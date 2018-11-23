@@ -1,0 +1,210 @@
+[2018-11-23 15:22:17.556] [INFO] pudding - VDP WebApp listening on port 8080
+[2018-11-23 15:22:17.563] [WARN] pudding - Wanna date me? ...
+[2018-11-23 15:22:17.563] [INFO] pudding - You can debug your app with http://localhost:8080
+[2018-11-23 15:22:17.563] [INFO] pudding - 
+[2018-11-23 15:22:32.791] [INFO] pudding - 
+
+Started 2018-11-23T07:22:32.791Z GET / ::1
+[2018-11-23 15:22:32.800] [INFO] pudding - Completed 302 (9ms)
+[2018-11-23 15:22:32.805] [INFO] pudding - 
+
+Started 2018-11-23T07:22:32.805Z GET /dashboard ::1
+[2018-11-23 15:22:32.824] [INFO] pudding - Render view signin (14ms)
+[2018-11-23 15:22:32.825] [INFO] pudding - Completed 200 (20ms)
+[2018-11-23 15:22:41.801] [INFO] pudding - 
+
+Started 2018-11-23T07:22:41.801Z POST /signin ::1
+[2018-11-23 15:22:41.881] [DEBUG] pudding - MONGO users.findOne {"conditions":{"name":{}},"options":{},"collectionName":"users"} 62ms
+[2018-11-23 15:22:42.134] [INFO] pudding - Render view signin (10ms)
+[2018-11-23 15:22:42.136] [INFO] pudding - Completed 403 (335ms)
+[2018-11-23 15:22:51.502] [INFO] pudding - 
+
+Started 2018-11-23T07:22:51.502Z POST /signin ::1
+[2018-11-23 15:22:51.558] [DEBUG] pudding - MONGO users.findOne {"conditions":{"name":{}},"options":{},"collectionName":"users"} 50ms
+[2018-11-23 15:22:51.810] [INFO] pudding - Completed 302 (308ms)
+[2018-11-23 15:22:51.812] [INFO] pudding - 
+
+Started 2018-11-23T07:22:51.812Z GET / ::1
+[2018-11-23 15:22:51.855] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"57c44989d5f754f81b36b9e3"},"options":{},"collectionName":"users"} 41ms
+[2018-11-23 15:22:51.910] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 51ms
+[2018-11-23 15:22:51.919] [INFO] pudding - 
+
+Started 2018-11-23T07:22:51.919Z GET /dashboard ::1
+[2018-11-23 15:22:51.927] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:22:51.857Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 69ms
+[2018-11-23 15:22:51.992] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 51ms
+[2018-11-23 15:22:52.005] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:22:51.940Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 63ms
+[2018-11-23 15:22:52.040] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 46ms
+[2018-11-23 15:22:52.050] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 3ms
+[2018-11-23 15:22:52.057] [DEBUG] pudding - MONGO fac_consinfo.findOne {"conditions":{"consDate":"2018-11-22"},"options":{},"collectionName":"fac_consinfo"} 10ms
+[2018-11-23 15:22:52.163] [INFO] pudding - Render view dashboard (105ms)
+[2018-11-23 15:22:52.166] [INFO] pudding - Completed 200 (247ms)
+[2018-11-23 15:22:52.300] [INFO] pudding - 
+
+Started 2018-11-23T07:22:52.300Z POST /dashboard/getfac ::1
+[2018-11-23 15:22:52.311] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 6ms
+[2018-11-23 15:22:52.317] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 5ms
+[2018-11-23 15:22:52.326] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:22:52.304Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 21ms
+[2018-11-23 15:22:52.334] [DEBUG] pudding - MONGO fac_consinfo.findOne {"conditions":{"consDate":"2018-11-22"},"options":{},"collectionName":"fac_consinfo"} 16ms
+[2018-11-23 15:22:52.338] [INFO] pudding - Completed 200 (38ms)
+[2018-11-23 15:22:57.005] [INFO] pudding - 
+
+Started 2018-11-23T07:22:57.005Z GET /order ::1
+[2018-11-23 15:22:57.013] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 2ms
+[2018-11-23 15:22:57.020] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 6ms
+[2018-11-23 15:22:57.037] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:22:57.009Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 28ms
+[2018-11-23 15:22:57.045] [DEBUG] pudding - MONGO order.find {"conditions":{"vdpType":{"$in":[0,1,2,3,4]}},"options":{"skip":0,"limit":10,"sort":{"_id":-1}},"collectionName":"order"} 24ms
+[2018-11-23 15:22:57.135] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5b71212f2524f2790f44fae6"},"options":{},"collectionName":"category"} 5ms
+[2018-11-23 15:22:57.140] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5b7121232524f2790f44fae5"},"options":{},"collectionName":"category"} 9ms
+[2018-11-23 15:22:57.142] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"599a2c35c46bbac62c4864b1"},"options":{},"collectionName":"category"} 11ms
+[2018-11-23 15:22:57.143] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5b3347c6190f05be5407afde"},"options":{},"collectionName":"category"} 12ms
+[2018-11-23 15:22:57.143] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5b0f5617ecb15fca679baf1c"},"options":{},"collectionName":"category"} 11ms
+[2018-11-23 15:22:57.144] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5b334945190f05be5407afdf"},"options":{},"collectionName":"category"} 13ms
+[2018-11-23 15:22:57.144] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5b519a1437cea89040eb5081"},"options":{},"collectionName":"category"} 11ms
+[2018-11-23 15:22:57.145] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5ba9df642c7524c63dcc9f67"},"options":{},"collectionName":"category"} 13ms
+[2018-11-23 15:22:57.146] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5a950aa46c58fe525b6a2dad"},"options":{},"collectionName":"category"} 13ms
+[2018-11-23 15:22:57.146] [DEBUG] pudding - MONGO category.findOne {"conditions":{"_id":"5b7bbe163147f210025e0f5e"},"options":{},"collectionName":"category"} 14ms
+[2018-11-23 15:22:57.246] [INFO] pudding - Render view order/order (99ms)
+[2018-11-23 15:22:57.247] [INFO] pudding - Completed 200 (242ms)
+[2018-11-23 15:23:08.794] [INFO] pudding - 
+
+Started 2018-11-23T07:23:08.794Z POST /order/roll ::1
+[2018-11-23 15:23:08.860] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 4ms
+[2018-11-23 15:23:08.870] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:23:08.855Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 15ms
+[2018-11-23 15:23:08.878] [DEBUG] pudding - MONGO roll.find {"conditions":{"orderId":18360},"options":{},"collectionName":"roll"} 15ms
+[2018-11-23 15:23:08.882] [INFO] pudding - Render view order/roll (4ms)
+[2018-11-23 15:23:08.884] [INFO] pudding - Completed 200 (90ms)
+[2018-11-23 15:23:09.003] [INFO] pudding - 
+
+Started 2018-11-23T07:23:09.003Z POST /order/roll ::1
+[2018-11-23 15:23:09.010] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 3ms
+[2018-11-23 15:23:09.018] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:23:09.007Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 11ms
+[2018-11-23 15:23:09.027] [DEBUG] pudding - MONGO roll.find {"conditions":{"orderId":18360},"options":{},"collectionName":"roll"} 16ms
+[2018-11-23 15:23:09.030] [INFO] pudding - Render view order/roll (2ms)
+[2018-11-23 15:23:09.032] [INFO] pudding - Completed 200 (29ms)
+[2018-11-23 15:39:27.442] [INFO] pudding - VDP WebApp listening on port 8080
+[2018-11-23 15:39:27.442] [WARN] pudding - Wanna date me? ...
+[2018-11-23 15:39:27.443] [INFO] pudding - You can debug your app with http://localhost:8080
+[2018-11-23 15:39:27.443] [INFO] pudding - 
+[2018-11-23 15:39:43.701] [INFO] pudding - 
+
+Started 2018-11-23T07:39:43.700Z GET / ::1
+[2018-11-23 15:39:43.765] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 52ms
+[2018-11-23 15:39:43.780] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:39:43.711Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 67ms
+[2018-11-23 15:39:43.792] [INFO] pudding - Completed 302 (92ms)
+[2018-11-23 15:39:43.793] [INFO] pudding - 
+
+Started 2018-11-23T07:39:43.793Z GET /dashboard ::1
+[2018-11-23 15:39:43.802] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 4ms
+[2018-11-23 15:39:43.849] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 45ms
+[2018-11-23 15:39:43.857] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:39:43.797Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 59ms
+[2018-11-23 15:39:43.866] [DEBUG] pudding - MONGO fac_consinfo.findOne {"conditions":{"consDate":"2018-11-22"},"options":{},"collectionName":"fac_consinfo"} 11ms
+[2018-11-23 15:39:43.898] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 44ms
+[2018-11-23 15:39:44.010] [INFO] pudding - Render view dashboard (109ms)
+[2018-11-23 15:39:44.012] [INFO] pudding - Completed 200 (219ms)
+[2018-11-23 15:39:44.163] [INFO] pudding - 
+
+Started 2018-11-23T07:39:44.163Z POST /dashboard/getfac ::1
+[2018-11-23 15:39:44.183] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 3ms
+[2018-11-23 15:39:44.191] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 6ms
+[2018-11-23 15:39:44.199] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T07:39:44.180Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 19ms
+[2018-11-23 15:39:44.207] [DEBUG] pudding - MONGO fac_consinfo.findOne {"conditions":{"consDate":"2018-11-22"},"options":{},"collectionName":"fac_consinfo"} 15ms
+[2018-11-23 15:39:44.212] [INFO] pudding - Completed 200 (49ms)
+[2018-11-23 15:43:51.586] [INFO] pudding - VDP WebApp listening on port 8080
+[2018-11-23 15:43:51.587] [WARN] pudding - Wanna date me? ...
+[2018-11-23 15:43:51.587] [INFO] pudding - You can debug your app with http://localhost:8080
+[2018-11-23 15:43:51.587] [INFO] pudding - 
+[2018-11-23 15:44:18.899] [INFO] pudding - 
+
+Started 2018-11-23T07:44:18.898Z GET / ::1
+[2018-11-23 15:44:18.959] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"_id":"57c44988d5f754f81b36b9e2"},"options":{},"collectionName":"roles"} 24ms
+[2018-11-23 15:48:21.760] [INFO] pudding - VDP WebApp listening on port 8080
+[2018-11-23 15:48:21.761] [WARN] pudding - Wanna date me? ...
+[2018-11-23 15:48:21.761] [INFO] pudding - You can debug your app with http://localhost:8080
+[2018-11-23 15:48:21.761] [INFO] pudding - 
+[2018-11-23 15:48:29.842] [INFO] pudding - 
+
+Started 2018-11-23T07:48:29.842Z GET / ::1
+[2018-11-23 15:48:29.855] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"57c44989d5f754f81b36b9e3"},"options":{},"collectionName":"users"} 7ms
+[2018-11-23 15:48:29.860] [INFO] pudding - Completed 302 (18ms)
+[2018-11-23 15:48:29.863] [INFO] pudding - 
+
+Started 2018-11-23T07:48:29.863Z GET /dashboard ::1
+[2018-11-23 15:48:29.873] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"57c44989d5f754f81b36b9e3"},"options":{},"collectionName":"users"} 6ms
+[2018-11-23 15:48:29.890] [INFO] pudding - Render view signin (16ms)
+[2018-11-23 15:48:29.891] [INFO] pudding - Completed 200 (28ms)
+[2018-11-23 15:48:37.190] [INFO] pudding - 
+
+Started 2018-11-23T07:48:37.190Z POST /signin ::1
+[2018-11-23 15:48:37.213] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"57c44989d5f754f81b36b9e3"},"options":{},"collectionName":"users"} 10ms
+[2018-11-23 15:48:37.229] [DEBUG] pudding - MONGO users.findOne {"conditions":{"name":{}},"options":{},"collectionName":"users"} 13ms
+[2018-11-23 15:48:37.238] [INFO] pudding - Render view signin (9ms)
+[2018-11-23 15:48:37.239] [INFO] pudding - Completed 403 (49ms)
+[2018-11-23 15:49:18.378] [INFO] pudding - 
+
+Started 2018-11-23T07:49:18.378Z POST /signin ::1
+[2018-11-23 15:49:18.412] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"57c44989d5f754f81b36b9e3"},"options":{},"collectionName":"users"} 13ms
+[2018-11-23 15:51:26.886] [DEBUG] pudding - MONGO users.findOne {"conditions":{"name":{}},"options":{},"collectionName":"users"} 32ms
+[2018-11-23 15:51:51.539] [INFO] pudding - Render view signin (17ms)
+[2018-11-23 16:21:22.198] [INFO] pudding - VDP WebApp listening on port 8080
+[2018-11-23 16:21:22.199] [WARN] pudding - Wanna date me? ...
+[2018-11-23 16:21:22.200] [INFO] pudding - You can debug your app with http://localhost:8080
+[2018-11-23 16:21:22.200] [INFO] pudding - 
+[2018-11-23 16:21:42.058] [INFO] pudding - VDP WebApp listening on port 8080
+[2018-11-23 16:21:42.059] [WARN] pudding - Wanna date me? ...
+[2018-11-23 16:21:42.059] [INFO] pudding - You can debug your app with http://localhost:8080
+[2018-11-23 16:21:42.059] [INFO] pudding - 
+[2018-11-23 16:22:07.251] [INFO] pudding - 
+
+Started 2018-11-23T08:22:07.250Z GET /signin ::1
+[2018-11-23 16:22:31.384] [INFO] pudding - 
+
+Started 2018-11-23T08:22:31.384Z GET / ::1
+[2018-11-23 16:23:33.638] [INFO] pudding - VDP WebApp listening on port 8080
+[2018-11-23 16:23:33.640] [WARN] pudding - Wanna date me? ...
+[2018-11-23 16:23:33.640] [INFO] pudding - You can debug your app with http://localhost:8080
+[2018-11-23 16:23:33.640] [INFO] pudding - 
+[2018-11-23 16:29:20.893] [INFO] pudding - VDP WebApp listening on port 8080
+[2018-11-23 16:29:20.895] [WARN] pudding - Wanna date me? ...
+[2018-11-23 16:29:20.895] [INFO] pudding - You can debug your app with http://localhost:8080
+[2018-11-23 16:29:20.895] [INFO] pudding - 
+[2018-11-23 16:29:31.477] [INFO] pudding - 
+
+Started 2018-11-23T08:29:31.476Z GET / ::1
+[2018-11-23 16:29:31.515] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"57c44989d5f754f81b36b9e3"},"options":{},"collectionName":"users"} 22ms
+[2018-11-23 16:29:31.528] [INFO] pudding - Completed 302 (52ms)
+[2018-11-23 16:29:31.532] [INFO] pudding - 
+
+Started 2018-11-23T08:29:31.532Z GET /dashboard ::1
+[2018-11-23 16:29:31.555] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"57c44989d5f754f81b36b9e3"},"options":{},"collectionName":"users"} 20ms
+[2018-11-23 16:29:31.582] [INFO] pudding - Render view signin (25ms)
+[2018-11-23 16:29:31.584] [INFO] pudding - Completed 200 (52ms)
+[2018-11-23 16:29:39.304] [INFO] pudding - 
+
+Started 2018-11-23T08:29:39.304Z POST /signin ::1
+[2018-11-23 16:29:39.372] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"57c44989d5f754f81b36b9e3"},"options":{},"collectionName":"users"} 22ms
+[2018-11-23 16:29:46.611] [DEBUG] pudding - MONGO users.findOne {"conditions":{"name":{}},"options":{},"collectionName":"users"} 42ms
+[2018-11-23 16:29:46.883] [INFO] pudding - 
+
+Started 2018-11-23T08:29:46.883Z GET / ::1
+[2018-11-23 16:29:46.912] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"5bf234788c83e41744ebfc15"},"options":{},"collectionName":"users"} 22ms
+[2018-11-23 16:29:46.941] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T08:29:46.915Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 24ms
+[2018-11-23 16:29:46.943] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 25ms
+[2018-11-23 16:29:46.949] [INFO] pudding - Completed 302 (66ms)
+[2018-11-23 16:29:46.953] [INFO] pudding - 
+
+Started 2018-11-23T08:29:46.953Z GET /dashboard ::1
+[2018-11-23 16:29:46.977] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 21ms
+[2018-11-23 16:29:46.979] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T08:29:46.955Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 24ms
+[2018-11-23 16:29:46.999] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 20ms
+[2018-11-23 16:29:47.030] [DEBUG] pudding - MONGO fac_consinfo.findOne {"conditions":{"consDate":"2018-11-22"},"options":{},"collectionName":"fac_consinfo"} 20ms
+[2018-11-23 16:29:47.031] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 21ms
+[2018-11-23 16:29:47.069] [INFO] pudding - Render view dashboard (35ms)
+[2018-11-23 16:29:47.071] [INFO] pudding - Completed 200 (118ms)
+[2018-11-23 16:29:47.182] [INFO] pudding - 
+
+Started 2018-11-23T08:29:47.182Z POST /dashboard/getfac ::1
+[2018-11-23 16:29:47.212] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-22T08:29:47.190Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 21ms
+[2018-11-23 16:29:47.213] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 21ms
+[2018-11-23 16:29:47.232] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 17ms
+[2018-11-23 16:29:47.241] [DEBUG] pudding - MONGO fac_consinfo.findOne {"conditions":{"consDate":"2018-11-22"},"options":{},"collectionName":"fac_consinfo"} 7ms
+[2018-11-23 16:29:47.242] [INFO] pudding - Completed 200 (60ms)

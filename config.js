@@ -42,8 +42,8 @@ if (!config.istest) {
     // config.redis.host = 'vdp.greatviewpack.org';
     // config.redis.pass = 'qrcode@2016';
 
-    config.db.options.user = 'admin.vdp';
-    config.db.options.pass = 'Ap123456';
+    // config.db.options.user = 'admin.vdp';
+    // config.db.options.pass = 'Ap123456';
 
     //测试环境
     // config.db.host = '192.168.11.36';
@@ -51,12 +51,17 @@ if (!config.istest) {
     // config.db.uri = 'mongodb://192.168.11.36:27017/vdp';
     config.db.host = '192.168.14.61';
     config.db.dbname = 'vdp';
-    config.db.uri = 'mongodb://192.168.14.61:27072/vdp';
+    //config.db.uri = 'mongodb://192.168.14.61:27072/vdp';
+    config.db.uri = 'mongodb://vdp.documents.azure.cn:10255/vdp'+'?ssl=true&replicaSet=globaldb';
+
+    config.db.options.user = 'vdp';
+    config.db.options.pass = 'iuxgvcbIrCYO6eO1mQTNqEo4g1JM1BksHhulQx32ELqWaFrqDL0pF3SaDUud7lrQQC1RzHXpcUI2AsWBKIEkXg==';
+
     config.redis.host = '192.168.14.48';
     config.redis.pass = 'qrcode@2016';
 
     config.host = 'localhost';
-    config.port = 3001;
+    config.port = 8080;
     config.hostname = 'localhost';
 
     // config.host = '192.168.14.48';

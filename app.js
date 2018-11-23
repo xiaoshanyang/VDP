@@ -138,11 +138,11 @@ app.use(require('cookie-parser')(config.session_secret));
 app.use(compress());
 app.use(session({
     secret: config.session_secret,
-    store: new RedisStore({
-        port: config.redis.port,
-        host: config.redis.host,
-        pass: config.redis.pass
-    }),
+    // store: new RedisStore({
+    //     port: config.redis.port,
+    //     host: config.redis.host,
+    //     pass: config.redis.pass
+    // }),
     resave: true,
     saveUninitialized: true
 }));

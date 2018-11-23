@@ -15,7 +15,7 @@ var configFile  = 'config.json';
 
 require('./app');
 
-var ws_port = 8080,
+var ws_port = 80,
     ws_path = '/v1/soap',
     //hostname = '192.168.0.37';
     //hostname = '192.168.6.31';

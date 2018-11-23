@@ -6,8 +6,9 @@ var mongoose = require('mongoose');
 var config   = require('../config');
 var logger = require('../common/logger');
 
-
+var mongodburi = 'mongodb://vdp:iuxgvcbIrCYO6eO1mQTNqEo4g1JM1BksHhulQx32ELqWaFrqDL0pF3SaDUud7lrQQC1RzHXpcUI2AsWBKIEkXg==@vdp.documents.azure.cn:10255/?ssl=true&replicaSet=globaldb';
 mongoose.connect(config.db.uri, config.db.options, function (err) {
+//mongoose.connect(mongodburi, function (err) {
     if (err) {
         logger.error('connect to %s error: ', config.db, err.message);
         process.exit(1);

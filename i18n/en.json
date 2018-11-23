@@ -310,5 +310,7 @@
 	"actualCount": "actualCount",
 	"D-value of roll": "D-value of roll",
 	"bladeNumIn": "bladeNumIn",
-	"export": "export"
+	"export": "export",
+	"VDPType-D": "VDPType-D",
+	"VDPType-E": "VDPType-E"
 }

@@ -57,7 +57,7 @@ exports.getPermissionsByRole = function(role, callback) {
     if (!role) {
         return callback();
     }
-    Roles.findOne({_id: role}, callback);
+    Roles.findOne({id: role}, callback);
 };
 
 /**

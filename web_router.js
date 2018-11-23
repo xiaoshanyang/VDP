@@ -19,7 +19,6 @@ var ftp = require('./controllers/ftp');
 var InterFace = require('./controllers/interface');
 var order = require('./controllers/order');
 var search = require('./controllers/search');
-var roll = require('./controllers/roll');
 var batch = require('./controllers/batch');
 
 var consReport = require('./controllers/consReport');
@@ -92,8 +91,6 @@ if (config.isinit) {
     router.get('/batch', auth, batch.index);
     router.post('/batch', auth, batch.index);
     router.get('/getcategory', category.getCategory);
-    router.get('/checkqrcode', auth, checkqrcode.index);
-    router.post('/checkqrcode', auth, checkqrcode.index);
     router.get('/downloadfile', auth, order.download);
     //router.get('/checkContent/:content', mesRequest.checkContent);
     router.get('/checkContent', mesRequest.checkContent);
