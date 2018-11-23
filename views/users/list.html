@@ -1,0 +1,49 @@
+<tr>
+    <td><%= getUsersList.name%></td>
+    <td><a class="lstEmail" data-pk="<%= getUsersList.name%>" data-value="<%= getUsersList.email%>"><%= getUsersList.email%></a></td>
+    <td><a class="lstPass" data-pk="<%= getUsersList.name%>">[hidden]</a></td>
+    <td><a class="lstRole" data-pk="<%= getUsersList.name%>" data-value="<%= getUsersList.role%>"></a></td>
+    <td>
+        <div class="btn-group">
+            <% if (getUsersList.is_block) {%>
+            <button type="button" data-target='#<%=getUsersList.name%>-offBlock' data-toggle='modal' class="offBlock btn btn-green btn-outlined btn-sm"> <span class="fa fa-check"></span> </button>
+            <% } else {%>
+            <button type="button" data-target='#<%=getUsersList.name%>-onBlock' data-toggle='modal' class="onBlock btn btn-danger btn-outlined btn-sm"> <span class="fa fa-times"></span> </button>
+            <%}%>
+            <!--
+            <button type="button" class="btn btn-warning btn-outlined btn-sm" data-toggle="dropdown"> <span class="fa fa-cog"></span> </button>
+            <ul class="dropdown-menu pull-right text-left" role="menu">
+                <li><a><i class="fa fa-user"></i> 个人档案 </a></li>
+                <li><a><i class="fa fa-search-plus"></i> 操作记录 </a></li>
+            </ul>
+            -->
+        </div>
+    </td>
+    <!--Modal Default-->
+    <div id="<%=getUsersList.name%>-offBlock" tabindex="-1" role="dialog" aria-labelledby="modal-default-label" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body color-green"><%= i18n.__('Are you sure you want to enable')%> <%= getUsersList.name%></div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-outlined btn-default"><%= i18n.__('Cancel')%></button>
+                        <button type="button" data-dismiss="modal" class="btn btn-outlined btn-green"><%= i18n.__('Ok')%></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="<%=getUsersList.name%>-onBlock" tabindex="-1" role="dialog" aria-labelledby="modal-default-label" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body color-red"><%= i18n.__('Are you sure you want to block')%> <%= getUsersList.name%></div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-outlined btn-default"><%= i18n.__('Cancel')%></button>
+                        <button type="button" data-dismiss="modal" class="btn btn-outlined btn-danger"><%= i18n.__('Ok')%></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</tr>

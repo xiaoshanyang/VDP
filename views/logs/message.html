@@ -1,0 +1,27 @@
+<li>
+    <a href="/logs" target="_blank" title="<%- message.todo%>">
+        <% if(message.opstype == 'qrcode') { %>
+        <span class="label label-blue"><i class="fa fa-qrcode"></i></span>
+        <% } %>
+        <% if(message.opstype == 'order') { %>
+        <span class="label label-green"><i class="fa fa-wpforms"></i></span>
+        <% } %>
+        <% if(message.opstype == 'users') { %>
+        <span class="label label-yellow"><i class="fa fa-user"></i></span>
+        <% } %>
+        <% if(message.opstype == 'setting') { %>
+        <span class="label label-pink"><i class="fa fa-cogs"></i></span>
+        <% } %>
+        <% if(message.opstype == 'other') { %>
+        <span class="label label-violet"><i class="fa fa-bullhorn"></i></span>
+        <% } %>
+        <% if(message.opstype == 'system') { %>
+        <span class="label label-violet"><i class="fa fa-cogs"></i></span>
+        <% } %>
+        <% if (message.todo.length > 16) {%>
+        <%- message.todo.substr(0,16)%>...
+        <%} else {%>
+        <%- message.todo%>
+        <% } %>
+        <span class="pull-right text-muted small"><%= message.create_at_ago() %></span></a>
+</li>

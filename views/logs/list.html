@@ -1,0 +1,46 @@
+<% if (getLogsList.state === 2) { %>
+<tr class="danger">
+<% } else { %>
+<tr>
+<% } %>
+    <td><%
+        if (getLogsList.opstype === 'system') {
+        %><%= i18n.__('System') %><%
+        }
+        if (getLogsList.opstype === 'users') {
+        %><%= i18n.__('Users') %><%
+        }
+        %></td>
+    <td><a data-target='#<%=getLogsList._id%>-des' data-toggle='modal'><%= getLogsList.todo%></a></td>
+    <td><%
+        if (getLogsList.state === 0) {
+        %><%= i18n.__('success') %><%
+        }
+        if (getLogsList.state === 1) {
+        %><%= i18n.__('processing') %><%
+        }
+        if (getLogsList.state === 2) {
+        %><%= i18n.__('failed') %><%
+        }
+        %></td>
+    <td><%= getLogsList.opsname%></td>
+    <td id="create_at"><%= getLogsList.create_at%></td>
+    <div id="<%=getLogsList._id%>-des" tabindex="-1" role="dialog" aria-labelledby="modal-default-label" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method='POST' class="form-validate-qrcodeAdd">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                        <h4 id="modal-default-label" class="modal-title"><%= i18n.__('content') %></h4>
+                    </div>
+                    <div class="model-body-log">
+                        <%= getLogsList.todo%>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default"><%= i18n.__('close')%></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</tr>

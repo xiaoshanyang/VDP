@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- meta -->
+    <meta charset="utf-8"/>
+    <meta name='description' content='<%= config.description %>'>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="keywords" content="<%= config.keywords %>"/>
+    <meta name="referrer" content="always">
+    <%
+    var headers = config.site_headers || [];
+    for (var i = 0, l = headers.length; i < l; i++) {
+    %>
+    <%- headers[i] %>
+    <% } %>
+    <% if (config.site_icon) { %>
+    <link rel="icon" href="<%= config.site_icon %>" type="image/x-icon"/>
+    <link rel="shortcut icon" href="<%= config.site_icon %>">
+    <% } %>
+    <title><%= i18n.__("title setup page") %></title>
+    <meta content="_csrf" name="csrf-param">
+    <meta content="<%= csrf %>" name="csrf-token">
+
+    <!--Loading bootstrap css-->
+    <link type="text/css" rel="stylesheet" href="/public/css/fonts-open-sans.css">
+    <link type="text/css" rel="stylesheet" href="/public/css/fonts-oswald.css">
+    <link type="text/css" rel="stylesheet" href="/public/vendors/font-awesome/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="/public/css/themes/style1/orange-blue.css" class="default-style">
+    <link type="text/css" rel="stylesheet" href="/public/css/themes/style1/orange-blue.css" id="theme-change" class="style-change color-change">
+    <link type="text/css" rel="stylesheet" href="/public/css/style-responsive.css">
+    <script src="/public/js/jquery-1.10.2.min.js"></script>
+    <script src="/public/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/public/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/public/js/html5shiv.js"></script>
+    <script src="/public/js/respond.min.js"></script>
+</head>
+<body>
+<%- body %>
+<script src="/public/vendors/jquery-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+<script src="/public/vendors/jquery-validate/jquery.validate.min.js"></script>
+<script src="/public/js/form-wizard.js"></script>
+</body>
+</html>

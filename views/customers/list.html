@@ -1,0 +1,12 @@
+<tr>
+    <td><input class="chkCustomer" type="checkbox" value="<%= getCustomerList.client_number %>"/></td>
+    <td><%= getCustomerList.client_number%></td>
+    <td><%= getCustomerList.client_name%></td>
+    <td><%
+        if (getCustomerList.isVDP) {
+        %><button data-pk="<%= getCustomerList.client_number %>" data-value="false" type="button" class="btn btn-danger btn-outlined btn-sm actRow"><%= i18n.__('Cancel') %></button>
+        <%
+        } else { %>
+        <button data-pk="<%= getCustomerList.client_number %>"  data-value="true" type="button" class="btn btn-success btn-outlined btn-sm actRow"><%= i18n.__('set') %></button>
+        <% } %></td>
+</tr>

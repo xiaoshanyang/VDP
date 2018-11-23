@@ -1,0 +1,257 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/x-editable/bootstrap3-editable/css/bootstrap-editable.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-tablesorter/themes/blue/style-custom.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-select/css/bootstrap-select.min.css">
+<style type="text/css">
+    .input-inline-users {
+        display: inline-block;
+        width: 100%;
+        vertical-align: middle;
+    }
+
+</style>
+<!--BEGIN TITLE & BREADCRUMB PAGE-->
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('Role') %>&<%= i18n.__('Power') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><%= i18n.__('System') %>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('Role') %>&<%= i18n.__('Power') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<!--END TITLE & BREADCRUMB PAGE-->
+
+<div class="page-content">
+    <div id="table-action" class="row">
+        <div class="col-lg-12">
+            <div id="tableactionTabContent" class="tab-content">
+                <div id="table-table-tab" class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 class="box-heading"><%= i18n.__('Create') %></h4>
+                            <div class="table-container">
+                                <% if(typeof(error) !== 'undefined' && error){ %>
+                                <div class="note note-danger alert-dismissable">
+                                    <strong id="notetitle"><%= i18n.__("failed")%>: </strong> <span id="notetext"><%= error %></span>
+                                </div>
+                                <% } %>
+                                <% if(typeof(success) !== 'undefined' && success){ %>
+                                <div class="note note-success alert-dismissable">
+                                    <strong id="notetitle"><%= i18n.__("success")%>: </strong> <span id="notetext"><%= success %></span>
+                                </div>
+                                <% } %>
+                                <form class="form-validate-createrole">
+                                    <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                                    <div class="row mbm">
+                                        <div class="col-lg-12">
+                                            <div class="pagination-panel">
+                                                <div class="col-lg-4">
+                                                    <input name="name" type="text" maxlenght="25" placeholder="<%= i18n.__('Role') %>" class="pagination-panel-input form-control input-inline-users required" />
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <select name="permissions" class="selectpicker form-control selectpermis required" title="<%= i18n.__('choose roles') %>" multiple data-actions-box="true" data-selected-text-format="count">
+                                                        <%
+                                                        config.power_list.forEach(function (pair) {
+                                                        var value = pair;
+                                                        if (value.indexOf('edit') !== -1) { %>
+                                                        <option data-content="<span class='label label-green'><%=value%></span>" value="<%=value%>"><%=value%></option>
+                                                        <% } else { %>
+                                                        <option data-content="<span class='label label-success'><%=value%></span>" value="<%=value%>"><%=value%></option>
+                                                        <% } %>
+                                                        <%});%>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <span id="processing" hidden><%= i18n.__('processing') %></span>
+                                                    <button id="btnCreate" type="submit" class="btn btn-success btn-outlined"><%= i18n.__('Create') %></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                                    <thead>
+                                    <tr>
+                                        <th width="50%"><%= i18n.__('Role') %></th>
+                                        <th width="50%"><%= i18n.__('Power') %></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <% if (typeof(rolesList) !== 'undefined' && rolesList.length > 0) { %>
+                                    <%- partial('roles/list', { collection: rolesList, as: 'getRolesList' }) %>
+                                    <% } else { %>
+                                    <td colspan="2"><%= i18n.__('null data') %></td>
+                                    <% } %>
+                                    </tbody>
+                                    <tbody>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/vendors/x-editable/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="/public/vendors/jquery-tablesorter/jquery.tablesorter.js"></script>
+<script src="/public/vendors/jquery-validate/jquery.validate.min.js"></script>
+<script src="/public/vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script>
+
+    $(function () {
+
+        // Start Get / Put Role List
+        $(".tablesorter").tablesorter({
+            headers: {
+                1: {
+                    sorter: false
+                }
+            }
+        });
+
+        $.fn.editable.defaults.inputclass = 'form-control';
+        $.fn.editable.defaults.url = '/roles/update';
+        $.fn.editable.defaults.mode = 'popup';
+
+        $('.lstName').editable({
+            type: 'text',
+            name: 'name',
+            params: {
+                _csrf: '<%= csrf %>'
+            },
+            validate: function(value) {
+                if($.trim(value) == '') return '<%= i18n.__("This field is required")%>';
+            },
+            ajaxOptions: {
+                timeout: 30000,
+                dataType: 'json' //assuming json response
+            },
+            success: function(response) {
+                if (response.reload) {
+                    location.reload();
+                }
+            },
+            error: function(errors) {
+                return errors.responseText;
+            }
+        });
+
+        // End Get / Put Role List
+
+        // Start Create Role
+        $(".form-validate-createrole").validate({
+            errorPlacement: function(error, element)
+            {
+                error.insertAfter(element);
+            },
+            submitHandler:function(form){
+                $('#btnCreate').hide();
+                $('#processing').show();
+                var $params = {
+                    name: $('input[name="name"]').val(),
+                    permissions: $('.selectpermis').selectpicker('val'),
+                    _csrf: '<%= csrf %>'
+                };
+                $.ajax({
+                    data: $params,
+                    url: '/roles/create',
+                    method: 'POST',
+                    cache: false,
+                    timeout: 30000
+                }).done(function(data) {
+                    if (data.success){
+                        location.reload();
+                    } else {
+                        alert(data);
+                        $('#btnCreate').show();
+                        $('#processing').hide();
+                    }
+                }).fail(function (xhr) {
+                    if (xhr.status === 403) {
+                        alert('403-Error!');
+                    } else {
+                        alert('ERROR: '+ xhr.responseText);
+                    }
+                    $('#btnCreate').show();
+                    $('#processing').hide();
+                });
+
+
+            }
+        });
+
+        $.validator.messages = {
+            required: "<%- i18n.__('This field is required')%>",
+            remote: "<%- i18n.__('Please fix this field')%>",    // 自己定义
+            email: "<%- i18n.__('Please enter a valid email address')%>",
+            url: "<%- i18n.__('Please enter a valid URL')%>",
+            date: "<%- i18n.__('Please enter a valid date')%>",
+            dateISO: "<%- i18n.__('Please enter a valid date (ISO)')%>",
+            number: "<%- i18n.__('Please enter a valid number')%>",
+            digits: "<%- i18n.__('Please enter only digits')%>",
+            creditcard: "<%- i18n.__('Please enter a valid credit card number')%>",
+            equalTo: "<%- i18n.__('Please enter the same value again')%>",
+            maxlength: $.validator.format( "<%- i18n.__('Please enter no more than {0} characters')%>" ),
+            minlength: $.validator.format( "<%- i18n.__('Please enter at least {0} characters')%>" ),
+            rangelength: $.validator.format( "<%- i18n.__('Please enter a value between {0} and {1} characters long')%>" ),
+            range: $.validator.format( "<%- i18n.__('Please enter a value between {0} and {1}')%>" ),
+            max: $.validator.format( "<%- i18n.__('Please enter a value less than or equal to {0}')%>" ),
+            min: $.validator.format( "<%- i18n.__('Please enter a value greater than or equal to {0}')%>" )
+        };
+        // End Create Role
+
+        $.fn.selectpicker.defaults = {
+            noneSelectedText: '<%= i18n.__("noneSelectedText")%>',
+            noneResultsText: '<%= i18n.__("noneResultsText")%>',
+            countSelectedText: '<%= i18n.__("countSelectedText")%>',
+            maxOptionsText: ['<%= i18n.__("maxOptionsText1")%>', '<%= i18n.__("maxOptionsText2")%>'],
+            selectAllText: '<%= i18n.__("selectAllText")%>',
+            deselectAllText: '<%= i18n.__("deselectAllText")%>',
+            multipleSeparator: '<%= i18n.__("multipleSeparator")%>'
+        };
+
+        $('.splst').on('hidden.bs.select', function (e) {
+            if ($(this).val() === '' || $(this).val() === null) {
+                alert('<%= i18n.__("This field is required")%>');
+                $('.splst').selectpicker('refresh');
+                return;
+            } else {
+                var $params = {
+                    pk: $(this).attr('data-pk'),
+                    name: 'permissions',
+                    value: $(this).val(),
+                    _csrf: '<%= csrf %>'
+                };
+                $.ajax({
+                    data: $params,
+                    url: '/roles/update',
+                    method: 'POST',
+                    cache: false,
+                    timeout: 30000
+                }).done(function(data) {
+                    if (data.success){
+                        $('.splst').selectpicker('refresh');
+                        if(data.reload){
+                            location.reload();
+                        }
+                    } else {
+                        alert(data.responseText);
+                    }
+                }).fail(function (xhr) {
+                    if (xhr.status === 403) {
+                        alert('403-Error!');
+                    }
+                });
+            }
+        });
+
+    });
+
+
+</script>

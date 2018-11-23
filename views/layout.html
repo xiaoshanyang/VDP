@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- meta -->
+    <meta charset="utf-8"/>
+    <meta name='description' content='<%= config.description %>'>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="keywords" content="<%= config.keywords %>"/>
+    <meta name="referrer" content="always">
+    <%
+    var headers = config.site_headers || [];
+    for (var i = 0, l = headers.length; i < l; i++) {
+    %>
+    <%- headers[i] %>
+    <% } %>
+    <% if (config.site_icon) { %>
+    <link rel="icon" href="<%- staticFile(config.site_icon) %>" type="image/x-icon"/>
+    <% } %>
+
+    <% if (typeof(pageTitle) !== 'undefined') { %>
+    <title><%= i18n.__(pageTitle) %> - <%= i18n.__(config.name) %></title>
+    <% } else { %>
+    <title><%= i18n.__(config.name) %> - <%= i18n.__(config.comname) %></title>
+    <% } %>
+    <meta content="_csrf" name="csrf-param">
+    <meta content="<%= csrf %>" name="csrf-token">
+
+    <%- Loader('/public/css/qrcode.min.css')
+    .css('/public/css/fonts-open-sans.css')
+    .css('/public/css/fonts-oswald.css')
+    .css('/public/vendors/font-awesome/css/font-awesome.min.css')
+    .css('/public/vendors/bootstrap/css/bootstrap.min.css')
+    .css('/public/vendors/jquery-pace/pace.css')
+    .css('/public/css/default.css')
+    .css('/public/css/style-responsive.css')
+    .done(assets, config.site_static_host, config.mini_assets)
+    %>
+
+    <%- Loader('/public/js/qrcode.min.js')
+    .js('/public/js/jquery-1.10.2.min.js')
+    .js('/public/js/jquery-migrate-1.2.1.min.js')
+    .js('/public/vendors/bootstrap/js/bootstrap.min.js')
+    .js('/public/vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js')
+    .js('/public/vendors/metisMenu/jquery.metisMenu.js')
+    .js('/public/vendors/slimScroll/jquery.slimscroll.js')
+    .js('/public/vendors/jquery-cookie/jquery.cookie.js')
+    .js('/public/vendors/jquery-pace/pace.min.js')
+    .js('/public/js/html5shiv.js')
+    .js('/public/js/respond.min.js')
+    .js('/public/js/main.js')
+    .done(assets, config.site_static_host, config.mini_assets)
+    %>
+    <style type="text/css">
+        .navbar-brand{
+            padding: 10px 15px;
+        }
+        .dropdown{
+            float:right;
+        }
+    </style>
+</head>
+<body class="">
+    <div>
+        <!--BEGIN BACK TO TOP-->
+        <a id="totop" href="#"><i class="fa fa-angle-up"></i></a>
+        <!--END BACK TO TOP-->
+        <!--BEGIN TOPBAR-->
+        <div class="page-header-topbar">
+            <nav id="topbar" role="navigation" style="margin-bottom: 0; z-index: 2;" class="navbar navbar-default navbar-static-top">
+                <div class="navbar-header">
+                    <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                    </button><a href="/" class="navbar-brand" id="logo"><img class="img-logo" src="<%- staticFile(config.site_logo) %>"></a>
+                </div>
+                <div class="topbar-main">
+                    <form id="topbar-search" action="/search" method="post" class="hidden-xs">
+                        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                        <div class="input-group">
+                            <input name="content" type="text" placeholder="<%= i18n.__('search') %>..." class="form-control" />
+                            <span class="input-group-btn"><a href="#" class="btn submit"><i class="fa fa-search"></i></a></span>
+                        </div>
+                    </form>
+                    <ul class="nav navbar navbar-top-links navbar-right mbn">
+                        <!--hidden-xs-->
+                        <li class="dropdown ">
+                            <!--BEGIN THEME SETTING--><a id="theme-setting" href="javascript:;" data-hover="dropdown" class="dropdown-toggle"><i class="fa fa-cogs"></i></a>
+                            <ul class="dropdown-menu dropdown-theme-setting pull-right">
+                                <li>
+                                    <h4 class="mtn"><%= i18n.__('Language') %></h4>
+                                    <select id="list-lan" class="form-control">
+                                        <option value="zh-CN">中文</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <h4 class="mtn"><%= i18n.__('Menu Style') %></h4>
+                                    <select id="list-menu" class="form-control">
+                                        <option value="sidebar-default"><%= i18n.__('Standard') %></option>
+                                        <option value="sidebar-colors"><%= i18n.__('Fresh') %></option>
+                                        <option value="sidebar-icons"><%= i18n.__('Large Icon') %></option>
+                                        <option value="sidebar-collapsed"><%= i18n.__('Smaill Icon') %></option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <h4 class="mtn"><%= i18n.__('Header & Sidebar') %></h4>
+                                    <select id="list-header" class="form-control">
+                                        <option value="header-static"><%= i18n.__('Static') %></option>
+                                        <option value="header-fixed"><%= i18n.__('Fixed') %></option>
+                                    </select>
+                                </li>
+                            </ul>
+                            <!--END THEME SETTING-->
+                        </li>
+
+                        <% if (typeof(msgLogs) !== 'undefined' && msgLogs.length > 0) { %>
+                        <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-orange"><% if (msgLogs.length > 99) { %><%= msgLogs.length - 1%>+<% } else { %><%= msgLogs.length%><% } %></span></a>
+                            <ul class="dropdown-menu dropdown-alerts pull-right">
+                                <li>
+                                    <p><%= i18n.__('msgLogs Title', msgLogs.length) %></p>
+                                </li>
+                                <li>
+                                    <div class="dropdown-slimscroll">
+                                        <ul>
+                                            <%- partial('logs/message', { collection: msgLogs, as: 'message' }) %>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="last"><a href="/logs" class="text-right"><%= i18n.__('show all msgLogs') %></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <% } %>
+
+                        <li class="dropdown topbar-user">
+                            <a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="<%- staticFile('/public/images/user/head/'+ current_user.profile_image_url) %>" alt="" class="img-responsive img-circle" />&nbsp;<span class="hidden-xs"><%- current_user.name %></span>&nbsp;<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user pull-right">
+                                <!--<li><a href="#"><i class="fa fa-user"></i><%= i18n.__('My Profile') %></a></li>-->
+                                <!--<li class="divider"></li>-->
+                                <li><a href="/signout"><i class="fa fa-sign-out"></i><%= i18n.__('Sign out') %></a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <!--END TOPBAR-->
+        <div id="wrapper">
+            <!--BEGIN SIDEBAR MENU-->
+            <nav id="sidebar" role="navigation" class="navbar-default navbar-static-side">
+                <div class="sidebar-collapse menu-scroll">
+                    <ul id="side-menu" class="nav">
+                        <li class="user-panel">
+                            <div class="thumb"><img src="<%- staticFile('/public/images/user/head/'+ current_user.profile_image_url) %>" alt="" class="img-circle" />
+                            </div>
+                            <div class="info">
+                                <p><%- current_user.name %></p>
+                                <ul class="list-inline list-unstyled">
+                                    <!--<li><a href="#" data-hover="tooltip" title="<%= i18n.__('My Profile') %>"><i class="fa fa-user"></i></a>-->
+                                    <!--</li>-->
+                                    <li><a href="/signout" data-hover="tooltip" title="<%= i18n.__('Sign out') %>"><i class="fa fa-sign-out"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li><a href="/dashboard"><i class="fa fa-tachometer fa-fw"><div class="icon-bg bg-red"></div></i><span class="menu-title"><%= i18n.__('Dashboard') %></span></a>
+                        </li>
+                        <li id="download"><a href="#"><i class="fa fa-qrcode fa-fw"><div class="icon-bg bg-blue"></div></i><span class="menu-title"><%= i18n.__('QRCode') %></span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="/download"><i class="fa fa-download"></i><span class="submenu-title"><%= i18n.__('Download') %></span></a>
+                                </li>
+                                <!--<li><a href="#"><i class="fa fa-cubes"></i><span class="submenu-title"><%= i18n.__('Tools') %></span></a>-->
+                                <!--</li>-->
+                            </ul>
+                        </li>
+                        <li id="report"><a href="#"><i class="fa fa-bar-chart-o fa-fw"><div class="icon-bg bg-orange"></div></i><span class="menu-title"><%= i18n.__('Charts') %></span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li id="searchQrcode"><a href="/searchQrcode"><i class="fa fa-table"></i><span class="submenu-title"><%= i18n.__('searchQrcode') %></span></a>
+                                </li>
+                                <li id="order"><a href="/order"><i class="fa fa-wpforms"></i><span class="submenu-title"><%= i18n.__('Order') %></span></a>
+                                </li>
+                                <li id="batch"><a href="/batch"><i class="fa fa-barcode"></i><span class="submenu-title"><%= i18n.__('Batch') %></span></a>
+                                </li>
+                                <li id="checkqrcode"><a href="/checkqrcode"><i class="fa fa-barcode"></i><span class="submenu-title"><%= i18n.__('CheckQrcode') %></span></a>
+                                </li>
+                                <li id="consReport"><a href="/consReport"><i class="fa fa-barcode"></i><span class="submenu-title"><%= i18n.__('consReport') %></span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li id="system"><a href="#"><i class="fa fa-cogs fa-fw"><div class="icon-bg bg-grey"></div></i><span class="menu-title"><%= i18n.__('System') %></span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li id="roles"><a href="/roles"><i class="fa fa-key"></i><span class="submenu-title"><%= i18n.__('Role') %>&<%= i18n.__('Power') %></span></a>
+                                </li>
+                                <li id="users"><a href="/users"><i class="fa fa-users"></i><span class="submenu-title"><%= i18n.__('Users') %></span></a>
+                                </li>
+                                <!--<li><a href="#"><i class="fa fa-share-alt"></i><span class="submenu-title"><%= i18n.__('Lifecycle') %></span></a>-->
+                                <!--</li>-->
+                                <!--<li><a href="/materiel"><i class="fa fa-briefcase"></i><span class="submenu-title"><%= i18n.__('Materiel') %></span></a>-->
+                                <!--</li>-->
+                                <li id="customer"><a href="/customer"><i class="fa fa-briefcase"></i><span class="submenu-title"><%= i18n.__('Customer') %></span></a>
+                                </li>
+                                <li id="category"><a href="/category"><i class="fa fa-product-hunt"></i><span class="submenu-title"><%= i18n.__('Category') %></span></a>
+                                </li>
+                                <li id="ftp"><a href="/ftp"><i class="fa fa-share"></i><span class="submenu-title"><%= i18n.__('FTP') %></span></a>
+                                </li>
+                                <li id="interface"><a href="/interface"><i class="fa fa-exchange"></i><span class="submenu-title"><%= i18n.__('Interface') %></span></a>
+                                </li>
+                                <li id="logs"><a href="/logs"><i class="fa fa-history"></i><span class="submenu-title"><%= i18n.__('Logs') %></span></a>
+                                </li>
+                                <!--<li id="operator"><a href="/operator"><i class="fa fa-history"></i><span class="submenu-title"><%= i18n.__('Operator') %></span></a>-->
+                                <!--</li>-->
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!--END SIDEBAR MENU-->
+            <!--BEGIN PAGE WRAPPER-->
+            <div id="page-wrapper">
+                <!--BEGIN CONTENT-->
+                <%- body %>
+                <!--END CONTENT-->
+            </div>
+            <!--BEGIN FOOTER-->
+            <div id="footer">
+                <div class="copyright">2016 © <%- i18n.__(config.comname) %></div>
+            </div>
+            <!--END FOOTER-->
+            <!--END PAGE WRAPPER-->
+        </div>
+
+    </div>
+</body>
+<script>
+function GetUrlRelativePath()
+{
+    var url = document.location.toString();
+    var arrUrl = url.split("//");
+    var start = arrUrl[1].indexOf("/");
+    var relUrl = arrUrl[1].substring(start);//stop省略，截取从start开始到结尾的所有字符
+
+    if(relUrl.indexOf("?") != -1){
+        relUrl = relUrl.split("?")[0];
+    }
+    if(relUrl.indexOf("#") != -1){
+        relUrl = relUrl.split("#")[0];
+    }
+    if(relUrl.indexOf("/") != -1){
+        relUrl = "/"+relUrl.split("/")[1];
+    }
+    return relUrl;
+}
+//取得登陆用户名
+//var username=document.cookie;
+var username="<%= current_user.name %>";
+//username = username.split('=')[1];
+console.log(username);
+var rolesdata = '/public/report/roles.json';
+$.getJSON(rolesdata, function(data){
+    var nameroles = data.name;
+    var name = '';
+    nameroles.forEach(function (n) {
+       if(n.user == username){
+           name = n.roles;
+       }
+    });
+    console.log(name);
+    var roles = data.roles;
+    var report = data.report;
+    var system = data.system;
+    var ismatch = false;
+    roles.forEach(function (r) {
+        if(r.name == name){
+            r.permissions.forEach(function (rs) {
+                var j = report.indexOf(rs);
+                var s = system.indexOf(rs);
+                if(j>=0){
+                    report.splice(j,1);
+                }
+                if(s>=0){
+                    system.splice(s,1);
+                }
+                var tmp = rs.split('.')[0];
+                tmp = '#' + tmp;
+                $(tmp).css("display","none")
+            });
+            if(report.length==0){
+                $('#report').css("display","none");
+            }
+            if(system.length==0){
+                $('#system').css("display","none");
+            }
+            ismatch = true;
+        }
+    });
+    if(!ismatch && name==''){
+        $('#download').css("display","none");
+        $('#report').css("display","none");
+        $('#system').css("display","none");
+    }else{
+
+    }
+});
+
+$(document).ready(function() {
+    var url = GetUrlRelativePath();
+    $('#side-menu a[href="'+ url +'"]').parent().addClass('active').parent().addClass('collapse in').parent().addClass('active');
+
+});
+
+</script>
+</html>

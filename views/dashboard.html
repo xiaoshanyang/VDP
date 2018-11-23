@@ -1,0 +1,484 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-datepicker/css/datepicker.css">
+
+<style type="text/css">
+    .panel-body{
+        padding: 15px 9px 15px 8px;
+    }
+    .col-md-3, .col-lg-12{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .legend>div{
+        display: none;
+    }
+    .legend>table{
+        display: none;
+    }
+</style>
+
+<!--BEGIN TITLE & BREADCRUMB PAGE-->
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('Dashboard') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('Dashboard') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<!--END TITLE & BREADCRUMB PAGE-->
+
+<div class="page-content">
+    <div id="tab-general">
+        <div id="sum_box" class="row mbl">
+            <div class="col-sm-6 col-md-3">
+                <div class="panel avlQRCode db mbm">
+                    <div class="panel-body">
+                        <p class="icon"><i class="icon fa fa-qrcode"></i></p>
+                        <h4 class="value">
+                            <span></span>
+                            <span><%= i18n.__('Million') %></span>
+                        </h4>
+                        <p class="description"><%= i18n.__('QRCode(avl)') %></p>
+                        <div class="progress progress-sm mbn">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="panel Printing db mbm">
+                    <div class="panel-body">
+                        <p class="icon"><i class="icon fa fa-print"></i></p>
+                        <h4 class="value">
+                            <span></span>
+                            <span><%= i18n.__('Million') %></span>
+                        </h4>
+                        <p class="description"><%= i18n.__('Printing') %></p>
+                        <div class="progress progress-sm mbn">
+                            <div class="progress-bar progress-bar-primary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="panel Printed db mbm">
+                    <div class="panel-body">
+                        <p class="icon"><i class="icon fa fa-database"></i></p>
+                        <h4 class="value">
+                            <span></span>
+                            <span><%= i18n.__('Million') %></span>
+                        </h4>
+                        <p class="description"><%= i18n.__('Printed') %></p>
+                        <div class="progress progress-sm mbn">
+                            <div class="progress-bar progress-bar-warning"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="panel Canned db mbm">
+                    <div class="panel-body">
+                        <p class="icon"><i class="icon fa fa-hourglass-end"></i></p>
+                        <h4 class="value">
+                            <span></span>
+                            <span><%= i18n.__('Million') %></span>
+                        </h4>
+                        <p class="description"><%= i18n.__('Canned') %></p>
+                        <div class="progress progress-sm mbn">
+                            <div class="progress-bar progress-bar-info"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mbl">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <!--<div class="col-md-4">-->
+                                <!--<h4 class="mbs text-uppercase"><%= i18n.__('QRCode useage summary') %></h4>-->
+                                <!--<p class="help-block"><%= i18n.__('QRCode useadle distribution') %></p>-->
+                                <!--<div id="PieChart_Avl" class="piechart_common" style="width: 100%; height:300px"></div>-->
+                            <!--</div>-->
+                            <div class="col-md-4">
+                                <h4 class="mbs text-uppercase"><%= i18n.__('QRCode useage summary') %></h4>
+                                <p class="help-block"><%= i18n.__('QRCode Issued distribution') %></p>
+                                <div id="PieChart_Used" class="piechart_common" style="width: 100%; height:300px"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <h4 class="mbs text-uppercase">&nbsp;</h4>
+                                <p class="help-block"><%= i18n.__('QRCode Cans distribution') %></p>
+                                <div id="PieChart_Canned" class="piechart_common" style="width: 100%; height:300px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mbl">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="text" class="datepicker" placeholder="<%= i18n.__('Please choose date')%>" />
+                                <!--<input type="text" class="zidongdate">-->
+                                <!--<input type="button" class="zidong" value="点击">-->
+                                <div id="batch-chart" style="width: 100%;height:550px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/public/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/public/vendors/flot-chart/jquery.flot.js"></script>
+<script src="/public/vendors/flot-chart/jquery.flot.categories.js"></script>
+<script src="/public/vendors/flot-chart/jquery.flot.tooltip.js"></script>
+<script src="/public/vendors/flot-chart/jquery.flot.spline.js"></script>
+<script src="/public/vendors/flot-chart/jquery.flot.pie.js"></script>
+<script src="/public/js/echarts.min.js"></script>
+<script src="/public/js/china.js"></script>ß
+<script>
+
+    var changedDate = null;
+    $(".nodata").hide();
+    // Get Report Data from JSON
+    var dataroot = '/public/report/data.json';
+    $.getJSON(dataroot, function(data){
+        var allCount = (data.Summary.allCount / 1000000).toFixed(2),
+            avlCount = (data.Summary.avlCount / 1000000).toFixed(2),
+            IssuredCount = (data.Summary.IssuredCount / 1000000).toFixed(2),
+            productedCount = (data.Summary.productedCount / 1000000).toFixed(2),
+            Canned = (data.Summary.Canned / 1000000).toFixed(2);
+        counterNum($(".avlQRCode h4 span:first-child"), allCount, 0, avlCount, stepNum(avlCount), 50);
+        counterNum($(".Printing h4 span:first-child"), allCount, 0, IssuredCount, stepNum(IssuredCount), 50);
+        counterNum($(".Printed h4 span:first-child"), allCount, 0, productedCount, stepNum(productedCount), 50);
+        counterNum($(".Canned h4 span:first-child"), allCount, 0, Canned, stepNum(Canned), 50);
+
+
+        //BEGIN PIE CHART
+//        $.plot('#PieChart_Avl', data.PieChart_Avl, {
+//            series: {
+//                pie: {
+//                    show: true,
+//                    radius: 1,
+//                    label: {
+//                        show: true,
+//                        radius: 3 / 5,
+//                        formatter: function (label, series) {
+//                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + (Math.round(series.percent)*0.01*avlCount).toFixed(1) + '</div>';
+//                        },
+//                        threshold: 0.1
+//                    }
+//                }
+//            },
+//            legend: {
+//                show: true,
+//                position: "ne"
+//            },
+//			  arrcount: 5
+//        });
+        $.plot('#PieChart_Used', data.PieChart_Used, {
+            series: {
+                pie: {
+                    show: true,
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 3 / 5,
+                        formatter: function (label, series) {
+                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + (Math.round(series.percent)*0.01*IssuredCount).toFixed(1) + '</div>';
+                        },
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: true
+            },
+            arrcount: 5000
+        });
+        $.plot('#PieChart_Canned', data.PieChart_NewCanned, {
+            series: {
+                pie: {
+                    show: true,
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 3 / 5,
+                        formatter: function (label, series) {
+                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + (Math.round(series.percent)*0.01*Canned).toFixed(1) + '</div>';
+                        },
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: true
+            },
+            arrcount: 5
+        });
+        //END PIE CHART
+
+    });
+
+    //BEGIN COUNTER FOR SUMMARY BOX
+    function counterNum(obj, allcount, start, end, step, duration) {
+        var proObj = $(obj).parent().parent().children('.progress').children('.progress-bar');
+        var perNum = Math.round(end / allcount * 10000) / 100.00 + '%';
+        /*
+        if (end <= 0.39 && end >= 0.30) {
+            end = 0.4;
+        }*/
+        $(obj).html(end);
+        proObj.css('width', perNum);
+       // $(obj).html(end+step);
+        /*
+        setInterval(function(){
+            var val = Number($(obj).html());
+            if (val < end) {
+                proObj.css('width', perNum);
+                $(obj).html(val+step);
+            } else {
+                clearInterval();
+            }
+        },duration);*/
+    }
+
+    function stepNum(count) {
+        if (count > 1000) { return 100; }
+        if (count > 100) { return 10; }
+        if (count < 0.1) { return 0.01; }
+        if (count < 1) { return 0.1; }
+        return 1;
+    }
+    //END COUNTER FOR SUMMARY BOX
+
+    //START BACTH CHART
+    //------------------------
+    function ajaxpost(date) {
+        var $params = {
+            date: date,
+            _csrf: "<%= csrf %>"
+        };
+        $.ajax({
+            data: $params,
+            url: '/dashboard/getfac',
+            method: 'POST',
+            cache: false,
+            timeout: 30000
+        }).done(function(result) {
+            if(result){
+                if(result.length==0){
+                    result = {
+                        consInfo:[]
+                    };
+                }
+                changedDate = result.consDate;
+                createEcharts(result);
+            }else{
+                result = {
+                    consInfo:[]
+                };
+                //alert(changedDate+' has no data. ');
+                createEcharts(result);
+                //alert('no_date');
+            }
+        }).fail(function (xhr) {
+            if (xhr.status === 403) {
+                alert('403-Error!');
+            }
+        });
+    }
+
+    function createEcharts(facConsInfo) {
+        var myChart = echarts.init(document.getElementById('batch-chart'));
+        var legendleft = [];     //左侧品类
+        var seriseMaps = [];
+        var max = -Infinity;
+        var min = Infinity;
+        var mapDatas = facConsInfo.consInfo;
+        mapDatas.forEach(function (mapdata) {
+            legendleft.push({
+                name:mapdata.name,
+                textStyle: {
+                    color: mapdata.mapinfo[0].color
+                }
+            });
+            mapdata.mapinfo.forEach(function (itemOpt) {
+                if (itemOpt.value > max) {
+                    max = itemOpt.value;
+                }
+                if (itemOpt.value < min) {
+                    min = itemOpt.value;
+                }
+            });
+            var tmpmap = {
+                name: mapdata.name,
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: mapdata.mapinfo.map(function (itemOpt) {
+                    return {
+                        name: itemOpt.name,
+                        value: [
+                            itemOpt.longitude,
+                            itemOpt.latitude,
+                            itemOpt.value
+                        ],
+                        label: {
+                            emphasis: {
+                                position: 'right',
+                                show: false
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: itemOpt.color
+                            }
+                        }
+                    };
+                })
+            };
+            seriseMaps.push(tmpmap);
+        });
+        //-----------------------------
+
+        var option = {
+            backgroundColor: '#ffffff',
+            title : {
+                text: "<%= i18n.__('Distribution of producing area') %>",
+                subtext: "<%= i18n.__('VDP platform') %>",
+                left: 'center',
+                top: 'top',
+                textStyle: {
+                    color: '#737373'
+                }
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter : function (params) {
+                    var value = (params.value + '').split(',');
+                    value = value[2];
+                    return params.name + '<br/>' + params.seriesName + ' : ' + value;
+                }
+            },
+            visualMap: {
+                show: false,
+                min: 0,
+                max: max,
+                inRange: {
+                    symbolSize: [20, 60]
+                }
+            },
+            geo: {
+                name: "<%= i18n.__('Distribution of producing area') %>",
+                type: 'map',
+                map: 'china',
+                roam: false,
+                label: {
+                    emphasis: {
+                        show: false
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        areaColor: '#DCDCDC',
+                        borderColor: '#C0C0C0'
+                    },
+                    emphasis: {
+                        areaColor: '#efefef'
+                    }
+                }
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: legendleft
+            },
+            series : seriseMaps
+        };
+        console.log(legendleft);
+        myChart.setOption(option);
+    }
+    if(changedDate == null){
+        ajaxpost('');
+    }
+
+        //END BACTH CHART
+    $(function () {
+        $(".datepicker").datepicker({
+            autoclose: true,//选中之后自动隐藏日期选择框
+            clearBtn: true,//清除按钮
+            todayBtn: "linked",//今日按钮
+            format: "yyyy-mm-dd",//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+            todayHighlight: true
+        });
+        $(".datepicker").change(function () {
+            var date = $(".datepicker").val();
+            if( changedDate !== date && date != ''){
+                ajaxpost(date);
+                changedDate = date;
+            }
+        });
+        $(".zidong").click(function () {
+            console.log(11);
+            var aa = $(".zidongdate").val();
+            console.log(aa);
+            var $params = {
+                _csrf: "<%= csrf %>",
+                date:aa
+            };
+            $.ajax({
+                data: $params,
+                url: '/dashboard/zidong',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function(result) {
+                if(result){
+
+                }else{
+                    console.log($params.date + ' no_date');
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                }
+            });
+        });
+
+       //$("#PieChart_Used > .legend").css("display","none");
+//        $("#PieChart_Avl").mouseover(function () {
+//            //$("#PieChart_Avl > .legend > div").css("display","block");
+//            $("#PieChart_Avl > .legend > table").css({"display":"block","position":"absoulte","top":"-15px","right":"-15px"});
+//        });
+//        $("#PieChart_Avl").mouseout(function () {
+//            //$("#PieChart_Avl > .legend > div").css("display","block");
+//            $("#PieChart_Avl > .legend > table").css("display","none");
+//        });
+        $("#PieChart_Used").mouseover(function () {
+            //$("#PieChart_Avl > .legend > div").css("display","block");
+            $("#PieChart_Used > .legend > table").css({"display":"block","position":"absoulte","top":"-15px","right":"-15px"});
+        });
+        $("#PieChart_Used").mouseout(function () {
+            //$("#PieChart_Avl > .legend > div").css("display","block");
+            $("#PieChart_Used > .legend > table").css("display","none");
+        });
+        $("#PieChart_Canned").mouseover(function () {
+            //$("#PieChart_Avl > .legend > div").css("display","block");
+            $("#PieChart_Canned > .legend > table").css({"display":"block","position":"absoulte","top":"-15px","right":"-15px"});
+        });
+        $("#PieChart_Canned").mouseout(function () {
+            //$("#PieChart_Avl > .legend > div").css("display","block");
+            $("#PieChart_Canned > .legend > table").css("display","none");
+        });
+
+    });
+</script>

@@ -1,0 +1,248 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-ui-1.11.4.base/jquery-ui.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-tablesorter/themes/blue/style-custom.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-treetable/css/jquery.treetable.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-treetable/css/jquery.treetable.theme.default.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/icheck-1.x/skins/all.css">
+<link type="text/css" rel="stylesheet" href="/public/css/themes/style1/green-red.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-datepicker/css/datepicker.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-select/css/bootstrap-select.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-fileinput-master/css/fileinput.min.css">
+
+<!--BEGIN TITLE & BREADCRUMB PAGE-->
+<style type="text/css">
+
+</style>
+
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('Sharded Cluster') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><%= i18n.__('System') %>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('Sharded Cluster') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+
+<div class="page-content">
+    <div id="table-action" class="row">
+        <div class="col-lg-12">
+            <div id="tableactionTabContent" class="tab-content">
+                <div id="table-table-tab" class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 class="box-heading"><%= i18n.__('Sharded Cluster') %></h4>
+                            <form action="/shards" method="get">
+                                <div class="table-container">
+                                    <div class="row mbm">
+                                        <div class="col-lg-12">
+                                            <div class="pagination-panel">
+                                                <div class="col-lg-3">
+                                                    <input name="shard_name" type="text" value="" placeholder="<%= i18n.__('shard name') %>" class="pagination-panel-input form-control input-inline-users" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input name="start_range" type="text" value="" placeholder="<%= i18n.__('start range')%>" class="pagination-panel-input form-control input-inline-users" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input name="end_range" type="text" value="" placeholder="<%= i18n.__('end range')%>" class="pagination-panel-input form-control input-inline-users" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <button id="btnAdd" type="button" class="btn btn-success btn-outlined"><%= i18n.__('Add Shard Range') %></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                                        <thead>
+                                        <tr>
+                                            <th width="5%"><%= i18n.__('shard name') %></th>
+                                            <th width="10%"><%= i18n.__('start range') %></th>
+                                            <th width="10%"><%= i18n.__('end range')%></th>
+                                            <th width="10%"><%= i18n.__('state')%></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="shards_list">
+                                        <% if (typeof(shardList) !== 'undefined' && shardList.length > 0) { %>
+                                        <%- partial('shards/list', { collection: shardList, as: 'getShardList' }) %>
+                                        <% } else { %>
+                                        <td colspan="5"><%= i18n.__('null data') %></td>
+                                        <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--END TITLE & BREADCRUMB PAGE-->
+<script src="/public/vendors/x-editable/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="/public/vendors/jquery-tablesorter/jquery.tablesorter.js"></script>
+<script src="/public/vendors/jquery-ui-1.11.4.base/jquery-ui.min.js"></script>
+<script src="/public/vendors/icheck-1.x/icheck.min.js"></script>
+<script src="/public/vendors/jquery-treetable/jquery.treetable.js"></script>
+<script src="/public/vendors/jquery-validate/jquery.validate.min.js"></script>
+<script src="/public/vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script>
+    $(function(){
+
+        $('input[name="start_range"]').change( function() {
+            var str = $(this).val();
+            if(isNaN(str) ){
+                alert('输入有误: '+str+'. 输入数字.');
+                $(this).val('');
+                return;
+            }
+        });
+        $('input[name="end_range"]').change( function() {
+            var str = $(this).val();
+            if(isNaN(str) ){
+                alert('输入有误: '+str+'. 输入数字.');
+                $(this).val('');
+                return;
+            }
+        });
+        $('#btnAdd').click(function (e) {
+            var $params = {
+                shard_name: $('input[name="shard_name"]').val(),
+                start_range: $('input[name="start_range"]').val(),
+                end_range: $('input[name="end_range"]').val(),
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/shards',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function (data) {
+                if (data.success) {
+                    if(data.reload){
+                        //location.reload();
+                        alert(1111);
+                        window.location.href='/shards';
+                    }
+                } else {
+                    alert(data.responseText);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                }
+            });
+        });
+        $('button.actRow').click(function (e) {
+
+            var $params = {
+                pk: $(this).attr('data-pk'),
+                name: 'changeState',
+                value: $(this).attr('data-value'),
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/shards/update',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function (data) {
+                if (data.success) {
+                    if(data.reload){
+                        location.reload();
+                    }
+                } else {
+                    alert(data.responseText);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                }
+            });
+        });
+
+        $.validator.messages = {
+            required: "<%- i18n.__('This field is required')%>",
+            remote: "<%- i18n.__('Please fix this field')%>",    // 自己定义
+            email: "<%- i18n.__('Please enter a valid email address')%>",
+            url: "<%- i18n.__('Please enter a valid URL')%>",
+            date: "<%- i18n.__('Please enter a valid date')%>",
+            dateISO: "<%- i18n.__('Please enter a valid date (ISO)')%>",
+            number: "<%- i18n.__('Please enter a valid number')%>",
+            digits: "<%- i18n.__('Please enter only digits')%>",
+            creditcard: "<%- i18n.__('Please enter a valid credit card number')%>",
+            equalTo: "<%- i18n.__('Please enter the same value again')%>",
+            maxlength: $.validator.format( "<%- i18n.__('Please enter no more than {0} characters')%>" ),
+            minlength: $.validator.format( "<%- i18n.__('Please enter at least {0} characters')%>" ),
+            rangelength: $.validator.format( "<%- i18n.__('Please enter a value between {0} and {1} characters long')%>" ),
+            range: $.validator.format( "<%- i18n.__('Please enter a value between {0} and {1}')%>" ),
+            max: $.validator.format( "<%- i18n.__('Please enter a value less than or equal to {0}')%>" ),
+            min: $.validator.format( "<%- i18n.__('Please enter a value greater than or equal to {0}')%>" )
+        };
+
+        $.fn.editable.defaults.inputclass = 'form-control';
+        $.fn.editable.defaults.url = '/shards/update';
+        $.fn.editable.defaults.mode = 'popup';
+
+        $('.lstStartRange').editable({
+            type: 'text',
+            name: 'startRange',
+            params: {
+                _csrf: '<%= csrf %>'
+            },
+            validate: function(value) {
+                if($.trim(value) == '') return '<%= i18n.__("This field is required")%>';
+                if( isNaN($.trim(value)) ) return $.validator.messages.number;
+            },
+            ajaxOptions: {
+                timeout: 30000,
+                dataType: 'json' //assuming json response
+            },
+            success: function(response) {
+                if (response.reload) {
+                    location.reload(false);
+                    //window.location.href="/shards"
+                    //alert('change');
+                }
+                if (response.error) {
+                    alert(response.message);
+                }
+            },
+            error: function(errors) {
+                return errors.responseText;
+            }
+        });
+        $('.lstEndRange').editable({
+            type: 'text',
+            name: 'endRange',
+            params: {
+                _csrf: '<%= csrf %>'
+            },
+            validate: function(value) {
+                if($.trim(value) == '') return '<%= i18n.__("This field is required")%>';
+                if( isNaN($.trim(value)) ) return $.validator.messages.number;
+            },
+            ajaxOptions: {
+                timeout: 30000,
+                dataType: 'json' //assuming json response
+            },
+            success: function(response) {
+                if (response.reload) {
+                    location.reload(false);
+                    //alert('change');
+                }
+                if (response.error) {
+                    alert(response.message);
+                }
+            },
+            error: function(errors) {
+                return errors.responseText;
+            }
+        });
+    });
+
+</script>

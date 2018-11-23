@@ -1,0 +1,16 @@
+<tr>
+    <td><a <% if(getList.disable) {%> disabled="disabled" <%}else{%> class="lstName" <%}%> data-pk="<%= getList._id%>" data-value="<%= getList.name%>"><%= getList.name %></a></td>
+    <td><select name="<%= getList._id%>" <% if(getList.disable) {%> disabled="disabled" <%}%> data-pk="<%= getList._id%>"
+        data-url="/getCategory" data-selected="<%= getList.designId_vdpVersion %>" class="updatedesignIdVersion form-control required" multiple data-size="10"
+        data-actions-box="true" data-live-search="true" data-selected-text-format="count">
+        </select></td>
+    <td><%= getList.codeCount %></td>
+    <td><%= getList.tokenCount %></td>
+    <!--<td>-->
+        <!--<% if (!getList.disable) { %>-->
+        <!--<button data-pk="<%= getList._id %>"  data-value="true" type="button" class="btn btn-success btn-outlined btn-sm actRow"><%= i18n.__('Active') %></button>-->
+        <!--<% } else { %>-->
+        <!--<button data-pk="<%= getList._id %>" data-value="false" type="button" class="btn btn-danger btn-outlined btn-sm actRow"><%= i18n.__('Inactive') %></button>-->
+        <!--<% } %>-->
+    <!--</td>-->
+</tr>

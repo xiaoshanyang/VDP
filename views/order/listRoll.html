@@ -1,0 +1,14 @@
+<% if(listRoll.isErr){%>
+<tr class="error">
+    <% } else {%>
+<tr>
+    <% } %>
+    <td><%= listRoll.rollNum%></td>
+    <td><%= listRoll.actualWebNum%></td>
+    <td width="25%"><%- listRoll.codeRange %></td>
+    <td><%= listRoll.actualCount%></td>
+    <td><%= listRoll.lines%></td>
+    <td><%= listRoll.value%></td>
+    <td><%= listRoll.bladeNumIn%></td>
+    <td><button type="button"  class="btn btn-yellow btn-xs" onclick="exportRollmsg(this,'<%= listRoll.rollNum%>','<%= listRoll.orderId%>')"><%= i18n.__('export') %></button></td>
+</tr>

@@ -1,0 +1,19 @@
+<root>
+	<con>
+		<url>http://ssr-cp.mengniu.com.cn</url><filename>SSR</filename>  <needUrl>0</needUrl> <password></password>
+		<ftpcode>57c44b3868a639091c5fff01</ftpcode><categoryname>酸酸乳</categoryname><!--> 酸酸乳<-->
+		<url>http://p.url.cn</url>             <filename>JXMC</filename> <needUrl>0</needUrl> <password></password>
+		<ftpcode>57c44b4368a639091c5fff05</ftpcode><categoryname>精选</categoryname><!--> 精选<-->
+		<url>http://www.firstgdt.com</url>      <filename>SMT</filename>  <needUrl>1</needUrl> <password>con@1234</password> 
+		<ftpcode>5809add17697a1e80afc5c74</ftpcode><categoryname>试机</categoryname><!--> 数码通(ftp地址用的三元儿童奶)<-->
+		<url>http://www.1gdt.com</url>          <filename>SMT</filename>  <needUrl>1</needUrl> <password>con@1234</password> 
+		<ftpcode>5809add17697a1e80afc5c74</ftpcode><categoryname>试机</categoryname><!--> 数码通(ftp地址用的三元儿童奶)<-->
+		<url>http://www.2gdt.com</url>          <filename>SMT</filename>  <needUrl>1</needUrl> <password>con@1234</password> 
+		<ftpcode>5809add17697a1e80afc5c74</ftpcode><categoryname>试机</categoryname><!--> 数码通(ftp地址用的三元儿童奶)<-->
+		<url>http://q.openhema.com</url>      <filename>SMT</filename>  <needUrl>1</needUrl> <password>con@1234</password>
+		<ftpcode>5809add17697a1e80afc5c74</ftpcode><categoryname>试机</categoryname><!--> 数码通(ftp地址用的三元儿童奶)<-->
+	</con>
+	<print>
+		
+	</print>
+</root>

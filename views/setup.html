@@ -1,0 +1,438 @@
+<% layout('layout_setup') -%>
+<div>
+    <div id=" ">
+        <!--BEGIN PAGE WRAPPER-->
+        <div id=" ">
+            <!--BEGIN CONTENT-->
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="portlet box portlet-green">
+                            <div class="portlet-header">
+                                <div class="caption"><%= i18n.__("title setup page")%></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div id="rootwizard-custom-circle">
+                                    <div class="navbar">
+                                        <div class="navbar-inner">
+                                            <ul>
+                                                <li><a href="#tab1-wizard-custom-circle" data-toggle="tab"><i class="fa fa-database"></i><p class="anchor">1. <%= i18n.__("database")%></p><p class="description"><%= i18n.__("database config")%></p></a>
+                                                </li>
+                                                <li><a href="#tab2-wizard-custom-circle" data-toggle="tab"><i class="fa fa-envelope"></i><p class="anchor">2. <%= i18n.__("email")%></p><p class="description"><%= i18n.__("email config")%></p></a>
+                                                </li>
+                                                <li><a href="#tab3-wizard-custom-circle" data-toggle="tab"><i class="fa fa-registered"></i><p class="anchor">3. <%= i18n.__("register")%></p><p class="description"><%= i18n.__("register config")%></p></a>
+                                                </li>
+                                                <li><a href="#tab4-wizard-custom-circle" data-toggle="tab"><i class="fa fa-user-secret"></i><p class="anchor">4. <%= i18n.__("account")%></p><p class="description"><%= i18n.__("account config")%></p></a>
+                                                </li>
+                                                <li><a href="#tab5-wizard-custom-circle" data-toggle="tab"><i class="fa fa-check-square"></i><p class="anchor">5. <%= i18n.__("finish")%></p><p class="description"><%= i18n.__("finish config")%></p></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div id="bar" class="progress active">
+                                        <div class="bar progress-bar progress-bar-primary"></div>
+                                    </div>
+                                    <div class="tab-content">
+                                        <div class="note note-dbtest note-danger alert-dismissable">
+                                            <strong id="notedbtitle"></strong> <span id="notedbtext"></span>
+                                        </div>
+                                        <div id="tab1-wizard-custom-circle" class="tab-pane fadeIn">
+                                            <h3 class="mbxl"><%= i18n.__("database config")%></h3>
+                                            <form id="dbForm" action="/setup/testdb" class="form-horizontal" method='post'>
+                                                <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                                                <div class="form-group">
+                                                    <label for="inputDBHostName" class="col-sm-3 control-label"><%= i18n.__("hostname")%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-server"></i></span>
+                                                            <input id="txtDBHostName" value="<%= config.db.host%>" type="text" placeholder="<%= i18n.__('hostname input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('hostname valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputDBHostPort" class="col-sm-3 control-label"><%= i18n.__('hostport')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-exchange"></i></span>
+                                                            <input id="txtDBHostPort" value="<%= config.db.port%>" type="number" placeholder="<%= i18n.__('hostport input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('hostport valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputDBName" class="col-sm-3 control-label"><%= i18n.__('dbname')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-database"></i></span>
+                                                            <input id="txtDBName"  value="<%= config.db.dbname%>" type="text" placeholder="<%= i18n.__('dbname input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('dbname valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputDBAccount" class="col-sm-3 control-label"><%= i18n.__('accname')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                            <input id="txtDBAccount" value="<%= config.db.options.user%>" type="text" placeholder="<%= i18n.__('accname input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('accname valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputDBPassword" class="col-sm-3 control-label"><%= i18n.__('accpwd')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                            <input id="txtDBPassword" value="<%= config.db.options.pass%>" type="password" placeholder="<%= i18n.__('accpwd input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('accpwd valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <button type="button" name="test" value="<%= i18n.__('connection test')%>" class="btn btn-warning button-test" id="btnTestDB"><i class="fa fa-link mlx"></i> <%= i18n.__('connection test')%></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div id="tab2-wizard-custom-circle" class="tab-pane fadeIn">
+                                            <h3 class="mbxl"><%= i18n.__('email config')%></h3>
+                                            <form id="emailForm" action="/setup/testemail" class="form-horizontal" method='post'>
+                                                <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                                                <div class="form-group">
+                                                    <label for="inputSMTPHost" class="col-sm-3 control-label"><%= i18n.__('hostname')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                                            <input id="txtSMTPHost" value="<%= config.mail_opts.host%>" type="text" placeholder="<%= i18n.__('hostname input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('hostname valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputSMTPPort" class="col-sm-3 control-label"><%= i18n.__('hostport')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-exchange"></i></span>
+                                                            <input id="txtSMTPPort" value="<%= config.mail_opts.port%>" type="number" placeholder="<%= i18n.__('hostport input')%>" class="form-control required number invalid" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('hostport valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputSenderName" class="col-sm-3 control-label"><%= i18n.__('accname')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                            <input id="txtSenderName" value="<%= config.mail_opts.auth.user%>" type="email" placeholder="<%= i18n.__('accname input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('accname valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputSenderPassword" class="col-sm-3 control-label"><%= i18n.__('accpwd')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                            <input id="txtSenderPassword" value="<%= config.mail_opts.auth.pass%>" type="password" placeholder="<%= i18n.__('accpwd input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('accpwd valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <button type="button" data-target="#modal-prompt" data-toggle="modal" class="btn btn-warning"><i class="fa fa-send mlx"></i> <%= i18n.__('mailto test') %></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div id="tab3-wizard-custom-circle" class="tab-pane fadeIn">
+                                            <h3 class="mbxl"><%= i18n.__('register config')%></h3>
+                                            <form action="#" class="form-horizontal">
+                                                <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                                                <div class="form-group">
+                                                    <label for="inputComName" class="col-sm-3 control-label"><%= i18n.__('comname')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-copyright"></i></span>
+                                                            <input id="txtComName" value="<%= config.comname%>" type="text" placeholder="<%= i18n.__('comname input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('comname valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputAppName" class="col-sm-3 control-label"><%= i18n.__('appname')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-suitcase"></i></span>
+                                                            <input id="txtAppName" value="<%= config.name%>" type="text" placeholder="<%= i18n.__('appname input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('appname valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputSessionName" class="col-sm-3 control-label"><%= i18n.__('sessioncode')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-internet-explorer"></i></span>
+                                                            <input id="txtSessionName" value="<%= config.session_secret%>" type="text" placeholder="<%= i18n.__('sessioncode input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('sessioncode valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputCookieName" class="col-sm-3 control-label"><%= i18n.__('cookiecode')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-desktop"></i></span>
+                                                            <input id="txtCookieName" value="<%= config.auth_cookie_name%>" type="text" placeholder="<%= i18n.__('cookiecode input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('cookiecode valid')%></i>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div id="tab4-wizard-custom-circle" class="tab-pane fadeIn">
+                                            <h3 class="mbxl"><%= i18n.__('account config')%></h3>
+                                            <form action="#" class="form-horizontal">
+                                                <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                                                <div class="form-group">
+                                                    <label for="inputAdminName" class="col-sm-3 control-label"><%= i18n.__('adminname')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                            <input id="txtAdminName" type="text" placeholder="<%= i18n.__('adminname input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('adminname valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputAdminMail" class="col-sm-3 control-label"><%= i18n.__('adminmail')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                                                            <input id="txtAdminMail" type="text" placeholder="<%= i18n.__('adminmail input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('adminmail valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputAdminpwd" class="col-sm-3 control-label"><%= i18n.__('adminpwd')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                            <input id="txtAdminpwd" type="password" placeholder="<%= i18n.__('adminpwd input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('adminpwd valid')%></i>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputReAdminpwd" class="col-sm-3 control-label"><%= i18n.__('readminpwd')%> <span class='require'>*</span>
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                                            <input id="txtReAdminpwd" type="password" placeholder="<%= i18n.__('readminpwd input')%>" class="form-control" />
+                                                        </div><i class="alert alert-hide"><%= i18n.__('readminpwd valid')%></i>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div id="tab5-wizard-custom-circle" class="tab-pane fadeIn">
+                                            <h3 class="mbxl"><%= i18n.__('finish config')%></h3>
+                                            <form action="#" class="form-horizontal">
+                                                <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                                                <div class="form-group">
+                                                    <textarea id="txtReport" rows="8" placeholder="<%= i18n.__('finish input')%>" class="form-control"></textarea>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="action text-right">
+                                            <button type="button" name="previous" value="<%= i18n.__('previous')%>" class="btn btn-success button-previous"><i class="fa fa-arrow-circle-o-left mrx"></i> <%= i18n.__('previous')%></button>
+                                            <button type="button" name="next" value="<%= i18n.__('next')%>" class="btn btn-success button-next mlm"><%= i18n.__('next')%> <i class="fa fa-arrow-circle-o-right mlx"></i></button>
+                                            <button type="button" name="last" value="<%= i18n.__('finish')%>" class="btn btn-warning button-last mlm" id="btnLast" ><i class="fa fa-refresh mlx"></i> <%= i18n.__('finish')%></button>
+                                        </div>
+                                    </div>
+                                    <!--Modal Prompt-->
+                                    <div id="modal-prompt" tabindex="-1" role="dialog" aria-labelledby="modal-prompt-label" aria-hidden="true" class="modal fade">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                                                    <h4 id="modal-prompt-label" class="modal-title"><%= i18n.__('mailto send')%></h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input id="txtMailTo" type="email" placeholder="<%= i18n.__('mailto input')%>" class="form-control" />
+                                                </div>
+                                                <div class="note note-mailtest note-danger alert-dismissable">
+                                                    <strong id="notemailtitle"></strong> <span id="notemailtext"></span>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" data-dismiss="modal" class="btn btn-default"><%= i18n.__('close')%></button>
+                                                    <button type="button" id="btnTestMail" name="test" class="btn btn-primary button-test"><%= i18n.__('mailto')%></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--END CONTENT-->
+        </div>
+        <!--END PAGE WRAPPER-->
+    </div>
+</div>
+<script>
+$(document).ready(function () {
+    $('#btnTestDB').click(function() {
+        $('#btnTestDB').attr("disabled", true).val("<%= i18n.__('processing')%>");
+        connTest();
+    });
+    $('#btnTestMail').click(function() {
+        $('#btnTestMail').attr("disabled", true).val("<%= i18n.__('processing')%>");
+        connTest();
+    });
+    $('#btnLast').click(function() {
+        $('#btnLast').attr("disabled", true);
+        var $params = {
+            db: {
+                host: $("#txtDBHostName").val(),
+                port: $("#txtDBHostPort").val(),
+                dbname: $("#txtDBName").val(),
+                user: $("#txtDBAccount").val(),
+                pass: $("#txtDBPassword").val()
+            },
+            session_secret: $("#txtSessionName").val(),
+            auth_cookie_name: $("#txtCookieName").val(),
+            comname: $("#txtComName").val(),
+            name: $("#txtAppName").val(),
+            mail_opts: {
+                host: $("#txtSMTPHost").val(),
+                port: $("#txtSMTPPort").val(),
+                user: $("#txtSenderName").val(),
+                pass: $("#txtSenderPassword").val()
+            },
+            adminname: $("#txtAdminName").val(),
+            adminpwd: $("#txtAdminpwd").val(),
+            adminmail: $("#txtAdminMail").val(),
+            _csrf: "<%= csrf %>"
+        };
+        $.ajax({
+            data: $params,
+            url: '/setup/finish',
+            method: 'POST',
+            cache: false,
+            timeout: 30000
+        }).done(function(data) {
+            if (data.success){
+                alert('<%= i18n.__("finish ok")%>');
+                location.reload();
+            } else {
+                $('.note-dbtest').removeClass("note-success").removeClass("hidden").addClass("note-danger");
+                $('#notedbtitle').text('').append('<%= i18n.__("failed")%>: ');
+                $('#notedbtext').text('').append(data.message);
+            }
+            $('#btnLast').attr("disabled", false);
+        }).fail(function (xhr) {
+            if (xhr.status === 403) {
+                $('.note-dbtest').removeClass("note-success").removeClass("hidden").addClass("note-danger");
+                $('#notedbtitle').text('').append('<%= i18n.__("failed")%>: ');
+                $('#notedbtext').text('').append('403 - Error');
+            }
+            $('#btnLast').attr("disabled", false);
+        });
+    });
+
+    $('.button-next').click(function() {
+        var $index = $(".navbar-inner .active").index() + 1;
+        var $Report = '';
+        if ($index == 4) {
+            $Report = '<%= i18n.__("database config")%>\n<%= i18n.__("hostname")%>: ' + $('#txtDBHostName').val() +':'+ $('#txtDBHostPort').val();
+            $Report = $Report + '\n<%= i18n.__("dbname")%>: ' + $('#txtDBName').val();
+            $Report = $Report + '\n<%= i18n.__("accname")%>: ' + $('#txtDBAccount').val();
+            $Report = $Report + '\n--------------------------------------------------------';
+            $Report = $Report + '\n<%= i18n.__("email config")%>\n<%= i18n.__("hostname")%>: ' + $('#txtSMTPHost').val() +':'+ $('#txtSMTPPort').val();
+            $Report = $Report + '\n<%= i18n.__("accname")%>: ' + $('#txtSenderName').val();
+            $Report = $Report + '\n--------------------------------------------------------';
+            $Report = $Report + '\n<%= i18n.__("register config")%>\n<%= i18n.__("comname")%>: ' + $('#txtComName').val();
+            $Report = $Report + '\n<%= i18n.__("appname")%>: ' + $('#txtAppName').val();
+            $Report = $Report + '\n<%= i18n.__("sessioncode")%>: ' + $('#txtSessionName').val();
+            $Report = $Report + '\n<%= i18n.__("cookiecode")%>: ' + $('#txtCookieName').val();
+            $Report = $Report + '\n--------------------------------------------------------';
+            $Report = $Report + '\n<%= i18n.__("account config")%>\n<%= i18n.__("adminname")%>: ' + $('#txtAdminName').val();
+            $Report = $Report + '\n<%= i18n.__("adminmail")%>: ' + $('#txtAdminMail').val();
+            $Report = $Report + '\n--------------------------------------------------------';
+            $('#txtReport').val($Report);
+        }
+    });
+    var connTest = function () {
+        var $index = $(".navbar-inner .active").index() + 1;
+        if ($index == 1) {
+            var $params = {
+                host: $("#txtDBHostName").val(),
+                port: $("#txtDBHostPort").val(),
+                dbname: $("#txtDBName").val(),
+                user: $("#txtDBAccount").val(),
+                pass: $("#txtDBPassword").val(),
+                _csrf: "<%= csrf %>"
+
+            };
+            $.ajax({
+                data: $params,
+                url: '/setup/testdb',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function(data) {
+                if (data.success){
+                    $('.note-dbtest').removeClass("note-danger").removeClass("hidden").addClass("note-success");
+                    $('#notedbtitle').text('').append('<%= i18n.__("success")%>: ');
+                    $('#notedbtext').text('').append('<%= i18n.__("str db conn success")%>');
+                } else {
+                    $('.note-dbtest').removeClass("note-success").removeClass("hidden").addClass("note-danger");
+                    $('#notedbtitle').text('').append('<%= i18n.__("failed")%>: ');
+                    $('#notedbtext').text('').append(data.message);
+                }
+                $('#btnTestDB').attr("disabled", false).val("<%= i18n.__('connection test')%>");
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    $('.note-dbtest').removeClass("note-success").removeClass("hidden").addClass("note-danger");
+                    $('#notedbtitle').text('').append('<%= i18n.__("failed")%>: ');
+                    $('#notedbtext').text('').append('403 - Error');
+                }
+            });
+        } else {
+            var $params = {
+                host: $("#txtSMTPHost").val(),
+                port: $("#txtSMTPPort").val(),
+                user: $("#txtSenderName").val(),
+                pass: $("#txtSenderPassword").val(),
+                mailto: $("#txtMailTo").val(),
+                _csrf: "<%= csrf %>"
+            };
+            if ($params.mailto === '') {
+                alert('<%= i18n.__("mailto valid")%>');
+                $('#btnTestMail').attr("disabled", false).val("<%= i18n.__('mailto test')%>");
+                return;
+            }
+            $.ajax({
+                data: $params,
+                url: '/setup/testemail',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function (data) {
+                if (data.success) {
+                    $('.note-mailtest').removeClass("note-danger").removeClass("hidden").addClass("note-success");
+                    $('#notemailtitle').text('').append('<%= i18n.__("success")%>: ');
+                    $('#notemailtext').text('').append('<%= i18n.__("str email send success")%>');
+                } else {
+                    $('.note-mailtest').removeClass("note-success").removeClass("hidden").addClass("note-danger");
+                    $('#notemailtitle').text('').append('<%= i18n.__("failed")%>: ');
+                    $('#notemailtext').text('').append(data.message);
+                }
+                $('#btnTestMail').attr("disabled", false).val("<%= i18n.__('mailto test')%>");
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    $('.note-mailtest').removeClass("note-success").removeClass("hidden").addClass("note-danger");
+                    $('#notemailtitle').text('').append('<%= i18n.__("failed")%>: ');
+                    $('#notemailtext').text('').append('403 - Error');
+                }
+                $('#btnTestMail').attr("disabled", false).val("<%= i18n.__('mailto test')%>");
+            });
+        }
+    };
+});
+</script>

@@ -1,0 +1,235 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-tablesorter/themes/blue/style-custom.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-select/css/bootstrap-select.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/icheck-1.x/skins/all.css">
+<!--BEGIN TITLE & BREADCRUMB PAGE-->
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('Customer') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><%= i18n.__('System') %>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('Customer') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<!--END TITLE & BREADCRUMB PAGE-->
+
+<div class="page-content">
+    <div id="table-action" class="row">
+        <div class="col-lg-12">
+            <div id="tableactionTabContent" class="tab-content">
+                <div id="table-table-tab" class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 class="box-heading"><%= i18n.__('search') %></h4>
+                            <form action='/customer' method='POST' class="form-validate-search">
+                                <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                                <input name="page" type="hidden">
+                                <div class="table-container">
+                                    <div class="row mbm">
+                                        <div class="col-lg-12">
+                                            <div class="pagination-panel">
+                                                <div class="col-lg-3">
+                                                    <select name="isVDP" class="selectpicker form-control input-inline-users">
+                                                        <option value="" <% if (customerSearch.isVDP == '') { %>selected="selected"<% } %>><%= i18n.__('one pack a code')%> (<%= i18n.__('all')%>)</option>
+                                                        <option value="true" <% if (customerSearch.isVDP == 'true') { %>selected="selected"<% } %>><%= i18n.__('yes')%></option>
+                                                        <option value="false" <% if (customerSearch.isVDP == 'false') { %>selected="selected"<% } %>><%= i18n.__('no')%></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input name="client_name" type="text" value="<%= customerSearch.client_name %>" placeholder="<%= i18n.__('client name')%> & <%= i18n.__('client number')%>" class="pagination-panel-input form-control input-inline-users" />
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <button id="btnSearch" type="submit" class="btn btn-success btn-outlined"><%= i18n.__('search') %></button>
+                                                </div>
+                                                <div class="col-lg-3 text-right">
+                                                    <button id="btnBatch" class="btn btn-warning batch_task"><%= i18n.__('set')%><%= i18n.__('one pack a code')%></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                                        <thead>
+                                        <tr>
+                                            <th width="5%"><input type="checkbox" class="checkall" /></th>
+                                            <th width="15%"><%= i18n.__('client number') %></th>
+                                            <th><%= i18n.__('client name') %></th>
+                                            <th width="10%"><%= i18n.__('one pack a code')%></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="customer_list">
+                                        <% if (typeof(customerList) !== 'undefined' && customerList.length > 0) { %>
+                                        <%- partial('customers/list', { collection: customerList, as: 'getCustomerList' }) %>
+                                        <!--<%- customerList%>-->
+                                        <% } else { %>
+                                        <td colspan="5"><%= i18n.__('null data') %></td>
+                                        <% } %>
+                                        </tbody>
+                                    </table>
+                                    <div class="row mbm">
+                                        <div class="col-lg-6 pagination-panel">
+                                            <label><select name="prePage" class="prePage form-control input-xsmall input-sm input-inline">
+                                                <option value="10" <% if (customerPage.perPage == '10') { %>selected="selected"<% } %>>10</option>
+                                                <option value="25" <% if (customerPage.perPage == '25') { %>selected="selected"<% } %>>25</option>
+                                                <option value="50" <% if (customerPage.perPage == '50') { %>selected="selected"<% } %>>50</option>
+                                                <option value="100" <% if (customerPage.perPage == '100') { %>selected="selected"<% } %>>100</option>
+                                            </select> <%= i18n.__('perPage') %> | <%= i18n.__('count records', customerPage.all_logs_count) %></label>
+                                        </div>
+                                        <div class="col-md-6 pagination-panel text-right">
+                                            <ul class="pagination pagination-sm man">
+                                                <%
+                                                if (customerPage.current_page == 1 ) { %>
+                                                <li class="paginate_button first disabled" tabindex="0" id="first"><a><<</a></li>
+                                                <li class="paginate_button previous disabled" tabindex="0" id="previous"><a><</a></li>
+                                                <% } else { %>
+                                                <li class="paginate_button first" tabindex="0" id="first"><a href="javascript:gotopage(1)"><<</a></li>
+                                                <li class="paginate_button previous" tabindex="0" id="previous"><a href="javascript:gotopage(<%-customerPage.current_page-1%>)"><</a></li>
+                                                <% }%>
+                                                <%
+                                                var page_start = customerPage.current_page - 2 > 0 ? customerPage.current_page - 2 : 1;
+                                                var page_end = page_start + 4 >= customerPage.pages ? customerPage.pages : page_start + 4;
+                                                %>
+                                                <% if (page_start > 1) { %>
+                                                <li><a>...</a></li>
+                                                <% } %>
+                                                <% for (var i = page_start; i <= page_end; i++) {%>
+                                                <% if (i === customerPage.current_page) { %>
+                                                <li class="paginate_button active" tabindex="0"><a><%=i%></a></li>
+                                                <% } else { %>
+                                                <li class="paginate_button " tabindex="0"><a href="javascript:gotopage(<%=i%>)"><%=i%></a></li>
+                                                <% } %>
+                                                <% } %>
+                                                <% if (page_end < customerPage.pages) { %>
+                                                <li><a>...</a></li>
+                                                <% } %>
+                                                <% if (customerPage.current_page == customerPage.pages) { %>
+                                                <li class="paginate_button next disabled" tabindex="0" id="next"><a>></a></li>
+                                                <li class="paginate_button last disabled" tabindex="0" id="last"><a>>></a></li>
+                                                <% } else {%>
+                                                <li class="paginate_button next" tabindex="0" id="next"><a href="javascript:gotopage(<%-customerPage.current_page+1%>)">></a></li>
+                                                <li class="paginate_button last" tabindex="0" id="last"><a href="javascript:gotopage(<%=customerPage.pages%>)">>></a></li>
+                                                <% } %>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/vendors/jquery-tablesorter/jquery.tablesorter.js"></script>
+<script src="/public/vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="/public/vendors/icheck-1.x/icheck.min.js"></script>
+
+<script>
+
+    function gotopage(page) {
+        $('input[name="page"]').val(page);
+        $(".form-validate-search").submit();
+    }
+
+    $(function () {
+        $(".prePage").change(function(){
+            $('input[name="page"]').val(1);
+            $(".form-validate-search").submit();
+        });
+        // Start Get
+        $(".tablesorter").tablesorter({
+            headers: {
+                0: {
+                    sorter: false
+                }
+            }
+        });
+        // End Get
+
+        $(".actRow").click(function () {
+            var pk = $(this).attr('data-pk');
+            var value = $(this).attr('data-value');
+            var $params = {
+                value: pk,
+                onecode: value,
+                _csrf: "<%= csrf %>"
+            };
+
+            $.ajax({
+                data: $params,
+                url: '/customer/setone',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function(data) {
+                if (data.success){
+                    location.reload();
+                } else {
+                    alert(data.responseText);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                }
+            });
+
+        });
+
+        $(".batch_task").click(function(){
+            var chkCustomer = [];
+            $.each($(".chkCustomer:checked"), function(){
+                chkCustomer.push($(this).val());
+            });
+            var $params = {
+                value: chkCustomer,
+                onecode: true,
+                _csrf: "<%= csrf %>"
+            };
+            $.ajax({
+                data: $params,
+                url: '/customer/setone',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function(data) {
+                if (data.success){
+                    location.reload();
+                } else {
+                    alert(data.responseText);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                }
+            });
+        });
+        // CheckBox
+        $('.batch_task').attr("disabled",true);
+        $('input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            increaseArea: '20%' // optional
+        });
+        $('.chkCustomer').on('ifChecked ifUnchecked', function(event){
+            if (event.type == 'ifChecked') {
+                $('.batch_task').attr("disabled",false);
+            } else {
+                if ($(".chkCustomer:checked").length == 0){
+                    $('.batch_task').attr("disabled",true);
+                }
+            }
+        });
+        $('.checkall').on('ifChecked ifUnchecked', function(event) {
+            if (event.type == 'ifChecked') {
+                $(this).closest('table').find('input[type=checkbox]').iCheck('check');
+                $('.batch_task').attr("disabled",false);
+            } else {
+                $(this).closest('table').find('input[type=checkbox]').iCheck('uncheck');
+                $('.batch_task').attr("disabled",true);
+            }
+        });
+    });
+
+</script>

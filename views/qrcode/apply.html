@@ -1,0 +1,202 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-ui-1.11.4.base/jquery-ui.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-tablesorter/themes/blue/style-custom.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-treetable/css/jquery.treetable.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-treetable/css/jquery.treetable.theme.default.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/icheck-1.x/skins/all.css">
+<link type="text/css" rel="stylesheet" href="/public/css/themes/style1/green-red.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-datepicker/css/datepicker.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-select/css/bootstrap-select.min.css">
+
+<!--BEGIN TITLE & BREADCRUMB PAGE-->
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('Download') %><%= i18n.__('Logs') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><%= i18n.__('QRCode') %>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('Download') %><%= i18n.__('Logs') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+
+<div class="page-content">
+    <div id="table-action" class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <form action="/download" method="POST" class="form-validate-search">
+                    <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                    <input name="page" type="hidden">
+                    <div class="col-lg-12">
+                        <div id="accordion" class="panel-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="display:block;"><%= i18n.__('filter') %></a>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="col-lg-3">
+                                            <input name="dateTime" type="text" value="<%= Query.DateTime %>" placeholder="<%= i18n.__('Download_at') %>" class="datepicker" />
+                                        </div>
+                                        <!--
+                                        <div class="col-lg-4">
+                                            <input name="customer" type="text" value="<%= Query.Customer %>" placeholder="<%= i18n.__('Download_customer') %> <%= i18n.__('Enter multiple value separated by spaces.') %>" class="pagination-panel-input form-control input-inline-users" />
+                                        </div>
+                                        -->
+                                        <div class="col-lg-4">
+                                            <select name="category" class="selectcategory form-control" title="<%= i18n.__('choose category')%>" value="<%= Query.category %>" data-url="/getcategory" data-live-search="true" multiple data-actions-box="true" data-selected-text-format="count" >
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="pull-right">
+                                            <div class="btn-group">
+                                                <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export</button>
+                                                <ul class="dropdown-menu pull-right" role="menu">
+                                                    <li><a href="#" onClick ="$('#table_list').tableExport({type:'json',escape:'false',tableName:'VDP_logs'});">JSON</a></li>
+                                                    <li><a href="#" onClick ="$('#table_list').tableExport({type:'xml',escape:'false',tableName:'VDP_logs'});">XML</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="#" onClick ="$('#table_list').tableExport({type:'csv',escape:'false',tableName:'VDP_logs'});">CSV</a></li>
+                                                    <li><a href="#" onClick ="$('#table_list').tableExport({type:'txt',escape:'false',tableName:'VDP_logs'});">TXT</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="#" onClick ="$('#table_list').tableExport({type:'excel',escape:'false',tableName:'VDP_logs'});">XLS</a></li>
+                                                    <li><a href="#" onClick ="$('#table_list').tableExport({type:'doc',escape:'false',tableName:'VDP_logs'});">Word</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 pull-right">
+                                            <button id="btnSearch" type="submit" class="btn btn-gvgreen btn-block"><%= i18n.__('search') %></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table id="table_list" class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                                <thead>
+                                <tr>
+                                    <th><%= i18n.__('Download_at') %></th>
+                                    <th><%= i18n.__('Download_category') %></th>
+                                    <th><%= i18n.__('Import_count') %></th>
+                                    <th><%= i18n.__('Download_count') %></th>
+                                </tr>
+                                </thead>
+                                <tbody class="QRcodeApplyList">
+                                <% if (typeof(QRcodeApplyList) !== 'undefined' && QRcodeApplyList.length > 0) { %>
+                                <%- partial('qrcode/list', { collection: QRcodeApplyList, as: 'getQRcodeApplyList' }) %>
+                                <% } else { %>
+                                <td colspan="4"><%= i18n.__('null data') %></td>
+                                <% } %>
+                                </tbody>
+                            </table>
+                            <div class="row mbm">
+                                <div class="col-lg-6 pagination-panel">
+                                    <label><select name="prePage" class="prePage form-control input-xsmall input-sm input-inline">
+                                        <option value="10" <% if (QRcodeApplyPage.perPage == '10') { %>selected="selected"<% } %>>10</option>
+                                        <option value="25" <% if (QRcodeApplyPage.perPage == '25') { %>selected="selected"<% } %>>25</option>
+                                        <option value="50" <% if (QRcodeApplyPage.perPage == '50') { %>selected="selected"<% } %>>50</option>
+                                        <option value="100" <% if (QRcodeApplyPage.perPage == '100') { %>selected="selected"<% } %>>100</option>
+                                    </select> <%= i18n.__('perPage') %> | <%= i18n.__('count records', QRcodeApplyPage.all_logs_count) %></label>
+                                </div>
+                                <div class="col-md-6 pagination-panel text-right">
+                                    <ul class="pagination pagination-sm man">
+                                        <%
+                                        if (QRcodeApplyPage.current_page == 1 ) { %>
+                                        <li class="paginate_button first disabled" tabindex="0" id="first"><a><<</a></li>
+                                        <li class="paginate_button previous disabled" tabindex="0" id="previous"><a><</a></li>
+                                        <% } else { %>
+                                        <li class="paginate_button first" tabindex="0" id="first"><a href="javascript:gotopage(1)"><<</a></li>
+                                        <li class="paginate_button previous" tabindex="0" id="previous"><a href="javascript:gotopage(<%-QRcodeApplyPage.current_page-1%>)"><</a></li>
+                                        <% }%>
+                                        <%
+                                        var page_start = QRcodeApplyPage.current_page - 2 > 0 ? QRcodeApplyPage.current_page - 2 : 1;
+                                        var page_end = page_start + 4 >= QRcodeApplyPage.pages ? QRcodeApplyPage.pages : page_start + 4;
+                                        %>
+                                        <% if (page_start > 1) { %>
+                                        <li><a>...</a></li>
+                                        <% } %>
+                                        <% for (var i = page_start; i <= page_end; i++) {%>
+                                        <% if (i === QRcodeApplyPage.current_page) { %>
+                                        <li class="paginate_button active" tabindex="0"><a><%=i%></a></li>
+                                        <% } else { %>
+                                        <li class="paginate_button " tabindex="0"><a href="javascript:gotopage(<%=i%>)"><%=i%></a></li>
+                                        <% } %>
+                                        <% } %>
+                                        <% if (page_end < QRcodeApplyPage.pages) { %>
+                                        <li><a>...</a></li>
+                                        <% } %>
+                                        <% if (QRcodeApplyPage.current_page == QRcodeApplyPage.pages) { %>
+                                        <li class="paginate_button next disabled" tabindex="0" id="next"><a>></a></li>
+                                        <li class="paginate_button last disabled" tabindex="0" id="last"><a>>></a></li>
+                                        <% } else {%>
+                                        <li class="paginate_button next" tabindex="0" id="next"><a href="javascript:gotopage(<%-QRcodeApplyPage.current_page+1%>)">></a></li>
+                                        <li class="paginate_button last" tabindex="0" id="last"><a href="javascript:gotopage(<%=QRcodeApplyPage.pages%>)">>></a></li>
+                                        <% } %>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--END TITLE & BREADCRUMB PAGE-->
+<script src="/public/vendors/jquery-tablesorter/jquery.tablesorter.js"></script>
+<script src="/public/vendors/jquery-ui-1.11.4.base/jquery-ui.min.js"></script>
+<script src="/public/vendors/icheck-1.x/icheck.min.js"></script>
+<script src="/public/vendors/jquery-treetable/jquery.treetable.js"></script>
+<script src="/public/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/public/vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="/public/vendors/tableExport/tableExport.js"></script>
+<script src="/public/vendors/tableExport/jquery.base64.js"></script>
+
+<script>
+    function gotopage(page) {
+        $('input[name="page"]').val(page);
+        $(".form-validate-search").submit();
+    }
+    $(function () {
+        $(".tablesorter").tablesorter({
+        });
+        $(".prePage").change(function(){
+            $('input[name="page"]').val(1);
+            $(".form-validate-search").submit();
+        });
+        $(".datepicker").datepicker({
+            autoclose: true,//选中之后自动隐藏日期选择框
+            clearBtn: true,//清除按钮
+            todayBtn: "linked",//今日按钮
+            format: "yyyy-mm-dd"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+        });
+        $.fn.selectpicker.defaults = {
+            noneSelectedText: '<%= i18n.__("noneSelectedText")%>',
+            noneResultsText: '<%= i18n.__("noneResultsText")%>',
+            countSelectedText: '<%= i18n.__("countSelectedText")%>',
+            maxOptionsText: ['<%= i18n.__("maxOptionsText1")%>', '<%= i18n.__("maxOptionsText2")%>'],
+            selectAllText: '<%= i18n.__("selectAllText")%>',
+            deselectAllText: '<%= i18n.__("deselectAllText")%>',
+            multipleSeparator: '<%= i18n.__("multipleSeparator")%>'
+        };
+        $('select[class~="selectcategory"][data-url]').each(function(index, value)
+        {
+            var select = $(this);
+            var url    = $(this).attr('data-url');
+            var list   = [];
+            $.getJSON(url, function(data)
+            {
+                $.each(data, function(key, val)
+                {
+                    list.push('<option value="' + val._id.toString() + '_'+val.name+'">' + val.name + '</option>');
+                });
+                select.html(list.join(''));
+                select.selectpicker('refresh');
+                var str = '<%= Query.Category %>';
+                str = str.split(',');
+                select.selectpicker('val', str );//默认选中
+            });
+        });
+    });
+</script>

@@ -1,0 +1,17 @@
+/* tables */
+
+table.tablesorter thead tr .header {
+    background-image: url('/public/vendors/jquery-tablesorter/themes/blue/black-unsorted.gif');
+    background-repeat: no-repeat;
+    background-position: 98% 50%;
+    cursor: pointer;
+}
+table.tablesorter tbody tr.odd td {
+    background-color: #F0F0F6 !important;
+}
+table.tablesorter thead tr .headerSortUp {
+    background-image: url('/public/vendors/jquery-tablesorter/themes/blue/black-asc.gif');
+}
+table.tablesorter thead tr .headerSortDown {
+    background-image: url('/public/vendors/jquery-tablesorter/themes/blue/black-desc.gif');
+}

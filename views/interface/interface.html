@@ -1,0 +1,936 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-switch/css/bootstrap-switch.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-select/css/bootstrap-select.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/x-editable/bootstrap3-editable/css/bootstrap-editable.css">
+<div class="news-ticker bg-orange">
+    <div class="container">
+        <ul id="news-ticker-content" class="list-unstyled mbn">
+            <li><%= i18n.__('Important: Modify these parameters can raise system restart.') %></li>
+        </ul><a id="news-ticker-close" href="javascript:;"><i class="fa fa-times"></i></a>
+    </div>
+</div>
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('InterFace') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><%= i18n.__('System') %>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('InterFace') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading"><%= i18n.__('ECODE')%><span class="subtitle"><%= i18n.__('interface for ecode')%></span></div>
+                <div class="panel-body"><%= i18n.__('intro interface for ecode')%></div>
+                <div class="panel-body pan">
+                    <form action="#" class="form-horizontal form-seperated">
+                        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="apiApplyCode" class="col-md-2 control-label"><%= i18n.__('qrcode apply')%></label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input id="apiApplyCode" type="text" placeholder="<%= i18n.__('Please enter a valid URL')%>" class="form-control" value="<%= config.interface_opts.apiApplyCode%>" />
+                                        <span class="input-group-addon"><i class="fa fa-arrow-circle-o-right"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="updateApplyURL btn btn-success btn-outlined btn-sm"><%= i18n.__('update')%></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="apiDLCode" class="col-md-2 control-label"><%= i18n.__('qrcode download')%></label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input id="apiDLCode" type="text" placeholder="<%= i18n.__('Please enter a valid URL')%>" class="form-control" value="<%= config.interface_opts.apiDLCode%>" />
+                                        <span class="input-group-addon"><i class="fa fa-arrow-circle-o-right"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="updateDLURL btn btn-success btn-outlined btn-sm"><%= i18n.__('update')%></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="apiReturnQRCode" class="col-md-2 control-label"><%= i18n.__('qrcode return')%></label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input id="apiReturnQRCode" type="text" placeholder="<%= i18n.__('Please enter a valid URL')%>" class="form-control" value="<%= config.interface_opts.apiReturnQRCode%>" />
+                                        <span class="input-group-addon"><i class="fa fa-arrow-circle-o-right"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="updateReturnURL btn btn-success btn-outlined btn-sm"><%= i18n.__('update')%></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="apiQRCondition" class="col-md-2 control-label"><%= i18n.__('qrcode condition')%></label>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <input id="apiQRCondition" type="number" placeholder="<%= i18n.__('Please enter a valid number')%>" class="form-control" value="<%= config.interface_opts.minStock%>" />
+                                        <span class="input-group-addon"><i class="fa fa-database"></i></span>
+                                    </div>
+                                </div>
+                                <label for="apiQRTime" class="col-md-2 control-label"><%= i18n.__('qrcode time')%></label>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select id="apiQRTime" data-style="btn-white" class="selectpicker form-control">
+                                            <option value="1" <% if (config.interface_opts.apiQRTime === 1) {%> selected<%}%>>01:00</option>
+                                            <option value="3"<% if (config.interface_opts.apiQRTime === 3) {%> selected<%}%>>03:00</option>
+                                            <option value="5"<% if (config.interface_opts.apiQRTime === 5) {%> selected<%}%>>05:00</option>
+                                            <option value="7"<% if (config.interface_opts.apiQRTime === 7) {%> selected<%}%>>07:00</option>
+                                            <option value="11"<% if (config.interface_opts.apiQRTime === 11) {%> selected<%}%>>11:00</option>
+                                            <option value="12"<% if (config.interface_opts.apiQRTime === 12) {%> selected<%}%>>12:00</option>
+                                            <option value="15"<% if (config.interface_opts.apiQRTime === 15) {%> selected<%}%>>15:00</option>
+                                            <option value="18"<% if (config.interface_opts.apiQRTime === 18) {%> selected<%}%>>18:00</option>
+                                            <option value="21"<% if (config.interface_opts.apiQRTime === 21) {%> selected<%}%>>21:00</option>
+                                            <option value="23"<% if (config.interface_opts.apiQRTime === 23) {%> selected<%}%>>23:00</option>
+                                        </select>
+                                        <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div data-on-label="<%= i18n.__('Open')%>" data-off-label="<%= i18n.__('Close')%>" data-on="success" data-off="warning" class="ecode-switch switch-small">
+                                        <input id="switch-ecode" type="checkbox" <%= config.interface_opts.AddCodeTaskState%> />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading"><%= i18n.__('check print')%><span class="subtitle"><%= i18n.__('interface for check print')%></span></div>
+                <div class="panel-body"><%= i18n.__('intro interface for check print')%></div>
+                <div class="panel-body pan">
+                    <form action="#" class="form-horizontal form-seperated">
+                        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="apiCheckPrintTime" class="col-md-2 control-label"><%= i18n.__('qrcode interval')%></label>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select id="apiCheckPrintTime" data-style="btn-white" class="selectpicker form-control">
+                                            <option value="5" <% if (config.interface_opts.apiCheckPrintTime === 5) {%> selected<%}%>>5<%= i18n.__('minute')%></option>
+                                            <option value="10"<% if (config.interface_opts.apiCheckPrintTime === 10) {%> selected<%}%>>10<%= i18n.__('minute')%></option>
+                                            <option value="15"<% if (config.interface_opts.apiCheckPrintTime === 15) {%> selected<%}%>>15<%= i18n.__('minute')%></option>
+                                            <option value="20"<% if (config.interface_opts.apiCheckPrintTime === 20) {%> selected<%}%>>20<%= i18n.__('minute')%></option>
+                                            <option value="30"<% if (config.interface_opts.apiCheckPrintTime === 30) {%> selected<%}%>>30<%= i18n.__('minute')%></option>
+                                            <option value="60"<% if (config.interface_opts.apiCheckPrintTime === 60) {%> selected<%}%>>60<%= i18n.__('minute')%></option>
+                                        </select>
+                                        <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div data-on-label="<%= i18n.__('Open')%>" data-off-label="<%= i18n.__('Close')%>" data-on="success" data-off="warning" class="checkprint-switch switch-small">
+                                        <input id="switch-checkprint" type="checkbox" <%= config.interface_opts.CheckPrintTaskState%> />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading"><%= i18n.__('MES')%><span class="subtitle"><%= i18n.__('interface for mes')%></span></div>
+                <div class="panel-body"><%= i18n.__('intro interface for mes')%></div>
+                <div class="panel-body pan">
+                    <form action="#" class="form-horizontal form-seperated">
+                        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                        <div class="row mbm">
+                            <div class="form-group col-md-12">
+                                <label for="apiPushOrder" class="col-md-2 control-label"><%= i18n.__('api for mes')%></label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input id="apiPushOrder" disabled type="text" class="form-control" value="<%= config.interface_opts.apiPushOrder%>" />
+                                        <span class="input-group-addon"><i class="fa fa-arrow-circle-o-left"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="pagination-panel">
+                                    <div class="col-lg-2">
+                                        <input name="factoryname" type="text" maxlenght="25" placeholder="<%= i18n.__('factoryname') %>" class="pagination-panel-input form-control input-inline-users required" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <select name="webtype" class="selectpicker form-control selectrole required">
+                                            <option value="0" selected="selected"><%= i18n.__('webServiceType') %></option>
+                                            <option value="1" ><%= i18n.__('return order') %></option>
+                                            <option value="2" ><%= i18n.__('return split') %></option>
+                                            <option value="3" ><%= i18n.__('return roll') %></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <input name="webUrl" type="text" maxlenght="35" placeholder="<%= i18n.__('URL') %>" class="pagination-panel-input form-control input-inline-users required email" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span id="processing" hidden><%= i18n.__('processing') %></span>
+                                        <button id="btnCreate" type="button" class="btn btn-success btn-outlined"><%= i18n.__('Create') %></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                            <thead>
+                            <tr>
+                                <th width="5%"><%= i18n.__('factoryname') %></th>
+                                <th width="5%"><%= i18n.__('webServiceType') %></th>
+                                <th width="30%"><%= i18n.__('URL') %></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <%  %>
+                            <% if (typeof(urlList) !== 'undefined' && urlList.length > 0) { %>
+                            <%- partial('interface/list', { collection: urlList, as: 'geturlList' }) %>
+                            <% } else { %>
+                            <td colspan="4"><%= i18n.__('null data') %></td>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading"><%= i18n.__('cans')%><span class="subtitle"><%= i18n.__('interface for cans')%></span></div>
+                <div class="panel-body"><%= i18n.__('intro interface for cans')%></div>
+                <div class="panel-body pan">
+                    <form action="#" class="form-horizontal form-seperated">
+                        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="apiGetConsTime" class="col-md-2 control-label"><%= i18n.__('get cans')%></label>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select id="apiGetConsTime" data-style="btn-white" class="selectpicker form-control">
+                                            <option value="5" <% if (config.interface_opts.apiGetConsTime === 5) {%> selected<%}%>>5<%= i18n.__('minute')%></option>
+                                            <option value="10"<% if (config.interface_opts.apiGetConsTime === 10) {%> selected<%}%>>10<%= i18n.__('minute')%></option>
+                                            <option value="15"<% if (config.interface_opts.apiGetConsTime === 15) {%> selected<%}%>>15<%= i18n.__('minute')%></option>
+                                            <option value="20"<% if (config.interface_opts.apiGetConsTime === 20) {%> selected<%}%>>20<%= i18n.__('minute')%></option>
+                                            <option value="30"<% if (config.interface_opts.apiGetConsTime === 30) {%> selected<%}%>>30<%= i18n.__('minute')%></option>
+                                        </select>
+                                        <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+                                    </div>
+                                </div>
+                                <label for="apiSendConsTime" class="col-md-2 control-label"><%= i18n.__('put cans')%></label>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select id="apiSendConsTime" data-style="btn-white" class="selectpicker form-control">
+                                            <option value="2" <% if (config.interface_opts.apiSendConsTime === 2) {%> selected<%}%>>02:00</option>
+                                            <option value="4"<% if (config.interface_opts.apiSendConsTime === 4) {%> selected<%}%>>04:00</option>
+                                            <option value="6"<% if (config.interface_opts.apiSendConsTime === 6) {%> selected<%}%>>06:00</option>
+                                            <option value="8"<% if (config.interface_opts.apiSendConsTime === 8) {%> selected<%}%>>08:00</option>
+                                            <option value="10"<% if (config.interface_opts.apiSendConsTime === 10) {%> selected<%}%>>10:00</option>
+                                            <option value="12"<% if (config.interface_opts.apiSendConsTime === 12) {%> selected<%}%>>12:00</option>
+                                            <option value="14"<% if (config.interface_opts.apiSendConsTime === 14) {%> selected<%}%>>14:00</option>
+                                            <option value="16"<% if (config.interface_opts.apiSendConsTime === 16) {%> selected<%}%>>16:00</option>
+                                            <option value="18"<% if (config.interface_opts.apiSendConsTime === 18) {%> selected<%}%>>18:00</option>
+                                        </select>
+                                        <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div data-on-label="<%= i18n.__('Open')%>" data-off-label="<%= i18n.__('Close')%>" data-on="success" data-off="warning" class="cons-switch switch-small">
+                                        <input id="switch-cons" type="checkbox" <%= config.interface_opts.ConsTaskState%> />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading"><%= i18n.__('report')%><span class="subtitle"><%= i18n.__('interface for report')%></span></div>
+                <div class="panel-body"><%= i18n.__('intro interface for report')%></div>
+                <div class="panel-body pan">
+                    <form action="#" class="form-horizontal form-seperated">
+                        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="apiReportTime" class="col-md-2 control-label"><%= i18n.__('qrcode time')%></label>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <select id="apiReportTime" data-style="btn-white" class="selectpicker form-control">
+                                            <option value="1" <% if (config.interface_opts.apiReportTime === 1) {%> selected<%}%>>01:00</option>
+                                            <option value="2"<% if (config.interface_opts.apiReportTime === 2) {%> selected<%}%>>02:00</option>
+                                            <option value="3"<% if (config.interface_opts.apiReportTime === 3) {%> selected<%}%>>03:00</option>
+                                            <option value="4"<% if (config.interface_opts.apiReportTime === 4) {%> selected<%}%>>04:00</option>
+                                            <option value="5"<% if (config.interface_opts.apiReportTime === 5) {%> selected<%}%>>05:00</option>
+                                        </select>
+                                        <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div data-on-label="<%= i18n.__('Open')%>" data-off-label="<%= i18n.__('Close')%>" data-on="success" data-off="warning" class="report-switch switch-small">
+                                        <input id="switch-report" type="checkbox" <%= config.interface_opts.ReportTaskState%> />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading"><%= i18n.__('restart')%><span class="subtitle"><%= i18n.__('interface for restart')%></span></div>
+                <div class="panel-body"><%= i18n.__('intro interface for restart')%></div>
+                <div class="panel-body">是否执行、接口执行间隔</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading"><%= i18n.__('roll different value')%><span class="subtitle"><%= i18n.__('interface for roll')%></span></div>
+                <div class="panel-body"><%= i18n.__('intro interface for roll')%></div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="apiRollDifferentValue" class="col-md-2 control-label"><%= i18n.__('label for wait time')%></label>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <input id="apiRollDifferentValue" type="number" placeholder="<%= i18n.__('Please enter a valid number')%>" class="form-control" value="<%= config.interface_opts.Dvalue_Roll%>" />
+                                <span class="input-group-addon"><i class="fa fa-step-forward"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="updateRollDifferentValue btn btn-success btn-outlined btn-sm"><%= i18n.__('update')%></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-heading"><%= i18n.__('wait time')%><span class="subtitle"><%= i18n.__('interface for wait time')%></span></div>
+                <div class="panel-body"><%= i18n.__('intro interface for wait time')%></div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="apiEcodeDownloadTime" class="col-md-2 control-label"><%= i18n.__('roll different value')%></label>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <input id="apiEcodeDownloadTime" type="number" placeholder="<%= i18n.__('Please enter a valid number')%>" class="form-control" value="<%= config.interface_opts.Download_WaitingTime%>" />
+                                <span class="input-group-addon"><i class="fa fa-step-forward"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="updateEcodeDownloadTime btn btn-success btn-outlined btn-sm"><%= i18n.__('update')%></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/vendors/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="/public/vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="/public/vendors/x-editable/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+<script>
+    $(function () {
+        $.fn.selectpicker.defaults = {
+            noneSelectedText: '<%= i18n.__("noneSelectedText")%>',
+            noneResultsText: '<%= i18n.__("noneResultsText")%>',
+            countSelectedText: '<%= i18n.__("countSelectedText")%>',
+            maxOptionsText: ['<%= i18n.__("maxOptionsText1")%>', '<%= i18n.__("maxOptionsText2")%>'],
+            selectAllText: '<%= i18n.__("selectAllText")%>',
+            deselectAllText: '<%= i18n.__("deselectAllText")%>',
+            multipleSeparator: '<%= i18n.__("multipleSeparator")%>'
+        };
+        $(".ecode-switch").bootstrapSwitch();
+        $(".checkprint-switch").bootstrapSwitch();
+        $(".cons-switch").bootstrapSwitch();
+        $(".report-switch").bootstrapSwitch();
+
+        if ($("#switch-ecode").attr("checked")) {
+            $('#apiQRCondition').attr("disabled", true);
+            $('#apiQRTime').attr("disabled", true);
+        }
+        if ($("#switch-checkprint").attr("checked")) {
+            $('#apiCheckPrintTime').attr("disabled", true);
+        }
+        if ($("#switch-cons").attr("checked")) {
+            $('#apiGetConsTime').attr("disabled", true);
+            $('#apiSendConsTime').attr("disabled", true);
+        }
+        if ($("#switch-report").attr("checked")) {
+            $('#apiReportTime').attr("disabled", true);
+        }
+
+        $('.ecode-switch').on('switch-change', function (e, data) {
+            if (data.value) {
+                $('#apiQRCondition').attr("disabled", true);
+                $('#apiQRTime').attr("disabled", true).selectpicker('refresh');
+                if ($('#apiQRCondition').val() > 1000000000) {
+                    $('.ecode-switch').bootstrapSwitch('setState', false);
+                    alert('<%= i18n.__("Please enter a valid number")%>');
+                    return;
+                }
+            } else {
+                $('#apiQRCondition').removeAttr('disabled');
+                $('#apiQRTime').removeAttr('disabled').selectpicker('refresh');
+            }
+            var $params = {
+                name: 'updateEcodeTask',
+                offon: data.value,
+                condition: $('#apiQRCondition').val(),
+                time: $('#apiQRTime').selectpicker('val'),
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    alert(data.msg);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.checkprint-switch').on('switch-change', function (e, data) {
+            if (data.value) {
+                $('#apiCheckPrintTime').attr("disabled", true).selectpicker('refresh');
+            } else {
+                $('#apiCheckPrintTime').removeAttr('disabled').selectpicker('refresh');
+            }
+            var $params = {
+                name: 'updateCheckPrintTask',
+                offon: data.value,
+                time: $('#apiCheckPrintTime').selectpicker('val'),
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    alert(data.msg);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.cons-switch').on('switch-change', function (e, data) {
+            if (data.value) {
+                $('#apiGetConsTime').attr("disabled", true).selectpicker('refresh');
+                $('#apiSendConsTime').attr("disabled", true).selectpicker('refresh');
+            } else {
+                $('#apiGetConsTime').removeAttr('disabled').selectpicker('refresh');
+                $('#apiSendConsTime').removeAttr('disabled').selectpicker('refresh');
+            }
+            var $params = {
+                name: 'updateConsTask',
+                offon: data.value,
+                gettime: $('#apiGetConsTime').selectpicker('val'),
+                puttime: $('#apiSendConsTime').selectpicker('val'),
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    alert(data.msg);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.report-switch').on('switch-change', function (e, data) {
+            if (data.value) {
+                $('#apiReportTime').attr("disabled", true).selectpicker('refresh');
+            } else {
+                $('#apiReportTime').removeAttr('disabled').selectpicker('refresh');
+            }
+            var $params = {
+                name: 'updateReportTask',
+                offon: data.value,
+                reporttime: $('#apiReportTime').selectpicker('val'),
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    alert(data.msg);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updateApplyURL').click(function() {
+            var url = $('#apiApplyCode').val();
+            if (url === '' || url === null) {
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            var $params = {
+                name: 'updateApplyURL',
+                value: url,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updateDLURL').click(function() {
+            var url = $('#apiDLCode').val();
+            if (url === '' || url === null) {
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            var $params = {
+                name: 'updateDLURL',
+                value: url,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updateReturnURL').click(function() {
+            var url = $('#apiReturnQRCode').val();
+            if (url === '' || url === null) {
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            var $params = {
+                name: 'updateReturnURL',
+                value: url,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updatePushOrderReturn').click(function() {
+            var url = $('#apiPushOrderReturn').val();
+            if (url === '' || url === null) {
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            var $params = {
+                name: 'updatePushOrderReturn',
+                value: url,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updatePushSplitReturn').click(function() {
+            var url = $('#apiPushSplitReturn').val();
+            if (url === '' || url === null) {
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            var $params = {
+                name: 'updatePushSplitReturn',
+                value: url,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updatePushRollReturn').click(function() {
+            var url = $('#apiPushRollReturn').val();
+            if (url === '' || url === null) {
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            var $params = {
+                name: 'updatePushRollReturn',
+                value: url,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updateMaxCount').click(function() {
+            var maxrows = $('#apiMaxPrintRows').val();
+            var maxcount = $('#apiMaxRollCount').val();
+
+            if (maxrows === '' || maxrows === null || maxcount === '' || maxcount === null) {
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            var $params = {
+                name: 'updateMaxCount',
+                maxrows: maxrows,
+                maxcount: maxcount,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updateRollDifferentValue').click(function() {
+            var differentValue = $('#apiRollDifferentValue').val();
+
+            var $params = {
+                name: 'updateRollDifferentValue',
+                differentValue: differentValue,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('.updateEcodeDownloadTime').click(function() {
+            var waitTime = $('#apiEcodeDownloadTime').val();
+
+            var $params = {
+                name: 'updateEcodeDownloadTime',
+                waitTime: waitTime,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('#btnCreate').click(function () {
+            var factoryname = $('input[name=factoryname]').val();
+            var webtype = $('select[name=webtype]').selectpicker('val');
+            var webUrl = $('input[name=webUrl]').val();
+
+            var $params = {
+                name: 'createFactoryReturnURL',
+                factoryname: factoryname,
+                webtype: webtype,
+                webUrl: webUrl,
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/interface/update',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                if (data.success){
+                    setTimeout(function() {
+                        alert('<%= i18n.__("Success update api parameter.")%>');
+                        if (data.reload) {
+                            location.reload();
+                        }
+                    },500 * 1);
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        $('#news-ticker-close').click(function(e){
+            $('.news-ticker').remove();
+            $('.quick-sidebar').css('top', '50px');
+        });
+
+        $.fn.editable.defaults.inputclass = 'form-control';
+        $.fn.editable.defaults.url = '/interface/update';
+        $.fn.editable.defaults.mode = 'popup';
+
+        $('.lstUrl').editable({
+            type: 'text',
+            name: 'updateReturn',
+            params: {
+                _csrf: '<%= csrf %>'
+            },
+            validate: function(value) {
+                if($.trim(value) == '') return '<%= i18n.__("This field is required")%>';
+            },
+            ajaxOptions: {
+                timeout: 30000,
+                dataType: 'json' //assuming json response
+            },
+            success: function(response) {
+                if (response.reload) {
+                    location.reload();
+                }
+            },
+            error: function(errors) {
+                return errors.responseText;
+            }
+        });
+
+    });
+</script>

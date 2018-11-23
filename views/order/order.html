@@ -1,0 +1,388 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-ui-1.11.4.base/jquery-ui.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-tablesorter/themes/blue/style-custom.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-treetable/css/jquery.treetable.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-treetable/css/jquery.treetable.theme.default.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/icheck-1.x/skins/all.css">
+<link type="text/css" rel="stylesheet" href="/public/css/themes/style1/green-red.css">
+<style type="text/css">
+    .vdptype{
+        padding-top: 5px;
+    }
+</style>
+
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('Order') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><%= i18n.__('Charts') %>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('Order') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+
+<div class="page-content">
+    <div id="table-action" class="row">
+        <div class="col-lg-12">
+            <div id="tableactionTabContent" class="tab-content">
+                <div id="table-table-tab" class="tab-pane fade in active">
+                    <div class="row">
+                        <form action='/order' method='POST' class="form-validate-search">
+                        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                        <input name="page" type="hidden">
+                        <div class="col-lg-12">
+                            <div id="accordion" class="panel-group">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="display:block;"><%= i18n.__('filter') %></a>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div class="col-lg-6">
+                                                <input name="orderId" type="text" value="<%= orderSearch.OrderId %>" placeholder="<%= i18n.__('OrderId') %> <%= i18n.__('Enter multiple value separated by spaces.') %>" class="pagination-panel-input form-control input-inline-users" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="col-lg-4">
+                                                    <input name="vdpType" type="checkbox" value="0" <% if (orderSearch.vdpType.indexOf('0') >= 0) { %>checked<% } %>>
+                                                    <label><%= i18n.__('VDPType-A') %></label>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <input name="vdpType" type="checkbox" value="1" <% if (orderSearch.vdpType.indexOf('1') >= 0) { %>checked<% } %>>
+                                                    <label><%= i18n.__('VDPType-B') %></label>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <input name="vdpType" type="checkbox" value="2" <% if (orderSearch.vdpType.indexOf('2') >= 0) { %>checked<% } %>>
+                                                    <label><%= i18n.__('VDPType-C') %></label>
+                                                </div>
+                                                <div class="col-lg-4 vdptype">
+                                                    <input name="vdpType" type="checkbox" value="3" <% if (orderSearch.vdpType.indexOf('3') >= 0) { %>checked<% } %>>
+                                                    <label><%= i18n.__('VDPType-D') %></label>
+                                                </div>
+                                                <div class="col-lg-4 vdptype">
+                                                    <input name="vdpType" type="checkbox" value="4" <% if (orderSearch.vdpType.indexOf('4') >= 0) { %>checked<% } %>>
+                                                    <label><%= i18n.__('VDPType-E') %></label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="panel-body">
+                                            <input name="PlanCount" type="hidden">
+                                            <div class="col-md-6">
+                                                <p>
+                                                    <label for="amount-pc"><%= i18n.__('PlanCount') %></label>
+                                                    <input id="amount-pc" type="text" style="border: 0; color: #f6931f; font-weight: bold;" />
+                                                </p>
+                                                <div id="slider-pc"></div>
+                                            </div>
+                                            <input name="IssuedCount" type="hidden">
+                                            <div class="col-md-6">
+                                                <p>
+                                                    <label for="amount-ic"><%= i18n.__('IssuedCount') %></label>
+                                                    <input id="amount-ic" type="text" style="border: 0; color: #f6931f; font-weight: bold;" />
+                                                </p>
+                                                <div id="slider-ic"></div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="pull-right">
+                                                <div class="btn-group">
+                                                    <button type="submit" style="display: none"></button>
+                                                    <button class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i> Export</button>
+                                                    <ul class="dropdown-menu pull-right" role="menu">
+                                                        <li><a href="#" onClick ="$('#table_orderlist').tableExport({type:'json',escape:'false',tableName:'VDP_logs'});">JSON</a></li>
+                                                        <li><a href="#" onClick ="$('#table_orderlist').tableExport({type:'xml',escape:'false',tableName:'VDP_logs'});">XML</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a href="#" onClick ="$('#table_orderlist').tableExport({type:'csv',escape:'false',tableName:'VDP_logs'});">CSV</a></li>
+                                                        <li><a href="#" onClick ="$('#table_orderlist').tableExport({type:'txt',escape:'false',tableName:'VDP_logs'});">TXT</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a href="#" onClick ="$('#table_orderlist').tableExport({type:'excel',escape:'false',tableName:'VDP_logs'});">XLS</a></li>
+                                                        <li><a href="#" onClick ="$('#table_orderlist').tableExport({type:'doc',escape:'false',tableName:'VDP_logs'});">Word</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 pull-right">
+                                                <button id="btnSearch" type="submit" class="btn btn-gvgreen btn-block"><%= i18n.__('search') %></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="table_orderlist" class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                                    <thead>
+                                    <tr>
+                                        <th><%= i18n.__('OrderId') %></th>
+                                        <th><%= i18n.__('Category') %></th>
+                                        <th><%= i18n.__('DesignId') %></th>
+                                        <th><%= i18n.__('PlanCount') %></th>
+                                        <th><%= i18n.__('IssuedCount') %></th>
+                                        <th><%= i18n.__('PushDate') %></th>
+                                        <th><%= i18n.__('state') %></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="order_list">
+                                    <% if (typeof(orderList) !== 'undefined' && orderList.length > 0) { %>
+                                    <%- partial('order/list', { collection: orderList, as: 'getOrderList' }) %>
+                                    <% } else { %>
+                                    <td colspan="5"><%= i18n.__('null data') %></td>
+                                    <% } %>
+                                    </tbody>
+                                </table>
+                                <div class="row mbm">
+                                    <div class="col-lg-6 pagination-panel">
+                                        <label><select name="prePage" class="prePage form-control input-xsmall input-sm input-inline">
+                                            <option value="10" <% if (orderPage.perPage == '10') { %>selected="selected"<% } %>>10</option>
+                                            <option value="25" <% if (orderPage.perPage == '25') { %>selected="selected"<% } %>>25</option>
+                                            <option value="50" <% if (orderPage.perPage == '50') { %>selected="selected"<% } %>>50</option>
+                                            <option value="100" <% if (orderPage.perPage == '100') { %>selected="selected"<% } %>>100</option>
+                                        </select> <%= i18n.__('perPage') %> | <%= i18n.__('count records', orderPage.all_logs_count) %></label>
+                                    </div>
+                                    <div class="col-md-6 pagination-panel text-right">
+                                        <ul class="pagination pagination-sm man">
+                                            <%
+                                            if (orderPage.current_page == 1 ) { %>
+                                            <li class="paginate_button first disabled" tabindex="0" id="first"><a><<</a></li>
+                                            <li class="paginate_button previous disabled" tabindex="0" id="previous"><a><</a></li>
+                                            <% } else { %>
+                                            <li class="paginate_button first" tabindex="0" id="first"><a href="javascript:gotopage(1)"><<</a></li>
+                                            <li class="paginate_button previous" tabindex="0" id="previous"><a href="javascript:gotopage(<%-orderPage.current_page-1%>)"><</a></li>
+                                            <% }%>
+                                            <%
+                                            var page_start = orderPage.current_page - 2 > 0 ? orderPage.current_page - 2 : 1;
+                                            var page_end = page_start + 4 >= orderPage.pages ? orderPage.pages : page_start + 4;
+                                            %>
+                                            <% if (page_start > 1) { %>
+                                            <li><a>...</a></li>
+                                            <% } %>
+                                            <% for (var i = page_start; i <= page_end; i++) {%>
+                                            <% if (i === orderPage.current_page) { %>
+                                            <li class="paginate_button active" tabindex="0"><a><%=i%></a></li>
+                                            <% } else { %>
+                                            <li class="paginate_button " tabindex="0"><a href="javascript:gotopage(<%=i%>)"><%=i%></a></li>
+                                            <% } %>
+                                            <% } %>
+                                            <% if (page_end < orderPage.pages) { %>
+                                            <li><a>...</a></li>
+                                            <% } %>
+                                            <% if (orderPage.current_page == orderPage.pages) { %>
+                                            <li class="paginate_button next disabled" tabindex="0" id="next"><a>></a></li>
+                                            <li class="paginate_button last disabled" tabindex="0" id="last"><a>>></a></li>
+                                            <% } else {%>
+                                            <li class="paginate_button next" tabindex="0" id="next"><a href="javascript:gotopage(<%-orderPage.current_page+1%>)">></a></li>
+                                            <li class="paginate_button last" tabindex="0" id="last"><a href="javascript:gotopage(<%=orderPage.pages%>)">>></a></li>
+                                            <% } %>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12" >
+                            <h3>小卷</h3>
+                            <div id="rollMsg"></div>
+                        </div>
+                        </form>
+                        <form id="downloadfile" action="downloadfile" method="get">
+                            <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                            <input type='hidden' name="filepath" >
+                            <input type='hidden' name="filename" >
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/vendors/jquery-tablesorter/jquery.tablesorter.js"></script>
+<script src="/public/vendors/jquery-ui-1.11.4.base/jquery-ui.min.js"></script>
+<script src="/public/vendors/icheck-1.x/icheck.min.js"></script>
+<script src="/public/vendors/jquery-treetable/jquery.treetable.js"></script>
+<script src="/public/vendors/tableExport/tableExport.js"></script>
+<script src="/public/vendors/tableExport/jquery.base64.js"></script>
+
+<script>
+    $(document).ready(function(){
+        //$("#example-basic-expandable").treetable({ expandable: true });
+
+        $(".tablesorter").tablesorter({
+        });
+
+        $('input[name="vdpType"]').each(function(){
+            var self = $(this),
+                    label = self.next(),
+                    label_text = label.text();
+
+            label.remove();
+            self.iCheck({
+                checkboxClass: 'icheckbox_line-green',
+                insert: '<div class="icheck_line-icon"></div>' + label_text
+            });
+        });
+        $('input[name="orderId"]').change( function() {
+            var str = $(this).val();
+            var bj = str.match(/[^\x00-\xff]/);  //[\u4E00-\u9FA5]
+            if(bj){
+                alert('输入字符中有全角: '+bj);
+                $(this).val('');
+                return;
+            }
+        });
+
+        //END RANGE SLIDER
+        $( "#slider-pc" ).slider({
+            range: true,
+            min: 0,
+            max: 8000,
+            <% if (orderSearch.PlanCount !== '') { %>
+            values: [ <%=orderSearch.PlanCount[0]%>, <%=orderSearch.PlanCount[1]%> ],
+            <% } else { %>
+            values: [ 0, 8000 ],
+            <% }; %>
+            slide: function( event, ui ) {
+                $( "#amount-pc" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ]);
+            }
+        });
+        $( "#slider-ic" ).slider({
+            range: true,
+            min: 0,
+            max: 8000,
+            <% if (orderSearch.IssuedCount !== '') { %>
+            values: [ <%=orderSearch.IssuedCount[0]%>, <%=orderSearch.IssuedCount[1]%> ],
+            <% } else { %>
+            values: [ 0, 8000 ],
+            <% }; %>
+            slide: function( event, ui ) {
+                $( "#amount-ic" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ]);
+            }
+        });
+        $( "#amount-pc" ).val( $( "#slider-pc" ).slider( "values", 0 ) +
+                " - " + $( "#slider-pc" ).slider( "values", 1 ) );
+        $( "#amount-ic" ).val( $( "#slider-ic" ).slider( "values", 0 ) +
+                " - " + $( "#slider-ic" ).slider( "values", 1 ) );
+        //END RANGE SLIDER
+        $(".prePage").change(function(){
+            var vdpType = [];
+            var PlanCount = '';
+            var IssuedCount = '';
+            PlanCount = $("#slider-pc").slider("values");
+            IssuedCount = $("#slider-ic").slider("values");
+            $.each($('input[name="vdpType"]:checked'), function () {
+                vdpType.push($(this).val());
+            });
+            if (vdpType == '') {
+                alert("<%= i18n.__('noneSelectedText')%>");
+                return false;
+            }
+            ;
+            $('input[name="PlanCount"]').val(PlanCount);
+            $('input[name="IssuedCount"]').val(IssuedCount);
+            $('input[name="page"]').val(1);
+            $(".form-validate-search").submit();
+        });
+        $("#btnSearch").click(function(e) {
+            var vdpType = [];
+            var PlanCount = '';
+            var IssuedCount = '';
+            PlanCount = $("#slider-pc").slider("values");
+            IssuedCount = $("#slider-ic").slider("values");
+            $.each($('input[name="vdpType"]:checked'), function () {
+                vdpType.push($(this).val());
+            });
+            if (vdpType == '') {
+                alert("<%= i18n.__('noneSelectedText')%>");
+                return false;
+            }
+            ;
+            $('input[name="PlanCount"]').val(PlanCount);
+            $('input[name="IssuedCount"]').val(IssuedCount);
+            $('.form-validate-search').submit();
+        });
+    });
+    function gotopage(page) {
+        var vdpType = [];
+        var PlanCount = '';
+        var IssuedCount = '';
+        PlanCount = $("#slider-pc").slider("values");
+        IssuedCount = $("#slider-ic").slider("values");
+        $.each($('input[name="vdpType"]:checked'), function () {
+            vdpType.push($(this).val());
+        });
+        if (vdpType == '') {
+            alert("<%= i18n.__('noneSelectedText')%>");
+            return false;
+        }
+        ;
+        $('input[name="PlanCount"]').val(PlanCount);
+        $('input[name="IssuedCount"]').val(IssuedCount);
+        $('input[name="page"]').val(page);
+        $(".form-validate-search").submit();
+    };
+    function queryRoll(id) {
+        //alert(id);
+        $.ajax({
+            data:{
+                 roll_id:id
+                 },
+            url: '/order/roll',
+            method:'POST'
+        }).done(function (data) {
+            $("#rollMsg").html(data);
+        });
+    }
+   function exportRollmsg(object,rollNum,orderId){
+       alert(rollNum+":导出");
+       $(object).attr("disabled",true);
+       var $param ={
+           rollNum:rollNum,
+           orderId:orderId
+       };
+       $.ajax({
+           data:$param,
+           url: '/order/exportRoll',
+           method: 'POST',
+           timeout: 100000
+       }).done(function(data){
+           if(data.isSuccess){
+               alert(data.success);
+               $(object).attr("disabled",false);
+               //alert(data.orderId);
+               //alert(data.rollFile);
+               DownloadRollFile(data.rollFile);
+           }else{
+               alert(data.error);
+               $(object).attr("disabled",false);
+           }
+       }).fail(function (xhr) {
+           if (xhr.status === 403) {
+               alert('403-Error!');
+           }
+       });
+   }
+    
+   function DownloadRollFile(path) {
+        var name = path.split('/');
+       name = name[name.length-1];
+       console.log(path, name);
+       $('input[name="filepath"]').val(path);
+       $('input[name="filename"]').val(name);
+       $("#downloadfile").submit();
+//       var $param ={
+//           filepath:path,
+//           filename:name
+//       };
+//       $.ajax({
+//           data:$param,
+//           url: '/downloadfile',
+//           method: 'GET',
+//           timeout: 10000
+//       }).done(function(data){
+//
+//       }).fail(function (xhr) {
+//           if (xhr.status === 403) {
+//               alert('403-Error!');
+//           }
+//       });
+   }
+
+</script>

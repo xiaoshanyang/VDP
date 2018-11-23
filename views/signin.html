@@ -1,0 +1,123 @@
+<% layout('layout_signin') -%>
+<div class="page-form">
+    <form id='signin_form' action='/signin' method='post'>
+        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+        <div class="header-content">
+            <h1><%= i18n.__("signin tilte")%></h1>
+        </div>
+        <% if(typeof(error) !== 'undefined' && error){ %>
+        <div class="note note-dbtest note-danger alert-dismissable">
+            <strong id="notedbtitle"><%= i18n.__("failed")%>: </strong> <span id="notedbtext"><%= error %></span>
+        </div>
+        <% } %>
+        <% if(typeof(success) !== 'undefined' && success){ %>
+        <div class="note note-dbtest note-success alert-dismissable">
+            <strong id="notedbtitle"><%= i18n.__("success")%>: </strong> <span id="notedbtext"><%= success %></span>
+        </div>
+        <% } %>
+        <div class="body-content">
+            <div class="form-group">
+                <div class="input-icon right"><i class="fa fa-user"></i>
+                    <input type="text" placeholder="<%= i18n.__('accname')%>" name="username" id="username" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-icon right"><i class="fa fa-key"></i>
+                    <input type="password" placeholder="<%= i18n.__('adminpwd')%>" name="password" id="password" class="form-control">
+                </div>
+            </div>
+            <!--
+            <div class="form-group pull-left">
+                <div class="checkbox-list">
+                    <label>
+                        <input type="checkbox" name="keepsign" id="keepsign">&nbsp; <%= i18n.__('keep signed')%></label>
+                </div>
+            </div>
+            -->
+            <div class="form-group pull-right">
+                <button type="submit" class="btn btn-success btn-outlined"><%= i18n.__("btn login")%> &nbsp;
+                    <i class="fa fa-chevron-circle-right"></i>
+                </button>
+            </div>
+            <div class="clearfix"></div>
+            <div class="forget-password">
+                <h4><%= i18n.__("forgot pwd") %>? </h4>
+                <p><%- i18n.__("reset pwd","<a href='#' data-target='#contact-password' data-toggle='modal' class='btn-forgot-pwd'>","</a>") %></p>
+            </div>
+            <hr>
+            <p><%- i18n.__("havent account","<a href='#' data-target='#contact-admin' data-toggle='modal' class='btn-forgot-pwd'>","</a>") %></p>
+        </div>
+    </form>
+</div>
+<!--Modal Default-->
+<div id="contact-admin" tabindex="-1" role="dialog" aria-labelledby="modal-default-label" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                <h4 id="modal-default-label" class="modal-title"><%= i18n.__("how account") %>? </h4>
+            </div>
+            <div class="modal-body"><%- i18n.__("how account describe") %></div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-outlined"><%= i18n.__("close") %></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="contact-password" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-title">
+             <h1 class="text-center">重置密码</h1>
+                     </div>
+                     <div class="modal-body">
+                         <form class="form-group" action='/changePassword' method='post'>
+                             <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                             <div class="form-group">
+                                 <label for="">用户名</label>
+                                 <input type="text" name="user" id="user" class="form-control" >
+                             </div>
+                             <div class="form-group">
+                                 <label for="">原密码</label>
+                                 <input type="password"  name="oldPassword" id="oldPassword" placeholder="至少6位字母或数字" class="form-control" >
+                             </div>
+                             <div class="form-group">
+                                 <label for="">新密码</label>
+                                 <input type="password"  name="newPassword" id="newPassword" placeholder="至少6位字母或数字"  class="form-control" >
+                             </div>
+                             <div class="text-right">
+                                 <button class="btn btn-primary" type="submit">提交</button>
+                             </div>
+                         </form>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+
+<script>
+    $("body").attr("id","signin-page");
+    //BEGIN CHECKBOX & RADIO
+    $('input[type="checkbox"]').iCheck({
+        checkboxClass: 'icheckbox_minimal-grey',
+        increaseArea: '20%' // optional
+    });
+    $('input[type="radio"]').iCheck({
+        radioClass: 'iradio_minimal-grey',
+        increaseArea: '20%' // optional
+    });
+    //END CHECKBOX & RADIO
+    $('button[type="submit"]').click(function () {
+        var username = $('#username').val();
+        var user = $('#user').val();
+        var oldPassword = $('#oldPassword').val();
+        var newPassword = $('#newPassword').val();
+        document.cookie= "username"+"="+username;
+    });
+</script>

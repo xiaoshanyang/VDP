@@ -1,0 +1,115 @@
+<tr>
+    <td><a <% if(getList.disable) {%> disabled="disabled" <%}else{%> class="lstName" <%}%> data-pk="<%= getList._id%>" data-value="<%= getList.name%>"><%= getList.name %></a></td>
+    <!--<td><select name="<%= getList._id%>" <% if(getList.disable) {%> disabled="disabled" <%}%> data-pk="<%= getList._id%>" data-url="/getmateriel" data-selected="<%= getList.materiel_number %>" class="updatemateriel form-control required" multiple data-size="10" data-actions-box="true" data-live-search="true" data-selected-text-format="count">-->
+    <!--</select></td>-->
+    <td><a <% if(getList.disable) {%> disabled="disabled" <%}else{%> class="lstSplitSpec" <%}%> data-pk="<%= getList._id%>" data-value="<%= getList.splitSpec%>"><%= getList.splitSpec %></a></td>
+    <td><%= getList.webNum %></td>
+    <td><a <% if(getList.disable) {%> disabled="disabled" <%}else{%> class="lstGeneralId" <%}%> data-pk="<%= getList._id%>" data-value="<%= getList.generalId%>"><%= getList.generalId %></a></td>
+    <!--<td><a <% if(getList.disable) {%> disabled="disabled" <%}else{%> class="lstFormat" <%}%> data-type="checklist" data-pk="<%= getList._id%>" data-title="<%= i18n.__('sendFormat')%>" data-value="<% if (getList.sendURL) {%>1<% }; %>,<% if (getList.sendXML) {%>2<% }; %>"><% if (getList.sendURL) {%><%= i18n.__('sendURL') %>,<% }; %><% if (getList.sendXML) {%><%= i18n.__('sendXML') %><% }; %></a></td>-->
+    <% if( typeof getList.designIdVersion == 'undefined') {%>
+    <%    if(typeof getList.designId == 'undefined') {%>
+    <td><%= i18n.__('null data') %></td>
+    <%     } else { %>
+    <td><%= getList.designId %></td>
+    <% } }else {%>
+    <td><%= getList.designIdVersion %></td>
+    <% } %>
+
+    <td><input class="chkGDT" type="checkbox" value="<%= getList.isGDT %>" data-pk="<%= getList._id %>" <% if(getList.disable){%> disabled="disabled" <%} %>/></td>
+    <td><%= getList.codeAvailable %>/<%= getList.codeCount %></td>
+    <td><div class="btn-group" disabled="<%= getList.disable %>">
+        <button type="button" <% if(!getList.disable) {%> class="btn btn-warning btn-outlined btn-sm" data-toggle="dropdown" <%}%> > <span class="fa fa-cog"></span> </button>
+        <ul class="dropdown-menu pull-right text-left" role="menu">
+            <li><a data-target='#<%=getList._id%>-ftp' data-toggle='modal'><i class="fa fa-cog"></i> <%= i18n.__('ftp config') %> </a></li>
+            <li><a data-target='#<%=getList._id%>-dlcode' data-toggle='modal'><i class="fa fa-cloud-download"></i> <%= i18n.__('add code') %> </a></li>
+            <li><a data-target='#<%=getList._id%>-dlcodepool' data-toggle='modal'><i class="fa fa-cloud-download"></i> <%= i18n.__('add code pool') %> </a></li>
+        </ul>
+    </div></td>
+    <td>
+        <% if (!getList.disable) { %>
+        <button data-pk="<%= getList._id %>"  data-value="true" type="button" class="btn btn-success btn-outlined btn-sm actRow"><%= i18n.__('Active') %></button>
+        <% } else { %>
+        <button data-pk="<%= getList._id %>" data-value="false" type="button" class="btn btn-danger btn-outlined btn-sm actRow"><%= i18n.__('Inactive') %></button>
+        <% } %>
+    </td>
+    <div id="<%=getList._id%>-ftp" tabindex="-1" role="dialog" aria-labelledby="modal-default-label" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method='POST' class="form-validate-ftpConfig">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                    <h4 id="modal-default-label" class="modal-title"><%= i18n.__('ftp config') %></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="input-icon right"><i class="fa fa-server"></i>
+                            <input type="text" placeholder="<%= i18n.__('hostname')%>" name="ftphost<%= getList.ftpinfo.id %>" id="ftphost<%= getList.ftpinfo.id %>" value="<%= getList.ftpinfo.host %>" class="form-control required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-icon right"><i class="fa fa-user"></i>
+                            <input type="text" placeholder="<%= i18n.__('accname')%>" name="ftpuser<%= getList.ftpinfo.id %>" id="ftpuser<%= getList.ftpinfo.id %>" value="<%= getList.ftpinfo.user %>" class="form-control required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-icon right"><i class="fa fa-key"></i>
+                            <input type="password" placeholder="<%= i18n.__('adminpwd')%>" name="ftppass<%= getList.ftpinfo.id %>" id="ftppass<%= getList.ftpinfo.id %>" value="<%= getList.ftpinfo.pass %>" class="form-control required" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default"><%= i18n.__('close')%></button>
+                    <button type="button" data-pk2="<%=getList.ftpinfo.id%>" data-pk="<%=getList._id%>" class="btn btn-success btnFtpConfig"><%= i18n.__('Save changes')%></button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="<%=getList._id%>-dlcode" tabindex="-1" data-backdrop="static" data-keyboard="false" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method='POST' class="form-validate-qrcodeAdd">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                    <h4 id="modal-default-label" class="modal-title"><%= i18n.__('add code') %></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="input-icon right"><i class="fa fa-cloud-download"></i>
+                            <input type="text" placeholder="<%= i18n.__('Please enter a number between 100,000 and 10,000,000')%>" name="codenum<%= getList._id %>" id="codenum<%= getList._id %>" class="form-control required" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default"><%= i18n.__('close')%></button>
+                    <button type="button" data-gid="<%= getList.generalId%>" data-pk="<%=getList._id%>" class="btn btn-success btnAddCode"><%= i18n.__('Download')%></button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="<%=getList._id%>-dlcodepool" tabindex="-1" data-backdrop="static" data-keyboard="false" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method='POST' class="form-validate-qrcodeAddPool">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                        <h4 id="modal-default-label" class="modal-title"><%= i18n.__('add code pool') %></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="input-icon right"><i class="fa fa-cloud-download"></i>
+                                <input type="text" placeholder="<%= i18n.__('Please enter a number between 100,000 and 50,000,000')%>" name="poolcodenum<%= getList._id %>" id="poolcodenum<%= getList._id %>" class="form-control required" />
+                                <span style="margin-top: 5px;display: block;float: right;"><%= i18n.__('code pool count') %><%= getList.codePool %></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default btnStopCodePool" data-pk="<%=getList._id%>" ><%= i18n.__('stop')%></button>
+                        <button type="button" data-gid="<%= getList.generalId%>" data-pk="<%=getList._id%>" class="btn btn-success btnAddCodePool"><%= i18n.__('start')%></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</tr>

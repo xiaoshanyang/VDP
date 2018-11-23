@@ -1,0 +1,26 @@
+{
+  "recipients": {
+
+      "manager":[
+        {
+          "address":"yu.feng@greatviewpack.com",
+          "type":"manager",
+          "name":"Feng Yu"
+        }
+      ],
+      "smt":[
+        {
+          "address": "6486611@qq.com",
+          "type": "smt",
+          "name": "Yang DeTong"
+        },
+        {
+          "address":"yu.feng@greatviewpack.com",
+          "type":"smt",
+          "name":"Wang Yongsheng"
+        }
+
+      ]
+
+  }
+}

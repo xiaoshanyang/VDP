@@ -1,0 +1,21 @@
+<tr>
+    <td><% if (docList.type == 'des') {%><%= i18n.__('DES') %><%}%>
+        <% if (docList.type == 'preprint') {%><%= i18n.__('preprint') %><%}%>
+        <% if (docList.type == 'checkprint') {%><%= i18n.__('checkprint') %><%}%>
+        <% if (docList.type == 'checkcanned') {%><%= i18n.__('checkcanned') %><%}%>
+        <% if (docList.type == 'category') {%><%= i18n.__('category') %><%}%></td>
+    <td><% if (docList.type == 'category') { %>
+        <a class="lstCategory" data-pk="<%= docList._id%>" data-value="<%= docList.code%>"></a>
+        <% } else { %>
+        <a class="lstCode" data-pk="<%= docList._id%>" data-value="<%= docList.code%>"><%= docList.code %></a>
+        <% } %>
+    </td>
+    <td><a class="lstHost" data-pk="<%= docList._id%>" data-value="<%= docList.host%>"><%= docList.host %></a></td>
+    <td><a class="lstPort" data-pk="<%= docList._id%>" data-value="<%= docList.port%>"><%= docList.port %></a></td>
+    <td><a class="lstUser" data-pk="<%= docList._id%>" data-value="<%= docList.user%>"><%= docList.user %></a></td>
+    <td><a class="lstPass" data-pk="<%= docList._id%>" data-value="<%= docList.pass%>">[hidden]</a></td>
+    <td><div class="btn-group">
+        <button type="button" data-host="<%= docList.host%>" data-port="<%= docList.port%>" data-user="<%= docList.user%>" data-pass="<%= docList.pass%>"
+                class="btn btn-warning btn-outlined btn-sm btnConnTest" data-toggle="dropdown"> <span class="fa fa-link"> <%= i18n.__('connection test') %></span> </button>
+    </div></td>
+</tr>

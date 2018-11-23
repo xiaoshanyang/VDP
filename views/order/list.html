@@ -1,0 +1,14 @@
+<tr>
+    <td onclick="queryRoll(<%= getOrderList.orderId %>)"><%= getOrderList.orderId %></td>
+    <td><a data-target="#<%=getOrderList.orderId%>-des" data-toggle='modal'><%= getOrderList.categoryname %></a></td>
+    <% if(getOrderList.vdpVersion == '') {%>
+    <td><%= getOrderList.designId %></td>
+    <% } else {%>
+    <td><%= getOrderList.designId+'-'+getOrderList.vdpVersion %></td>
+    <% } %>
+
+    <td><%= getOrderList.planCount %></td>
+    <td><%= getOrderList.actCount %></td>
+    <td><%= getOrderList.pushDateFormot %></td>
+    <td><%= getOrderList.completionStatus %></td>
+</tr>

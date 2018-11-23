@@ -1,0 +1,85 @@
+<!--BEGIN TITLE & BREADCRUMB PAGE-->
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('search') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('search') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="table-container">
+                <h3>二维码</h3>
+                <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                    <thead>
+                    <tr>
+                        <th><%= i18n.__('QRCode') %></th>
+                        <th><%= i18n.__('Category') %></th>
+                        <th><%= i18n.__('生产批次号') %></th>
+                        <th><%= i18n.__('OrderId') %></th>
+                        <th><%= i18n.__('state') %></th>
+                        <th><%= i18n.__('serialNum') %></th>
+                    </tr>
+                    </thead>
+                    <tbody class="qrcodeList">
+                    <% if ( qrcodeList !== null && qrcodeList.length > 0) { %>
+                    <%- partial('search/list', { collection: qrcodeList, as: 'getList' }) %>
+                    <% } else { %>
+                    <td colspan="6"><%= i18n.__('null data') %></td>
+                    <% } %>
+                    </tbody>
+                </table>
+                <h3>工单</h3>
+                <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                    <thead>
+                    <tr>
+                        <th><%= i18n.__('OrderId') %></th>
+                        <th><%= i18n.__('Category') %></th>
+                        <th><%= i18n.__('PlanCount') %></th>
+                        <th><%= i18n.__('IssuedCount') %></th>
+                        <th><%= i18n.__('state') %></th>
+                    </tr>
+                    </thead>
+                    <tbody class="orderList">
+                    <% if ( orderList !== null && orderList.length > 0) { %>
+                    <%- partial('search/list', { collection: orderList, as: 'getList' }) %>
+                    <% } else { %>
+                    <td colspan="5"><%= i18n.__('null data') %></td>
+                    <% } %>
+                    </tbody>
+                </table>
+                <h3>小卷查询</h3>
+                <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                    <thead>
+                    <tr>
+                        <th><%= i18n.__('rollNum') %></th>
+                        <th><%= i18n.__('startSerial') %> ---> <%= i18n.__('endSerial') %></th>
+                        <th ><%= i18n.__('planCount of roll') %> </th> <!--实际码-->
+                        <th ><%= i18n.__('actualCount') %> </th> <!--刀数-->
+                    </tr>
+                    </thead>
+                    <tbody class="rollList">
+                    <% if ( rollList !== null && rollList.length > 0) { %>
+                    <%- partial('search/list', { collection: rollList, as: 'getList' }) %>
+                    <% } else { %>
+                    <td colspan="5"><%= i18n.__('null data') %></td>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END TITLE & BREADCRUMB PAGE-->
+<script>
+    $(document).ready(function() {
+        $("tbody>.error>td").css("color", "#428bca");
+        $("tbody>.error>td>a").css("color", "#428bca");
+    })
+
+
+</script>

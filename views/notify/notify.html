@@ -1,0 +1,7 @@
+<% layout('notify/layout') -%>
+<div id="error-page-content">
+    <h1><%- status%>!</h1>
+    <h4><%- error%></h4>
+    <p></p>
+    <p><a href='/'><%= i18n.__("return")%></a> <%= i18n.__("or call admin")%></p>
+</div>

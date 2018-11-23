@@ -1,0 +1,20 @@
+<% getShardList.range.forEach(function(r, index){ %>
+<tr>
+    <td><%= getShardList.name%></td>
+    <td>
+        <a <% if(!getShardList.active) {%> disabled="disabled" <%}else{%> class="lstStartRange" <%}%> data-pk="<%= getShardList.name+'_'+index %>" data-value="<%= r[0] %>"><%= r[0] %></a>
+    </td>
+
+    <td>
+        <a <% if(!getShardList.active) {%> disabled="disabled" <%}else{%> class="lstEndRange" <%}%> data-pk="<%= getShardList.name+'_'+index %>" data-value="<%= r[1] %>"><%= r[1] %></a>
+    </td>
+    <td>
+        <% if (getShardList.active) { %>
+        <button data-pk="<%= getShardList.name+'_'+index %>"  data-value="true" type="button" class="btn btn-success btn-outlined btn-sm actRow"><%= i18n.__('Active') %></button>
+        <% } else { %>
+        <button data-pk="<%= getShardList.name+'_'+index %>"  data-value="false" type="button" class="btn btn-danger btn-outlined btn-sm actRow"><%= i18n.__('Inactive') %></button>
+        <% } %>
+    </td>
+
+</tr>
+<% }) %>

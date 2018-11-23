@@ -1,0 +1,677 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/x-editable/bootstrap3-editable/css/bootstrap-editable.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-tablesorter/themes/blue/style-custom.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-select/css/bootstrap-select.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/icheck-1.x/skins/all.css">
+<style type="text/css">
+    .category_lable {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    .btn-group{
+        max-width: 220px;
+    }
+    .slimpadding{
+        padding-left:10px;
+        padding-right:10px;
+    }
+    td {white-space:normal;word-break:break-all;}
+
+</style>
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('Category') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><%= i18n.__('System') %>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('Category') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+<!--END TITLE & BREADCRUMB PAGE-->
+
+<div class="page-content">
+    <div id="table-action" class="row">
+        <div class="col-lg-12">
+            <div id="tableactionTabContent" class="tab-content">
+                <div id="table-table-tab" class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4 class="box-heading"><%= i18n.__('search') %></h4>
+                            <div class="table-container">
+                                <% if(typeof(error) !== 'undefined' && error){ %>
+                                <div class="note note-dbtest note-danger alert-dismissable">
+                                    <strong id="notedbtitle"><%= i18n.__("failed")%>: </strong> <span id="notedbtext"><%= error %></span>
+                                </div>
+                                <% } %>
+                                <% if(typeof(success) !== 'undefined' && success){ %>
+                                <div class="note note-dbtest note-success alert-dismissable">
+                                    <strong id="notedbtitle"><%= i18n.__("success")%>: </strong> <span id="notedbtext"><%= success %></span>
+                                </div>
+                                <% } %>
+                                <!--<form class="form-validate-create">-->
+                                    <!--<input type='hidden' name='_csrf' value='<%= csrf %>'/>-->
+                                    <!--<div class="row mbm">-->
+                                        <!--<div class="col-lg-12">-->
+                                            <!--<div class="pagination-panel">-->
+                                                <!--<div class="col-lg-3">-->
+                                                    <!--<input name="categoryname" type="text" maxlenght="25" placeholder="<%= i18n.__('category name') %>" class="form-control" required/>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-lg-3">-->
+                                                    <!--<select name="materiel" class="selectmateriel form-control" title="<%= i18n.__('choose material')%>" data-url="/getmateriel" data-live-search="true" multiple data-actions-box="true" data-selected-text-format="count" required>-->
+                                                    <!--</select>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-lg-1 slimpadding">-->
+                                                    <!--<input name="webnum" type="number" placeholder="<%= i18n.__('webnum') %>" class="form-control" required/>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-lg-2">-->
+                                                    <!--<input name="splitSpec" type="text" placeholder="<%= i18n.__('splitSpec') %>" class="form-control" required/>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-lg-2">-->
+                                                    <!--<input name="designId" type="text" placeholder="<%= i18n.__('DesignId') %>" class="form-control" required/>-->
+                                                <!--</div>-->
+                                                <!--<div class="col-lg-1">-->
+                                                    <!--<span id="processing" hidden><%= i18n.__('processing') %></span>-->
+                                                    <!--<button id="btnCreate" type="submit" class="btn btn-success btn-outlined"><%= i18n.__('Create') %></button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</form>-->
+                                <form action="/category/search" method="post">
+                                    <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+                                    <div class="row mbm">
+                                        <div class="col-lg-12">
+                                            <div class="pagination-panel">
+                                                <div class="col-lg-3">
+                                                    <input name="categoryname" type="text" maxlenght="25" placeholder="<%= i18n.__('category name') %>" value="<%= query_r.categoryname %>" class="form-control"/>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <input name="designId" type="text" placeholder="<%= i18n.__('DesignId') %>" value="<%= query_r.designId %>" class="form-control"/>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <input name="generalId" type="text" placeholder="<%= i18n.__('generalId') %>" value="<%= query_r.generalId %>" class="form-control"/>
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <button type="submit" class="btn btn-success btn-outlined"><%= i18n.__('search') %></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped table-bordered table-advanced tablesorter">
+                                        <thead>
+                                        <tr>
+                                            <th width="15%"><%= i18n.__('category name') %></th>
+                                            <!--<th width="10%"><%= i18n.__('materiel name') %></th>-->
+                                            <th width="8%"><%= i18n.__('splitSpec') %></th>
+                                            <th width="7"><%= i18n.__('webnum') %></th>
+                                            <th width="23%"><%= i18n.__('generalId') %></th>
+                                            <!--<th width="10%"><%= i18n.__('sendFormat') %></th>-->
+                                            <th width="15%"><%= i18n.__('DesignId') %>
+                                            <th width="5"><%= i18n.__('isGDT')%></th>
+                                            <th width="17%"><%= i18n.__('AVL/Total') %></th>
+                                            <th width="5%"><%= i18n.__('Actions') %></th>
+                                            <th width="5%"><%= i18n.__('state') %></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% if (typeof(rsList) !== 'undefined' && rsList.length > 0) { %>
+                                        <%- partial('category/list', { collection: rsList, as: 'getList' }) %>
+                                        <% } else { %>
+                                        <td colspan="10"><%= i18n.__('null data') %></td>
+                                        <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/vendors/x-editable/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="/public/vendors/jquery-tablesorter/jquery.tablesorter.js"></script>
+<script src="/public/vendors/jquery-validate/jquery.validate.min.js"></script>
+<script src="/public/vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="/public/vendors/icheck-1.x/icheck.min.js"></script>
+<script>
+
+    $(function () {
+
+        //BEGIN CHECKBOX & RADIO
+        $('input[type="checkbox"]').each(function (index, value) {
+            if($(this).val() === 'true'){
+                $(this).attr('checked', true);
+
+            }else {
+            }
+            $(this).iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                increaseArea: '20%' // optional
+            });
+        });
+
+
+        //END CHECKBOX & RADIO
+
+        $.fn.selectpicker.defaults = {
+            noneSelectedText: '<%= i18n.__("noneSelectedText")%>',
+            noneResultsText: '<%= i18n.__("noneResultsText")%>',
+            countSelectedText: '<%= i18n.__("countSelectedText")%>',
+            maxOptionsText: ['<%= i18n.__("maxOptionsText1")%>', '<%= i18n.__("maxOptionsText2")%>'],
+            selectAllText: '<%= i18n.__("selectAllText")%>',
+            deselectAllText: '<%= i18n.__("deselectAllText")%>',
+            multipleSeparator: '<%= i18n.__("multipleSeparator")%>'
+        };
+
+        $(".tablesorter").tablesorter({
+            headers: {
+                1: {
+                    sorter: false
+                },
+                5: {
+                    sorter: false
+                },
+                7: {
+                    sorter: false
+                }
+            }
+        });
+
+        $('select[class~="selectmateriel"][data-url]').each(function(index, value)
+        {
+            var select = $(this);
+            var url    = $(this).attr('data-url');
+            var list   = [];
+
+            $.getJSON(url, function(data)
+            {
+                $.each(data, function(key, val)
+                {
+                    if (val.state == 0) {
+                        list.push('<option value="' + val.materiel_number + '">' + val.materiel_name + '</option>');
+                    }
+                });
+
+                select.html(list.join(''));
+                select.selectpicker('refresh');
+            });
+        });
+
+        $('select[class~="updatemateriel"][data-url]').each(function(index, value)
+        {
+            var select   = $(this);
+            var url      = $(this).attr('data-url');
+            var selected = $(this).attr('data-selected');
+            var list     = [];
+            selected     = selected.split(",");
+
+            $.getJSON(url, function(data)
+            {
+                $.each(data, function(key, val)
+                {
+                    if (val.state ===0 || $.inArray(val.materiel_number.toString(), selected) >=0) {
+                        if ($.inArray(val.materiel_number.toString(), selected) >= 0) {
+                            list.push('<option value="' + val.materiel_number + '" selected>' + val.materiel_name + '</option>');
+                        } else {
+                            list.push('<option value="' + val.materiel_number + '">' + val.materiel_name + '</option>');
+                        }
+                    }
+                });
+                select.html(list.join(''));
+                select.selectpicker('refresh');
+            });
+        });
+
+        // Start Create New Category
+        $(".form-validate-create").validate({
+            errorPlacement: function(error, element)
+            {
+                error.insertAfter(element);
+            },
+            submitHandler:function(form){
+                $('#btnCreate').hide();
+                $('#processing').show();
+                var $params = {
+                    materiel: $('.selectmateriel').selectpicker('val'),
+                    categoryname: $('input[name="categoryname"]').val(),
+                    webnum: $('input[name="webnum"]').val(),
+                    designId: $('input[name="designId"]').val(),
+                    splitSpec: $('input[name="splitSpec"]').val(),
+                    _csrf: "<%= csrf %>"
+                };
+                $.ajax({
+                    data: $params,
+                    url: '/category/create',
+                    method: 'POST',
+                    cache: false,
+                    timeout: 30000
+                }).done(function(data) {
+                    if (data.success){
+                        location.reload();
+                    } else {
+                        alert(data);
+                        $('#btnCreate').show();
+                        $('#processing').hide();
+                    }
+                }).fail(function (xhr) {
+                    if (xhr.status === 403) {
+                        alert('403-Error!');
+                    } else {
+                        alert('ERROR: '+ xhr.responseText);
+                    }
+                    $('#btnCreate').show();
+                    $('#processing').hide();
+                });
+            }
+        });
+        // End Create New Category
+
+        // start add code
+        $(".btnAddCode").click(function(e){
+            var dlcount = '#codenum' + $(this).attr('data-pk');
+            $('.btnAddCode').attr("disabled", true).text("<%= i18n.__('processing')%>");
+            if ($(dlcount).val() === '' || $(dlcount).val() === null) {
+                $('.btnAddCode').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            if (isNaN($(dlcount).val()) || $(dlcount).val() < 1000 || $(dlcount).val() > 10000000) {
+                $('.btnAddCode').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                alert('<%= i18n.__("Please enter a valid number")%>');
+                return;
+            }
+            var $params = {
+                pk: $(this).attr('data-pk'),
+                dlcount: $(dlcount).val(),
+                generalid: $(this).attr('data-gid'),
+                _csrf: "<%= csrf %>"
+            };
+            $.ajax({
+                data: $params,
+                url: '/category/addcode',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                $('.btnAddCode').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                if (data.success){
+                    alert('<%= i18n.__("Success download qrcode. The following about half an hour to insert database.")%>');
+                    if (data.reload) {
+                        location.reload();
+                    }
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                $('.btnAddCode').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        // end add code
+
+        // start add code pool
+        $(".btnAddCodePool").click(function(e){
+            var dlcount = '#poolcodenum' + $(this).attr('data-pk');
+            $('.btnAddCodePool').attr("disabled", true).text("<%= i18n.__('processing')%>");
+            if ($(dlcount).val() === '' || $(dlcount).val() === null) {
+                $('.btnAddCodePool').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            if (isNaN($(dlcount).val()) || $(dlcount).val() < 1000 || $(dlcount).val() > 50000000) {
+                $('.btnAddCodePool').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                alert('<%= i18n.__("Please enter a valid number")%>');
+                return;
+            }
+            var $params = {
+                pk: $(this).attr('data-pk'),
+                dlcount: $(dlcount).val(),
+                generalid: $(this).attr('data-gid'),
+                _csrf: "<%= csrf %>"
+            };
+            $.ajax({
+                data: $params,
+                url: '/category/addcodepool',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                $('.btnAddCodePool').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                if (data.success){
+                    alert('<%= i18n.__("Success download qrcode. The following about half an hour to insert database.")%>');
+                    if (data.reload) {
+                        location.reload();
+                    }
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                $('.btnAddCodePool').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+
+        $(".btnStopCodePool").click(function(e){
+
+            $('.btnStopCodePool').attr("disabled", true).text("<%= i18n.__('processing')%>");
+
+            var $params = {
+                pk: $(this).attr('data-pk'),
+                generalid: $(this).attr('data-gid'),
+                _csrf: "<%= csrf %>"
+            };
+            $.ajax({
+                data: $params,
+                url: '/category/stopcodepool',
+                method: 'POST',
+                cache: false,
+                timeout: 0
+            }).done(function(data) {
+                $('.btnStopCodePool').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                if (data.success){
+                    alert('<%= i18n.__("Stop download Code to codepool.")%>');
+                    if (data.reload) {
+                        location.reload();
+                    }
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                $('.btnStopCodePool').attr("disabled", false).text("<%= i18n.__('Download')%>");
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        // end add code
+
+        // start config ftp
+        $(".btnFtpConfig").click(function(e) {
+            var ftphost = '#ftphost' + $(this).attr('data-pk2');
+            var ftpuser = '#ftpuser' + $(this).attr('data-pk2');
+            var ftppass = '#ftppass' + $(this).attr('data-pk2');
+            $('.btnFtpConfig').attr("disabled", true).text("<%= i18n.__('processing')%>");
+            if ($(ftphost).val() === '' || $(ftphost).val() === null) {
+                $('.btnFtpConfig').attr("disabled", false).text("<%= i18n.__('Save changes')%>");
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            if ($(ftpuser).val() === '' || $(ftpuser).val() === null) {
+                $('.btnFtpConfig').attr("disabled", false).text("<%= i18n.__('Save changes')%>");
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            if ($(ftppass).val() === '' || $(ftppass).val() === null) {
+                $('.btnFtpConfig').attr("disabled", false).text("<%= i18n.__('Save changes')%>");
+                alert('<%= i18n.__("This field is required")%>');
+                return;
+            }
+            var $params = {
+                pk: $(this).attr('data-pk'),
+                name: 'ftp',
+                value: 'ftpconfig',
+                ftphost: $(ftphost).val(),
+                ftpuser: $(ftpuser).val(),
+                ftppass: $(ftppass).val(),
+                ftpid: $(this).attr('data-pk2'),
+                _csrf: "<%= csrf %>"
+            };
+
+            $.ajax({
+                data: $params,
+                url: '/category/update',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function(data) {
+                $('.btnFtpConfig').attr("disabled", false).text("<%= i18n.__('Save changes')%>");
+                if (data.success){
+                    alert('<%= i18n.__("success update data")%>');
+                    if (data.reload) {
+                        location.reload();
+                    }
+                } else {
+                    alert(data);
+                }
+            }).fail(function (xhr) {
+                $('.btnFtpConfig').attr("disabled", false).text("<%= i18n.__('Save changes')%>");
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                } else {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
+        // end config ftp
+
+        $.validator.messages = {
+            required: "<%- i18n.__('This field is required')%>",
+            remote: "<%- i18n.__('Please fix this field')%>",    // 自己定义
+            email: "<%- i18n.__('Please enter a valid email address')%>",
+            url: "<%- i18n.__('Please enter a valid URL')%>",
+            date: "<%- i18n.__('Please enter a valid date')%>",
+            dateISO: "<%- i18n.__('Please enter a valid date (ISO)')%>",
+            number: "<%- i18n.__('Please enter a valid number')%>",
+            digits: "<%- i18n.__('Please enter only digits')%>",
+            creditcard: "<%- i18n.__('Please enter a valid credit card number')%>",
+            equalTo: "<%- i18n.__('Please enter the same value again')%>",
+            maxlength: $.validator.format( "<%- i18n.__('Please enter no more than {0} characters')%>" ),
+            minlength: $.validator.format( "<%- i18n.__('Please enter at least {0} characters')%>" ),
+            rangelength: $.validator.format( "<%- i18n.__('Please enter a value between {0} and {1} characters long')%>" ),
+            range: $.validator.format( "<%- i18n.__('Please enter a value between {0} and {1}')%>" ),
+            max: $.validator.format( "<%- i18n.__('Please enter a value less than or equal to {0}')%>" ),
+            min: $.validator.format( "<%- i18n.__('Please enter a value greater than or equal to {0}')%>" )
+        };
+
+
+
+        $.fn.editable.defaults.inputclass = 'form-control';
+        $.fn.editable.defaults.url = '/category/update';
+        $.fn.editable.defaults.mode = 'popup';
+
+        $('.lstName').editable({
+            type: 'text',
+            name: 'name',
+            params: {
+                _csrf: '<%= csrf %>'
+            },
+            validate: function(value) {
+                if($.trim(value) == '') return '<%= i18n.__("This field is required")%>';
+            },
+            ajaxOptions: {
+                timeout: 30000,
+                dataType: 'json' //assuming json response
+            },
+            success: function(response) {
+                if (response.reload) {
+                    location.reload();
+                }
+            },
+            error: function(errors) {
+                return errors.responseText;
+            }
+        });
+
+        $('.lstSplitSpec').editable({
+            type: 'text',
+            name: 'splitSpec',
+            params: {
+                _csrf: '<%= csrf %>'
+            },
+            validate: function(value) {
+                if($.trim(value) == '') return '<%= i18n.__("This field is required")%>';
+            },
+            ajaxOptions: {
+                timeout: 30000,
+                dataType: 'json' //assuming json response
+            },
+            success: function(response) {
+                if (response.reload) {
+                    location.reload();
+                }
+            },
+            error: function(errors) {
+                return errors.responseText;
+            }
+        });
+
+        $('.lstGeneralId').editable({
+            type: 'text',
+            name: 'generalId',
+            params: {
+                _csrf: '<%= csrf %>'
+            },
+            validate: function(value) {
+                if($.trim(value) == '') return '<%= i18n.__("This field is required")%>';
+            },
+            ajaxOptions: {
+                timeout: 30000,
+                dataType: 'json' //assuming json response
+            },
+            success: function(response) {
+                if (response.reload) {
+                    location.reload();
+                }
+            },
+            error: function(errors) {
+                return errors.responseText;
+            }
+        });
+
+        $('.lstFormat').editable({
+            name: 'sendFormat',
+            source: [
+                {value: 1, text: '<%= i18n.__("sendURL") %>'},
+                {value: 2, text: '<%= i18n.__("sendXML") %>'}
+            ],
+            params: {
+                _csrf: '<%= csrf %>'
+            },
+            ajaxOptions: {
+                timeout: 30000,
+                dataType: 'json' //assuming json response
+            },
+            success: function(response) {
+                if (response.reload) {
+                    location.reload();
+                }
+            },
+            error: function(errors) {
+                return errors.responseText;
+            }
+        });
+
+        $('.updatemateriel').on('hidden.bs.select', function (e) {
+                var $params = {
+                    pk: $(this).attr('data-pk'),
+                    name: 'selMateriel',
+                    value: $(this).val(),
+                    _csrf: '<%= csrf %>'
+                };
+                $.ajax({
+                    data: $params,
+                    url: '/category/update',
+                    method: 'POST',
+                    cache: false,
+                    timeout: 30000
+                }).done(function (data) {
+                    if (data.success) {
+                        $('.updatemateriel').selectpicker('refresh');
+                        if(data.reload){
+                            location.reload();
+                        }
+                    } else {
+                        alert(data.responseText);
+                    }
+                }).fail(function (xhr) {
+                    if (xhr.status === 403) {
+                        alert('403-Error!');
+                    }
+                });
+        });
+
+        $('.chkGDT').on('ifChanged', function (event) {
+            var $params = {
+                pk: $(this).attr('data-pk'),
+                name: 'isGDT',
+                value: $(this).is(':checked'),
+                _csrf: '<%= csrf %>'
+            };
+
+            $.ajax({
+                data: $params,
+                url: '/category/update',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function(data) {
+                if (data.success){
+                    location.reload();
+                } else {
+                    alert(data.responseText);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                }
+            });
+        });
+
+        var width = $('button .dropdown-toggle').width();
+        $('button .dropdown-toggle').css("width", width/6);
+        console.log(width);
+
+        $('button.actRow').click(function (e) {
+
+            var $params = {
+                pk: $(this).attr('data-pk'),
+                name: 'changeState',
+                value: $(this).attr('data-value'),
+                _csrf: '<%= csrf %>'
+            };
+            $.ajax({
+                data: $params,
+                url: '/category/update',
+                method: 'POST',
+                cache: false,
+                timeout: 30000
+            }).done(function (data) {
+                if (data.success) {
+                    if(data.reload){
+                        location.reload();
+                    }
+                } else {
+                    alert(data.responseText);
+                }
+            }).fail(function (xhr) {
+                if (xhr.status === 403) {
+                    alert('403-Error!');
+                }
+            });
+        });
+
+    });
+
+
+</script>

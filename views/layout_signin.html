@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- meta -->
+    <meta charset="utf-8"/>
+    <meta name='description' content='<%= config.description %>'>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="keywords" content="<%= config.keywords %>"/>
+    <meta name="referrer" content="always">
+    <%
+    var headers = config.site_headers || [];
+    for (var i = 0, l = headers.length; i < l; i++) {
+    %>
+    <%- headers[i] %>
+    <% } %>
+    <% if (config.site_icon) { %>
+    <link rel="icon" href="<%= config.site_icon %>" type="image/x-icon"/>
+    <% } %>
+
+    <% if (typeof(pageTitle) !== 'undefined') { %>
+    <title><%= i18n.__(pageTitle) %> - <%= i18n.__(config.name) %></title>
+    <% } else { %>
+    <title><%= i18n.__(config.name) %> - <%= i18n.__(config.comname) %></title>
+    <% } %>
+    <meta content="_csrf" name="csrf-param">
+    <meta content="<%= csrf %>" name="csrf-token">
+
+    <%- Loader('/public/css/signin.min.css')
+    .css('/public/css/fonts-open-sans.css')
+    .css('/public/css/fonts-oswald.css')
+    .css('/public/vendors/font-awesome/css/font-awesome.min.css')
+    .css('/public/vendors/bootstrap/css/bootstrap.min.css')
+    .css('/public/vendors/jquery-pace/pace.css')
+    .css('/public/vendors/icheck-1.x/skins/all.css')
+    .css('/public/css/default.css')
+    .css('/public/css/style-responsive.css')
+    .done(assets, config.site_static_host, config.mini_assets)
+    %>
+
+    <%- Loader('/public/js/signin.min.js')
+    .js('/public/js/jquery-1.10.2.min.js')
+    .js('/public/js/jquery-migrate-1.2.1.min.js')
+    .js('/public/vendors/bootstrap/js/bootstrap.min.js')
+    .js('/public/vendors/icheck-1.x/icheck.min.js')
+    .js('/public/js/html5shiv.js')
+    .js('/public/js/respond.min.js')
+    .done(assets, config.site_static_host, config.mini_assets)
+    %>
+</head>
+<body>
+<div>
+<%- body %>
+</body>
+</html>

@@ -1,0 +1,174 @@
+{
+    "debug": true,
+    "isinit": true,
+    "istest": true,
+    "comname": "纷美包装",
+    "name": "可变印刷管理平台",
+    "description": "基于二维码的可追溯支撑管理",
+    "keywords": "greatviewpack, qrcode",
+    "site_headers": [
+        "<meta name=\"author\" content=\"mes@greatview\" />"
+    ],
+    "site_logo": "/public/images/logo/greatview_light.svg",
+    "site_icon": "/public/images/logo/favicon.png",
+    "site_static_host": "",
+    "host": "localhost",
+    "db": {
+        "host": "192.168.14.48",
+        "port": "27017",
+        "dbname": "vdp",
+        "uri": "mongodb://192.168.14.48:27020/vdp",
+        "options": {
+            "user": "admin.vdp",
+            "pass": "Ap123456",
+            "server": {
+                "poolSize": 20,
+                "socketOptions": {},
+                "auto_reconnect": true
+            },
+            "db": {
+                "forceServerObjectId": false,
+                "w": 1
+            },
+            "auth": {},
+            "replset": {
+                "socketOptions": {}
+            }
+        }
+    },
+    "shard_ranges": {
+        "shard0": {
+            "name": "rs0",
+            "range": [
+                [
+                    "0",
+                    "1999"
+                ]
+            ],
+            "active": true
+        },
+        "shard1": {
+            "name": "rs1",
+            "range": [
+                [
+                    "2000",
+                    "3999"
+                ]
+            ],
+            "active": true
+        },
+        "shard2": {
+            "name": "rs2",
+            "range": [
+                [
+                    "4000",
+                    "5999"
+                ]
+            ],
+            "active": true
+        }
+    },
+    "redis": {
+        "host": "192.168.11.36",
+        "port": 6379,
+        "db": 0,
+        "pass": "qrcode@2016"
+    },
+    "session_secret": "node_qrcode_secret_local",
+    "auth_cookie_name": "node_qrcode_local",
+    "i18n_opts": {
+        "locales": [
+            "en",
+            "zh-CN"
+        ],
+        "directory": "/Users/taozhou/Desktop/QRCode_O/i18n/",
+        "defaultLocale": "en"
+    },
+    "mail_opts": {
+        "host": "smtp.office365.com",
+        "secureConnection": true,
+        "port": "587",
+        "auth": {
+            "user": "mes@greatviewpack.com",
+            "pass": "1qaz@WSX"
+        },
+        "tls": {
+            "ciphers": "SSLv3"
+        },
+        "connectionTimeout": 10000
+    },
+    "upload": {
+        "path": "/Users/taozhou/Desktop/QRCode_O/public/upload/",
+        "url": "/public/upload/"
+    },
+    "data_exchange": {
+        "path": "/Users/taozhou/Desktop/QRCode_O/middlewares/data/",
+        "username": "",
+        "password": ""
+    },
+    "file_limit": "100MB",
+    "file_maxRows": 1800000,
+    "roll_maxCount": 18100,
+    "interface_opts": {
+        "apiApplyCode": "http://www.iotroot.com/general/Ecode/usr=hxrd/pwd=ecode8570/numb=",
+        "apiDLCode": "http://www.iotroot.com/general/downloadcode/fileId=",
+        "apiApplyGDTCode": "http://uma-api.openhema.com/code/generate/",
+        "apiDLGDTCode": "http://uma-api.openhema.com/code/download/",
+        "minStock": "50000000",
+        "apiQRTime": "23",
+        "apiCheckPrintTime": "10",
+        "apiPushOrder": "http://vdp-api.greatviewpack.org/v1/soap?wsdl",
+        "apiReturnCode": "F1C_2",
+        "apiPushOrderReturn": "http://192.168.97.7:8012/Service1.asmx?WSDL",
+        "apiPushSplitReturn": "http://192.168.97.7:8012/MES_QR_WEBSERVICE/Service1.asmx?op=get_QRCode_PaperDefect_Info",
+        "apiPushRollReturn": "http://192.168.97.7:8012/MES_QR_WEBSERVICE/Service1.asmx?op=get_QRCode_PaperDefect_Info",
+        "apiReturnCode1": "F2A_4",
+        "apiPushOrderReturn1": "http://192.168.101.9:8012/Service1.asmx?WSDL",
+        "apiPushSplitReturn1": "http://192.168.101.9:8012/MES_QR_WEBSERVICE/Service1.asmx?op=get_QRCode_PaperDefect_Info",
+        "apiPushRollReturn1": "http://192.168.101.9:8012/MES_QR_WEBSERVICE/Service1.asmx?op=get_QRCode_PaperDefect_Info",
+        "MaxPrintRows": "1800000",
+        "GMSMaxPrintRows": "10000",
+        "MaxRollCount": "18100",
+        "apiGetConsTime": "5",
+        "apiSendConsTime": "18",
+        "apiReportTime": "5",
+        "Dvalue_Roll": "500",
+        "Download_WaitingTime": "11"
+    },
+    "port": 3500,
+    "hostname": "localhost",
+    "mini_assets": false,
+    "power_list": [
+        "dashboard.view",
+        "dashboard.edit",
+        "download.view",
+        "download.edit",
+        "searchQrcode.view",
+        "searchQrcode.edit",
+        "order.view",
+        "order.edit",
+        "batch.view",
+        "batch.edit",
+        "checkqrcode.view",
+        "checkqrcode.edit",
+        "consReport.view",
+        "consReport.edit",
+        "roles.view",
+        "roles.edit",
+        "users.view",
+        "users.edit",
+        "customer.view",
+        "customer.edit",
+        "category.view",
+        "category.edit",
+        "ftp.view",
+        "ftp.edit",
+        "interface.view",
+        "interface.edit",
+        "logs.view",
+        "logs.edit",
+        "operator.view",
+        "operator.edit"
+    ],
+    "skipCount":50
+}

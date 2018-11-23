@@ -1,0 +1,20 @@
+<tr>
+    <%if (getRolesList.name !== 'admin') {%>
+    <td><a class="lstName" data-pk="<%= getRolesList._id%>" data-value="<%= getRolesList.name%>"><%= getRolesList.name %></a></td>
+    <td>
+        <select name="<%= getRolesList._id%>" data-pk="<%= getRolesList._id%>" class="selectpicker splst form-control input-inline-users" multiple data-size="10" data-actions-box="true" data-selected-text-format="count">
+            <%
+            config.power_list.forEach(function (pair) {
+                var RoleValue = pair;
+                if (RoleValue.indexOf('edit') !== -1) { %>
+                    <option data-content="<span class='label label-green'><%=RoleValue%></span>" value="<%=RoleValue%>"
+                    <%getRolesList.permissions.forEach(function (userrole) { if (userrole === RoleValue){%>selected<%}});%>><%=RoleValue%></option>
+                <% } else { %>
+                    <option data-content="<span class='label label-success'><%=RoleValue%></span>" value="<%=RoleValue%>"
+                    <%getRolesList.permissions.forEach(function (userrole) { if (userrole === RoleValue){%>selected<%}});%>><%=RoleValue%></option>
+                <% } %>
+            <%});%>
+        </select>
+    </td>
+    <% } %>
+</tr>

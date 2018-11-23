@@ -1,0 +1,8 @@
+{
+  "smtURL":["http://q.openhema.com","http://www.firstgdt.com","http://www.1gdt.com","http://www.2gdt.com","http://ga.openhema.com"],
+  "urlwithoutE":["openhema"],
+  "withoutUpload":["openhema"],
+  "smtConsFTP":"5809add17697a1e80afc5c74",
+  "smtPreprintFTP":"数码通",
+  "password":"con@1234"
+}

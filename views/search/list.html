@@ -1,0 +1,27 @@
+<% if(rollByContent.indexOf(getList.rollNum)>-1){%>
+<tr class="error">
+    <% } else {%>
+<tr>
+    <% } %>
+    <% if(typeof(getList.content) != 'undefined' ) {%>
+    <td><a data-target='#<%=getList._id%>-des' data-toggle='modal'><%= getList.content %></a></td>
+    <td><%= getList.name %></td>
+    <td><%= getList.batch %></td>
+    <td><%= getList.orderId %></td>
+    <td><%= getList.stateBynum %></td>
+    <td><%= getList.serialNum %></td>
+    <% } %>
+    <% if(typeof(getList.saleNum) != 'undefined' ) {%>
+    <td><a data-target='#<%=getList._id%>-des' data-toggle='modal'><%= getList.orderId %></a></td>
+    <td><%= getList.name %></td>
+    <td><%= getList.planCount %></td>
+    <td><%= getList.actCount %></td>
+    <td><%= getList.state %></td>
+    <% } %>
+    <% if(typeof(getList.rollNum) != 'undefined' ) {%>
+    <td><a data-target='#<%=getList._id%>-des' data-toggle='modal'><%= getList.rollNum %></a></td>
+    <td><%- getList.codeRange %></td>
+    <td><%= getList.actualCount%></td>
+    <td><%= getList.actualCode%></td>
+    <% } %>
+</tr>
