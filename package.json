@@ -1,0 +1,11 @@
+{
+    "name": "vdp",
+    "description": "QRCode",
+    "version": "2.0.1",
+    "private": true,
+    "license": "MIT",
+    "author": "Microsoft",
+    "scripts": {
+        "start": "node app.js"
+    }
+}
