@@ -9,9 +9,7 @@ var updateOrderState = require('./api/SOAP/pushOrderUpdate');
 var pushSplit = require('./api/SOAP/pushsplit');
 var pushDefect = require('./api/SOAP/pushdefect');
 var pushRoll = require('./api/SOAP/pushroll');
-var qrcodeTrace = require('./api/SOAP/qrcodeQualityTraceability');
 var pushVdpRoll = require('./api/SOAP/pushvdproll');
-var updateOrder = require('./api/SOAP/updateOrder');
 var Order = require('./proxy').Order;
 var RollDetailInfo = require('./proxy').RollDetailInfo;
 var tools = require('./common/tools');
@@ -21,7 +19,7 @@ var tools = require('./common/tools');
 
 var express = require('express');
 var router = express.Router();
-router.post('/startOrder', function (req, res, next) {
+exports.startOrder = function (req, res, next) {
     var orderId = req.body.orderId || 0;
     var state = req.body.state || 2;    // 1成功 、2失败
     var message = req.body.message || '';
@@ -53,11 +51,11 @@ router.post('/startOrder', function (req, res, next) {
 
         });
     });
-});
+}
 
 
 //接收工单
-router.post('pushOrder', function(req, res, next){
+exports.pushOrder = function(req, res, next){
     logger.debug('Received a SOAP request from MES. Call: PushOrder Args:'+ JSON.stringify(req.body));
     var state = 1;
     var message = '';
@@ -75,9 +73,9 @@ router.post('pushOrder', function(req, res, next){
     }
     //pushOrder.pushOrder(args);
     res.status(200).json({state:state, message:message});
-});
+};
 
-router.post('/pushSplit', function (req, res, next) {
+exports.pushSplit = function (req, res, next) {
     logger.debug('Received a SOAP request from MES. Call: PushSplit Args:'+ JSON.stringify(req.body));
     pushSplit.pushSplit({
         ID: req.body.ID,
@@ -93,9 +91,9 @@ router.post('/pushSplit', function (req, res, next) {
                res.status(200).json(rs);
            }
     });
-});
+};
 // arrScan = args.scanSequences
-router.post('/pushSequences', function (req, res, next) {
+exports.pushSequences = function (req, res, next) {
     logger.debug('Received a SOAP request from MES. Call: pushSequences Args:'+ JSON.stringify(req.body));
     var mm = {ID:"23021",Status:null,ErrMessage:null,
         scanSequences:"https://ga.openhema.com/H0001b0000W0hXTQMM65EyY2,https://ga.openhema.com/H0001b0000W000xY5RgdcNPs"};
@@ -112,12 +110,12 @@ router.post('/pushSequences', function (req, res, next) {
             res.status(200).json(rs);
         }
     });
-});
+};
 //     orderId = args.orderId,
 //     rollNum = args.rollNum,
 //     startCode = args.startCode,
 //     endCode = args.endCode;
-router.post('/pushRoll', function (req, res, next) {
+exports.pushRoll = function (req, res, next) {
     logger.debug('Received a SOAP request from MES. Call: pushRoll Args:'+ JSON.stringify(req.body));
     pushRoll.pushRoll({
         ID: req.body.ID,
@@ -134,9 +132,9 @@ router.post('/pushRoll', function (req, res, next) {
             res.status(200).json(rs);
         }
     });
-});
+};
 
-router.post('/pushRolls', function (req, res, next) {
+exports.pushRolls = function (req, res, next) {
     logger.debug(JSON.stringify(req.body));
     var ep = new EventProxy();
     ep.fail(function(err) {
@@ -181,23 +179,9 @@ router.post('/pushRolls', function (req, res, next) {
         res.status(200).json({state:2,message:'参数类型错误，不是数组'});
 
     }
-});
+};
 
-// router.get('/pushSplit', function (req, res, next) {
-//     var mm = {orderId:"14961",rollNum:"0000001496101000200000,0000001496102000200000,0000001496103000200000,0000001496104000200000,0000001496105000200000,0000001496106000200000",
-//         rollCode:"https://ga.openhema.com/H0000-000034zHZofGvZcXFf,https://ga.openhema.com/H0000-000030PNs2cqNuzzgq,https://ga.openhema.com/H0000-000030OzzPYqxEA4Bu,https://ga.openhema.com/H0000-00003036lvI-lSpml0",
-//         webNum:"6",ID:"002"};
-//     pushSplit.pushSplit(mm, function (err, rs) {
-//         if(err){
-//             res.status(200).json(err);
-//         }else{
-//             console.log(rs);
-//             res.status(200).json(rs);
-//         }
-//     });
-// });
-
-router.get('/updateOrderState', function (req, res, next) {
+exports.updateOrderState = function (req, res, next) {
     var orderId = req.query.orderId || '';
     var isSuccess = req.query.complete || '';
     var fileName = req.query.fileName || '';
@@ -211,11 +195,4 @@ router.get('/updateOrderState', function (req, res, next) {
     }
 
     updateOrderState.updateOrderState(orderId[0], orderId[1], isSuccess, fileName);
-});
-
-router.get('/qrcodeQualityTraceability/:content', qrcodeTrace.qrcodeTrace);
-router.post('/updateOrder', updateOrder.updateOrder);
-
-
-
-module.exports = router;
+};

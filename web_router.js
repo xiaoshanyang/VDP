@@ -26,6 +26,8 @@ var mesRequest = require('./controllers/mesRequest');
 var shards = require('./controllers/distributionShard');
 var qrcodeTrace = require('./controllers/qrcodeQualityTraceability');
 var getSendRollInfo = require('./controllers/getSendRollInfoByDate');
+var updateOrder = require('./api/SOAP/updateOrder');
+var apiRouterV1     = require('./api_router_v1');
 
 
 var router = express.Router();
@@ -109,6 +111,26 @@ if (config.isinit) {
     router.post('/getSendRollInfoByDate', getSendRollInfo.getSendRollInfoByDate);   // 按日期查询小卷发货信息
     router.get('/getDownloadFile', category.downloadFile);
     //--------------------
+
+    //----api 接口
+    router.post('/api/updateOrder', updateOrder.updateOrder);
+    //工单开始
+    router.post('/api/startOrder', apiRouterV1.startOrder);
+    //接收工单
+    router.post('/api/pushOrder', apiRouterV1.pushOrder);
+    //分切接口 
+    router.post('/api/pushSplit', apiRouterV1.pushSplit);
+    //接头接口
+    router.post('/api/pushSequences', apiRouterV1.pushSequences);
+    //小卷接口
+    router.post('/api/pushRoll', apiRouterV1.pushRoll);
+    //发运接口
+    router.post('/api/pushRolls', apiRouterV1.pushRolls);
+    //更新工单状态
+    router.get('/api/updateOrderState', apiRouterV1.updateOrderState);
+    
+    
+
 } else {
     //初始化未完成进入setup
     router.get('/', setup.index);

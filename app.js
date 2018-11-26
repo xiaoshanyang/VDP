@@ -65,7 +65,6 @@ var session                 = require('express-session');
                             require('./models');
 
 var webRouter               = require('./web_router');
-var apiRouterV1             = require('./api_router_v1');
 if (config.isinit) {
     var auth                    = require('./middlewares/auth');
 }
@@ -194,7 +193,6 @@ app.use(busboy({
 }));
 
 // routes
-app.use('/api/v1', apiRouterV1);
 app.use('/', webRouter);
 
 // error handler
