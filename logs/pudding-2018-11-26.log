@@ -1,0 +1,29 @@
+[2018-11-26 15:51:18.942] [INFO] pudding - VDP WebApp listening on port 1337
+[2018-11-26 15:51:18.943] [WARN] pudding - Wanna date me? ...
+[2018-11-26 15:51:18.944] [INFO] pudding - You can debug your app with http://localhost:1337
+[2018-11-26 15:51:18.944] [INFO] pudding - 
+[2018-11-26 15:51:44.510] [INFO] pudding - 
+
+Started 2018-11-26T07:51:44.509Z GET / ::1
+[2018-11-26 15:51:44.583] [DEBUG] pudding - MONGO users.findOne {"conditions":{"_id":"5bf234788c83e41744ebfc15"},"options":{},"collectionName":"users"} 67ms
+[2018-11-26 15:51:44.635] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-25T07:51:44.587Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 46ms
+[2018-11-26 15:51:44.636] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 47ms
+[2018-11-26 15:51:44.647] [INFO] pudding - Completed 302 (138ms)
+[2018-11-26 15:51:44.651] [INFO] pudding - 
+
+Started 2018-11-26T07:51:44.651Z GET /dashboard ::1
+[2018-11-26 15:51:44.662] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 8ms
+[2018-11-26 15:51:44.673] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 9ms
+[2018-11-26 15:51:44.679] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-25T07:51:44.653Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 25ms
+[2018-11-26 15:51:44.732] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 54ms
+[2018-11-26 15:51:44.734] [DEBUG] pudding - MONGO fac_consinfo.findOne {"conditions":{"consDate":"2018-11-25"},"options":{},"collectionName":"fac_consinfo"} 55ms
+[2018-11-26 15:51:44.765] [INFO] pudding - Render view dashboard (30ms)
+[2018-11-26 15:51:44.767] [INFO] pudding - Completed 200 (116ms)
+[2018-11-26 15:51:44.910] [INFO] pudding - 
+
+Started 2018-11-26T07:51:44.910Z POST /dashboard/getfac ::1
+[2018-11-26 15:51:44.980] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 50ms
+[2018-11-26 15:51:44.984] [DEBUG] pudding - MONGO logs.find {"conditions":{"create_at":{"$gte":"2018-11-25T07:51:44.929Z"}},"options":{"limit":100,"sort":{"create_at":-1}},"collectionName":"logs"} 55ms
+[2018-11-26 15:51:44.997] [DEBUG] pudding - MONGO roles.findOne {"conditions":{"id":"roles5"},"options":{},"collectionName":"roles"} 14ms
+[2018-11-26 15:51:45.007] [DEBUG] pudding - MONGO fac_consinfo.findOne {"conditions":{"consDate":"2018-11-25"},"options":{},"collectionName":"fac_consinfo"} 8ms
+[2018-11-26 15:51:45.008] [INFO] pudding - Completed 200 (98ms)
