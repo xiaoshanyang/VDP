@@ -61,7 +61,7 @@ if (!config.istest) {
     config.redis.pass = 'qrcode@2016';
 
     config.host = 'localhost';
-    config.port = 80;
+    config.port = 1337;
     config.hostname = 'localhost';
 
     // config.host = '192.168.14.48';
