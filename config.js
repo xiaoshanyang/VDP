@@ -57,8 +57,8 @@ if (!config.istest) {
     config.db.options.user = 'vdp';
     config.db.options.pass = 'iuxgvcbIrCYO6eO1mQTNqEo4g1JM1BksHhulQx32ELqWaFrqDL0pF3SaDUud7lrQQC1RzHXpcUI2AsWBKIEkXg==';
 
-    config.redis.host = '192.168.14.48';
-    config.redis.pass = 'qrcode@2016';
+    // config.redis.host = '192.168.14.48';
+    // config.redis.pass = 'qrcode@2016';
 
     config.host = 'localhost';
     config.port = process.env.PORT || 1337;

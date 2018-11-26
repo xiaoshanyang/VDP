@@ -69,7 +69,7 @@ if (config.isinit) {
     var auth                    = require('./middlewares/auth');
 }
 var errorPageMiddleware     = require('./middlewares/error_page');
-var RedisStore              = require('connect-redis')(session);
+//var RedisStore              = require('connect-redis')(session);
 var i18n                    = require('i18n');
 var _                       = require('lodash');
 var csurf                   = require('csurf');
