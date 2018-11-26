@@ -52,7 +52,7 @@ if (!config.istest) {
     config.db.host = '192.168.14.61';
     config.db.dbname = 'vdp';
     //config.db.uri = 'mongodb://192.168.14.61:27072/vdp';
-    config.db.uri = 'mongodb://vdp.documents.azure.cn:10255/vdp'+'?ssl=true&replicaSet=globaldb';
+    config.db.uri = 'mongodb://vdp.documents.azure.cn:10255/vdp?ssl=true&replicaSet=globaldb';
 
     config.db.options.user = 'vdp';
     config.db.options.pass = 'iuxgvcbIrCYO6eO1mQTNqEo4g1JM1BksHhulQx32ELqWaFrqDL0pF3SaDUud7lrQQC1RzHXpcUI2AsWBKIEkXg==';
@@ -61,7 +61,7 @@ if (!config.istest) {
     config.redis.pass = 'qrcode@2016';
 
     config.host = 'localhost';
-    config.port = 1337;
+    config.port = 80;
     config.hostname = 'localhost';
 
     // config.host = '192.168.14.48';

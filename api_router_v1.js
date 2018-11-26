@@ -3,9 +3,7 @@
  */
 var EventProxy = require('eventproxy');
 
-var config = require('./config');
 var logger = require('./common/logger');
-// 不再引入pushOrder， 可能会出错
 var pushOrder = require('./api/SOAP/pushorder');
 var updateOrderState = require('./api/SOAP/pushOrderUpdate');
 var pushSplit = require('./api/SOAP/pushsplit');
@@ -16,7 +14,6 @@ var pushVdpRoll = require('./api/SOAP/pushvdproll');
 var updateOrder = require('./api/SOAP/updateOrder');
 var Order = require('./proxy').Order;
 var RollDetailInfo = require('./proxy').RollDetailInfo;
-var http = require('http');
 var tools = require('./common/tools');
 //因为使用 express 需要设置一些中间件，直接创建web服务
 //开发这个服务，给61调用，然后，回调pushorder函数
@@ -56,6 +53,28 @@ router.post('/startOrder', function (req, res, next) {
 
         });
     });
+});
+
+
+//接收工单
+router.post('pushOrder', function(req, res, next){
+    logger.debug('Received a SOAP request from MES. Call: PushOrder Args:'+ JSON.stringify(req.body));
+    var state = 1;
+    var message = '';
+    //判断参数是否正确
+    var args = req.body;
+    if ([args.saleNum, args.orderId, args.customerCode,
+        args.vdpType, args.productCode,
+        args.planCount, args.multipleNum,
+        args.designId, args.vdpVersion, args.orderNum, args.factoryCode, args.lineCode,
+        args.pushMESDate].some(function (item) { return item === ''; })) {
+        state = 2; 
+        message = '某些参数为空';
+        logger.error('[SOAP-PushOrder '+ args.orderId +'] Received a SOAP request from MES. Call: PushOrder Args has Null');
+        Logs.addLogs('system', '[SOAP-PushOrder '+ args.orderId +'] Received a SOAP request from MES. Call: PushOrder Args has Null. Args:' + JSON.stringify(args), 'system', '2');
+    }
+    //pushOrder.pushOrder(args);
+    res.status(200).json({state:state, message:message});
 });
 
 router.post('/pushSplit', function (req, res, next) {
