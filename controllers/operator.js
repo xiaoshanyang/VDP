@@ -94,6 +94,7 @@ exports.importcode = function (req, res, next) {
                         if(info>0){
                             logger.debug('[Task-ImportCode] import code from file. FILE: '+filesList[0]+' count: '+info);
                             Logs.addLogs('users', '[Task-ImportCode] import code for category:'+ category +' from file. FILE: '+filesList[0]+' count: '+info, '0');
+                            filesList.shift();
                             updateCategoryCount(applyId, category, info, true, isUNUsed);
                         }
                     });
@@ -112,7 +113,8 @@ exports.importcode = function (req, res, next) {
     res.render('operator/operator',{
         i18n:res,
         Query:{
-            category:''
+            category:'',
+            orderId:filesList[0],
         }
     });
 };
@@ -174,13 +176,13 @@ function importQRCode(fileName, categoryId, orderId, isUNUsed, callback){
     });
 
     ep.on('getDistribution', function () {
-        wirtetoDB(fileName, categoryId, shardkey, isUNUsed, function(err, importCount){
+        wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, function(err, importCount){
             return callback(err, importCount);
         });
     });
 }
 
-function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, callback) {
+function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) {
     var counter = 0,
         importCount = 0;
     var startTime = Date.now();
@@ -200,7 +202,7 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, callback) {
                 content: data[0],
                 content1: data[1],
                 state: isUNUsed?1:11,
-                url: url,
+                url: "",
                 orderId: orderId,
                 distribution: shardkey
             });
@@ -209,7 +211,7 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, callback) {
                 categoryId: mongoose.Types.ObjectId(categoryId),
                 content: data[0],
                 state: isUNUsed?1:11,
-                url: url,
+                url: "",
                 orderId: orderId,
                 distribution: shardkey
             });
@@ -217,7 +219,7 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, callback) {
 
         counter++;
 
-        if (counter % 5000 === 0) {
+        if (counter % 500 === 0) {
             var t = msToS(getSpentTime(startTime));
             var s = counter / t;
             if (!isFinite(s)) s = counter;
@@ -239,7 +241,7 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, callback) {
         var t = msToS(getSpentTime(startTime));
         var s = counter / t;
         if (!isFinite(s)) s = counter;
-        if (counter % 5000 != 0) {
+        if (counter % 500 != 0) {
             batch.execute(function(err, rs) {
                 if (err) {
                     console.log('[Task-ImportCode] Insert to DB is err: '+ err);
