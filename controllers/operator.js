@@ -46,14 +46,14 @@ exports.importcode = function (req, res, next) {
         categoryId: category
     };
     if(filesList.length>0 && checked != 'option3'){
-        tools.shellgetLine(filesList[0], function (err, lineNum) {
-            if(lineNum){
-                dlCount = lineNum;
-                ep.emit('dlcount_ok');
-            }else{
-                logger.error('Import Code fail. File '+ filesList[0] +' is null. Err:'+ err);
-            }
-        });
+        // tools.shellgetLine(filesList[0], function (err, lineNum) {
+        //     if(lineNum){
+        //         dlCount = lineNum;
+        //         ep.emit('dlcount_ok');
+        //     }else{
+        //         logger.error('Import Code fail. File '+ filesList[0] +' is null. Err:'+ err);
+        //     }
+        // });
     }
 
     QRCodeApply.getQRCodeApplyByQuery(queryLogs,'', function (err, rs){
@@ -66,7 +66,8 @@ exports.importcode = function (req, res, next) {
             ep.emit('not_progress');
         }
     });
-    ep.all('dlcount_ok', 'not_progress', function() {
+    //ep.all('dlcount_ok', 'not_progress', function() {
+    ep.all('not_progress', function() {
         QRCodeApply.newAndSave(category, '58607054eaf69353e83aed62', '', req.session.user.name, dlCount, function(err, rs) {
             if (err) {
                 return next(err);
@@ -110,12 +111,12 @@ exports.importcode = function (req, res, next) {
         }
     });
 
-    ep.on('dlcount_ok', function(){
+    ep.on('not_progress', function(){
         res.render('operator/operator',{
             i18n:res,
             Query:{
                 category:'',
-                orderId:dlCount+filesList[0],
+                orderId:dlCount+' '+filesList[0],
             }
         });
     });
