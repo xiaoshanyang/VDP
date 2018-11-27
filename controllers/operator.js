@@ -140,7 +140,7 @@ exports.getfile = function (req, res, next) {
     //文件都将保存在files数组中
 
     form.parse(req, function(err, fields, files) {
-        console.log(files);
+        logger.debug(files);
         if (!(files.upload instanceof Array)) {
             files.upload = [files.upload];
         }
@@ -149,7 +149,7 @@ exports.getfile = function (req, res, next) {
             FS.renameSync(f.path, newName);
             filesList.push(newName);
         });
-        console.log(filesList);
+        logger.debug(filesList);
     });
 }
 
@@ -222,18 +222,18 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
 
         counter++;
 
-        if (counter % 500 === 0) {
+        if (counter % 3000 === 0) {
             var t = msToS(getSpentTime(startTime));
             var s = counter / t;
             if (!isFinite(s)) s = counter;
             batch.execute(function (err, rs) {
                 if (err) {
                     //Logs.addLogs('system', 'Import Code is err: ' + err, 'system', 2);
-                    console.log('[Task-ImportCode] Insert to DB is err: ' + err);
+                    logger.debug('[Task-ImportCode] Insert to DB is err: ' + err);
                     Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
                 }
                 importCount = importCount + rs.nInserted;
-                console.log('Insert %s lines, speed: %sL/S', counter, s.toFixed(0));
+                logger.debug('Insert %s lines, speed: %sL/S', counter, s.toFixed(0));
                 batch = QRCodeEntity.collection.initializeUnorderedBulkOp();
                 next();
             });
@@ -244,21 +244,21 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
         var t = msToS(getSpentTime(startTime));
         var s = counter / t;
         if (!isFinite(s)) s = counter;
-        if (counter % 500 != 0) {
+        if (counter % 3000 != 0) {
             batch.execute(function(err, rs) {
                 if (err) {
-                    console.log('[Task-ImportCode] Insert to DB is err: '+ err);
+                    logger.debug('[Task-ImportCode] Insert to DB is err: '+ err);
                     Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
                 }
                 importCount = importCount + rs.nInserted;
-                console.log('[Task-ImportCode] Complete Insert. Count is '+ importCount);
-                console.log('----------------['+ msToS(getSpentTime(startTime)) +']End Import----------------');
+                logger.debug('[Task-ImportCode] Complete Insert. Count is '+ importCount);
+                logger.debug('----------------['+ msToS(getSpentTime(startTime)) +']End Import----------------');
                 batch = null;
                 return callback(null, importCount);
             });
         }else{
-            console.log('[Task-ImportCode] Complete Insert. Count is '+ importCount);
-            console.log('----------------['+ msToS(getSpentTime(startTime)) +']End Import----------------');
+            logger.debug('[Task-ImportCode] Complete Insert. Count is '+ importCount);
+            logger.debug('----------------['+ msToS(getSpentTime(startTime)) +']End Import----------------');
             return callback(null, importCount);
         }
     });
@@ -270,4 +270,47 @@ function msToS (v) {
 
 function getSpentTime (startTime) {
     return Date.now() - startTime;
+}
+
+//---------申请表ID、品类ID(更新该品类可用码量使用)、插入数量、标明是插入新码、插入已下发码
+function updateCategoryCount(applyId, categoryId, insertCount, isInsert, isUsed) {
+    QRCodeApply.getQRCodeApplyById(applyId, function(qa_err, qa_rs) {
+        qa_rs.dbCount = insertCount;
+        qa_rs.fileName = filesList[0];
+        qa_rs.insert_at = Date.now();
+        if (insertCount === 0) {
+            qa_rs.state = 2;
+        } else {
+            qa_rs.state = 1;
+        }
+        qa_rs.save(function(err) {
+            if (err) {
+                return logger.error(err);
+            } else {
+                Category.getCategoryById(mongoose.Types.ObjectId(categoryId), function (err, rs) {
+                    if (err) {
+                        logger.error('category ' + categoryId + ' import code err. Error:' + err);
+                        return Logs.addLogs('users', 'category ' + categoryId + ' import code err. Error:' + err, '2');
+                    }
+                    if (rs) {
+                        if (isInsert) {
+                            if (!isUsed) {        //这些码是否被使用
+                                rs.codeAvailable = rs.codeAvailable + insertCount;
+                            }
+                            rs.codeCount = rs.codeCount + insertCount;
+                        } else {
+                            rs.codeAvailable = rs.codeAvailable - insertCount;
+                            rs.codeCount = rs.codeCount;
+                        }
+                        rs.save(function (err) {
+                            if (err) {
+                                return logger.error(err);
+                            }
+                        });
+                    }
+
+                });
+            }
+        });
+    });
 }
