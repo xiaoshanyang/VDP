@@ -163,7 +163,7 @@ function importQRCode(fileName, categoryId, orderId, isUNUsed, callback){
     ep.fail();
 
     // 如果已经导入了当前工单，按照已经存在的distribution
-    QRCode.getQRCodeByQuery({orderId:orderId}, {limit:1}, function (err,rs) {
+    QRCode.getOneQRCodeByQuery({orderId:orderId}, {limit:1}, function (err,rs) {
         if(err){
 
         }else{

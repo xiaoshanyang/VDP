@@ -245,6 +245,10 @@ exports.getQRCodeByQuery = function (query, opt, callback) {
     QRCode.find(query, '', opt, callback);
 };
 
+exports.getOneQRCodeByQuery = function (query, opt, callback) {
+    QRCode.findOne(query, '', opt, callback);
+};
+
 exports.getQRCodeById = function (id, callback) {
     if (!id) {
         return callback();
