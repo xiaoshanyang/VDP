@@ -110,12 +110,14 @@ exports.importcode = function (req, res, next) {
         }
     });
 
-    res.render('operator/operator',{
-        i18n:res,
-        Query:{
-            category:'',
-            orderId:filesList[0],
-        }
+    ep.on('dlcount_ok', function(){
+        res.render('operator/operator',{
+            i18n:res,
+            Query:{
+                category:'',
+                orderId:dlCount+filesList[0],
+            }
+        });
     });
 };
 // 接收上传文件
