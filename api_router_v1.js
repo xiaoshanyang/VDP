@@ -13,12 +13,8 @@ var pushVdpRoll = require('./api/SOAP/pushvdproll');
 var Order = require('./proxy').Order;
 var RollDetailInfo = require('./proxy').RollDetailInfo;
 var tools = require('./common/tools');
-//因为使用 express 需要设置一些中间件，直接创建web服务
-//开发这个服务，给61调用，然后，回调pushorder函数
-//参数：工单号、或者 是 62 临时表中的id号
 
-var express = require('express');
-var router = express.Router();
+
 exports.startOrder = function (req, res, next) {
     var orderId = req.body.orderId || 0;
     var state = req.body.state || 2;    // 1成功 、2失败
@@ -92,7 +88,7 @@ exports.pushSplit = function (req, res, next) {
            }
     });
 };
-// arrScan = args.scanSequences
+
 exports.pushSequences = function (req, res, next) {
     logger.debug('Received a SOAP request from MES. Call: pushSequences Args:'+ JSON.stringify(req.body));
     var mm = {ID:"23021",Status:null,ErrMessage:null,
@@ -111,10 +107,7 @@ exports.pushSequences = function (req, res, next) {
         }
     });
 };
-//     orderId = args.orderId,
-//     rollNum = args.rollNum,
-//     startCode = args.startCode,
-//     endCode = args.endCode;
+
 exports.pushRoll = function (req, res, next) {
     logger.debug('Received a SOAP request from MES. Call: pushRoll Args:'+ JSON.stringify(req.body));
     pushRoll.pushRoll({

@@ -1,0 +1,134 @@
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-ui-1.11.4.base/jquery-ui.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-tablesorter/themes/blue/style-custom.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-treetable/css/jquery.treetable.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/jquery-treetable/css/jquery.treetable.theme.default.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/icheck-1.x/skins/all.css">
+<link type="text/css" rel="stylesheet" href="/public/css/themes/style1/green-red.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-datepicker/css/datepicker.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-select/css/bootstrap-select.min.css">
+<link type="text/css" rel="stylesheet" href="/public/vendors/bootstrap-fileinput-master/css/fileinput.min.css">
+
+<!--BEGIN TITLE & BREADCRUMB PAGE-->
+<style type="text/css">
+    .nopadding{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+</style>
+
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    <div class="page-header pull-left">
+        <div class="page-title"><%= i18n.__('Operator') %></div>
+    </div>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/"><%= i18n.__('Index') %></a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><%= i18n.__('System') %>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active"><%= i18n.__('Operator') %></li>
+    </ol>
+    <div class="clearfix"></div>
+</div>
+
+<div class="page-content">
+    <form action="/operator" method="post">
+        <h2>入库</h2>
+        <input id="input-710" name="upload" type="file" multiple class="file-loading">
+        <div id="kv-error-2" style="margin-top:10px;display:none"></div>
+        <div id="kv-success-2" class="alert alert-success fade in" style="margin-top:10px;display:none"></div>
+        <div class="panel-body">
+            <div class="col-lg-2">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        导入未使用二维码
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        导入已下发二维码
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                        更新已下发二维码
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <select name="category" class="selectcategory form-control" title="<%= i18n.__('choose category')%>" value="<%= Query.category %>" data-url="/getcategory" data-live-search="true" data-actions-box="true" data-selected-text-format="count" required>
+                </select>
+            </div>
+            <div class="col-lg-3">
+                <input type="submit" value="Import" class="btn btn-gvgreen btn-block">
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--END TITLE & BREADCRUMB PAGE-->
+<script src="/public/vendors/x-editable/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="/public/vendors/jquery-tablesorter/jquery.tablesorter.js"></script>
+<script src="/public/vendors/jquery-ui-1.11.4.base/jquery-ui.min.js"></script>
+<script src="/public/vendors/icheck-1.x/icheck.min.js"></script>
+<script src="/public/vendors/jquery-treetable/jquery.treetable.js"></script>
+<script src="/public/vendors/jquery-validate/jquery.validate.min.js"></script>
+<script src="/public/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/public/vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="/public/vendors/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+<script>
+    $(function () {
+        $.fn.selectpicker.defaults = {
+            noneSelectedText: '<%= i18n.__("noneSelectedText")%>',
+            noneResultsText: '<%= i18n.__("noneResultsText")%>',
+            countSelectedText: '<%= i18n.__("countSelectedText")%>',
+            maxOptionsText: ['<%= i18n.__("maxOptionsText1")%>', '<%= i18n.__("maxOptionsText2")%>'],
+            selectAllText: '<%= i18n.__("selectAllText")%>',
+            deselectAllText: '<%= i18n.__("deselectAllText")%>',
+            multipleSeparator: '<%= i18n.__("multipleSeparator")%>'
+        };
+        $('select[class~="selectcategory"][data-url]').each(function(index, value)
+        {
+            var select = $(this);
+            var url    = $(this).attr('data-url');
+            var list   = [];
+            $.getJSON(url, function(data)
+            {
+                $.each(data, function(key, val)
+                {
+                    list.push('<option value="' + val._id.toString() + '_'+val.name+'">' + val.name + '</option>');
+                });
+                select.html(list.join(''));
+                select.selectpicker('refresh');
+                var str = '<%= Query.category %>';
+                str = str.split(',');
+                select.selectpicker('val', str );//默认选中
+            });
+        });
+        $("#input-710").fileinput({
+            uploadUrl: "/getfile", // server upload action
+            uploadAsync: false,
+            showPreview: false,
+            //allowedFileExtensions: ['jpg', 'png', 'gif'],
+            maxFileCount: 5,
+            elErrorContainer: '#kv-error-2'
+        }).on('filebatchpreupload', function(event, data, id, index) {
+            $('#kv-success-2').html('<h4>Upload Status</h4><ul></ul>').hide();
+        }).on('filebatchuploadsuccess', function(event, data) {
+            var out = '';
+            $.each(data.files, function(key, file) {
+                var fname = file.name;
+                out = out + '<li>' + 'Uploaded file # ' + (key + 1) + ' - '  +  fname + ' successfully.' + '</li>';
+            });
+            $('#kv-success-2 ul').append(out);
+            $('#kv-success-2').fadeIn('slow');
+        });
+    });
+
+</script>
+<script>
+</script>

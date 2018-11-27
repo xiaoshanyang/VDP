@@ -20,7 +20,7 @@ var InterFace = require('./controllers/interface');
 var order = require('./controllers/order');
 var search = require('./controllers/search');
 var batch = require('./controllers/batch');
-
+var operator = require('./controllers/operator');
 var consReport = require('./controllers/consReport');
 var mesRequest = require('./controllers/mesRequest');
 var shards = require('./controllers/distributionShard');
@@ -53,11 +53,6 @@ if (config.isinit) {
     router.get('/qrcode/search', auth, qrcode.Search); // 搜索二维码
     router.get('/order', auth, order.index); // 工单展现
     router.post('/order', auth, order.index); // 工单查询
-    //---------------------------------------
-    //router.post('/order/getroll', auth, roll.search); //按工单号查询小卷信息
-    // router.post('/order/getroll', auth, order.getRoll); //按工单号查询小卷信息
-    // router.post('/order/getrollcode', auth, order.getRollCode);
-    //---------------------------------------
     router.get('/users', auth, users.index); // 用户管理
     router.post('/users/create', auth, users.createUser); // 创建新用户
     router.post('/users/update', auth, users.updateUser); // 更新老用户
@@ -111,6 +106,10 @@ if (config.isinit) {
     router.post('/getSendRollInfoByDate', getSendRollInfo.getSendRollInfoByDate);   // 按日期查询小卷发货信息
     router.get('/getDownloadFile', category.downloadFile);
     //--------------------
+    //----管理员界面
+    router.get('/operator', operator.index);
+    router.post('/getfile', operator.getfile);
+    router.post('/operator', operator.importcode);
 
     //----api 接口
     router.post('/api/updateOrder', updateOrder.updateOrder);
