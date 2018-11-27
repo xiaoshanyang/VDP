@@ -77,9 +77,9 @@ exports.importcode = function (req, res, next) {
             ep.emit('startImport', rs._id); //把申请表中该条的_id传走,插入完成后更新状态使用
         });
     });
-    Category.getCategoryById(category, ep.done('getCategory_ok'));
+    //Category.getCategoryById(category, ep.done('getCategory_ok'));
 
-    ep.all('startImport', 'getCategory_ok', function (applyId, categoryDoc) {
+    ep.all('startImport', function (applyId, categoryDoc) {
         if(filesList.length>0 && checked!=''){
             var isUNUsed = false;
             switch (checked){
