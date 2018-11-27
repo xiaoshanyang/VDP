@@ -158,12 +158,12 @@ function importQRCode(fileName, categoryId, orderId, isUNUsed, callback){
     // 一个工单对应一个片键，Azure上不能按范围划分区间，自动处理分片，直接生成随机数
     var shardkey = parseInt(6000*Math.random());
     //------
-
+    logger.debug('[Task-ImportCode] orderId: '+orderId+' shardkey: '+shardkey );
     var ep = new eventproxy();
     ep.fail();
 
     // 如果已经导入了当前工单，按照已经存在的distribution
-    QRCode.getOneQRCodeByQuery({orderId:orderId}, {limit:1}, function (err,rs) {
+    QRCode.getOneQRCodeByQuery({orderId:orderId}, '', function (err,rs) {
         if(err){
 
         }else{
@@ -179,6 +179,7 @@ function importQRCode(fileName, categoryId, orderId, isUNUsed, callback){
     });
 
     ep.on('getDistribution', function () {
+        logger.debug('[Task-ImportCode] orderId: '+orderId+' shardkey: '+shardkey );
         wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, function(err, importCount){
             return callback(err, importCount);
         });
