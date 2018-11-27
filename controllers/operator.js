@@ -32,6 +32,7 @@ exports.index = function (req, res, next) {
 exports.importcode = function (req, res, next) {
     var category = req.body.category || '57c44b3868a639091c5fff01';
     var checked = req.body.optionsRadios || '';
+    var orderId = req.body.orderId || 99999;
     var dlCount = 0;
     var ep = new eventproxy();
     ep.fail(next);
@@ -83,7 +84,7 @@ exports.importcode = function (req, res, next) {
             switch (checked){
                 case 'option1':isUNUsed=true;
                 case 'option2':{
-                    importQRCode(filesList[0], category, isUNUsed, function(err, info) {
+                    importQRCode(filesList[0], category, orderId, isUNUsed, function(err, info) {
                         if(err){
                             logger.error('[Task-ImportCode] import code err. ERR:'+err);
                         }
