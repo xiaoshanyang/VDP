@@ -24,8 +24,8 @@ exports.index = function (req, res, next) {
         i18n:res,
         Query:{
             category:'',
-            orderId:"",
-            fileName:""
+            orderId:'',
+            fileName:''
         }
     });
 };
@@ -58,6 +58,8 @@ exports.importcode = function (req, res, next) {
         //         logger.error('Import Code fail. File '+ filesList[0] +' is null. Err:'+ err);
         //     }
         // });
+    }else{
+        fileName = 'middlewares/data/upload/'+fileName;
     }
 
     QRCodeApply.getQRCodeApplyByQuery(queryLogs,'', function (err, rs){
@@ -232,7 +234,7 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
             var t = msToS(getSpentTime(startTime));
             var s = counter / t;
             if (!isFinite(s)) s = counter;
-            logger.debug('[Task-ImportCode] orderId: '+orderId+' count: '+count );
+            logger.debug('[Task-ImportCode] orderId: '+orderId+' count: '+counter );
             batch.execute(function (err, rs) {
                 if (err) {
                     //Logs.addLogs('system', 'Import Code is err: ' + err, 'system', 2);
