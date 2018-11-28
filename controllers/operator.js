@@ -23,7 +23,9 @@ exports.index = function (req, res, next) {
     res.render('operator/operator',{
         i18n:res,
         Query:{
-            category:''
+            category:'',
+            orderId:"",
+            fileName:""
         }
     });
 };
@@ -33,6 +35,7 @@ exports.importcode = function (req, res, next) {
     var category = req.body.category || '57c44b3868a639091c5fff01';
     var checked = req.body.optionsRadios || '';
     var orderId = req.body.orderId || 99999;
+    var fileName = req.body.fileName || '';
     var dlCount = 0;
     var ep = new eventproxy();
     ep.fail(next);
@@ -45,7 +48,8 @@ exports.importcode = function (req, res, next) {
         state: 0,
         categoryId: category
     };
-    if(filesList.length>0 && checked != 'option3'){
+    if(filesList.length>0 && fileName == ''){
+        fileName = filesList[0];
         // tools.shellgetLine(filesList[0], function (err, lineNum) {
         //     if(lineNum){
         //         dlCount = lineNum;
@@ -80,12 +84,12 @@ exports.importcode = function (req, res, next) {
     //Category.getCategoryById(category, ep.done('getCategory_ok'));
 
     ep.all('startImport', function (applyId, categoryDoc) {
-        if(filesList.length>0 && checked!=''){
+        if(fileName!='' && checked!=''){
             var isUNUsed = false;
             switch (checked){
                 case 'option1':isUNUsed=true;
                 case 'option2':{
-                    importQRCode(filesList[0], category, orderId, isUNUsed, function(err, info) {
+                    importQRCode(fileName, category, orderId, isUNUsed, function(err, info) {
                         if(err){
                             logger.error('[Task-ImportCode] import code err. ERR:'+err);
                         }
@@ -93,15 +97,15 @@ exports.importcode = function (req, res, next) {
     
                         }
                         if(info>0){
-                            logger.debug('[Task-ImportCode] import code from file. FILE: '+filesList[0]+' count: '+info);
-                            Logs.addLogs('users', '[Task-ImportCode] import code for category:'+ category +' from file. FILE: '+filesList[0]+' count: '+info, '0');
+                            logger.debug('[Task-ImportCode] import code from file. FILE: '+fileName+' count: '+info);
+                            Logs.addLogs('users', '[Task-ImportCode] import code for category:'+ category +' from file. FILE: '+fileName+' count: '+info, '0');
                             filesList.shift();
                             updateCategoryCount(applyId, category, info, true, isUNUsed);
                         }
                     });
                 }break;
                 case 'option3':{
-                    updateCodeState(filesList[0], function (err, info) {
+                    updateCodeState(fileName, function (err, info) {
                         if(err){
                             logger.error('[Task-ImportCode] import code err. ERR:'+err);
                         }
@@ -116,7 +120,8 @@ exports.importcode = function (req, res, next) {
             i18n:res,
             Query:{
                 category:'',
-                orderId:dlCount+' '+filesList[0],
+                orderId:orderId,
+                fileName:fileName
             }
         });
     });
@@ -163,7 +168,7 @@ function importQRCode(fileName, categoryId, orderId, isUNUsed, callback){
     ep.fail();
 
     // 如果已经导入了当前工单，按照已经存在的distribution
-    QRCode.getOneQRCodeByQuery({orderId:orderId}, function (err,rs) {
+    QRCode.getOneQRCodeByQuery({orderId:''+orderId}, function (err,rs) {
         if(err){
 
         }else{
@@ -223,7 +228,7 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
 
         counter++;
 
-        if (counter % 3000 === 0) {
+        if (counter % 5000 === 0) {
             var t = msToS(getSpentTime(startTime));
             var s = counter / t;
             if (!isFinite(s)) s = counter;
@@ -245,7 +250,7 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
         var t = msToS(getSpentTime(startTime));
         var s = counter / t;
         if (!isFinite(s)) s = counter;
-        if (counter % 3000 != 0) {
+        if (counter % 5000 != 0) {
             batch.execute(function(err, rs) {
                 if (err) {
                     logger.debug('[Task-ImportCode] Insert to DB is err: '+ err);
