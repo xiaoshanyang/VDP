@@ -76,14 +76,14 @@ exports.importcode = function (req, res, next) {
             if (err) {
                 return next(err);
             }
-            Logs.addLogs('users', 'Apply ECODE('+dlCount+') for CategoryID: '+ category, req.session.user.name, '0');
+            //Logs.addLogs('users', 'Apply ECODE('+dlCount+') for CategoryID: '+ category, req.session.user.name, '0');
             // 开始后台程序
             ep.emit('startImport', rs._id); //把申请表中该条的_id传走,插入完成后更新状态使用
         });
     });
     //Category.getCategoryById(category, ep.done('getCategory_ok'));
 
-    ep.all('startImport', function (applyId, categoryDoc) {
+    ep.on('startImport', function (applyId) {
         if(fileName!='' && checked!=''){
             var isUNUsed = false;
             switch (checked){
@@ -98,7 +98,7 @@ exports.importcode = function (req, res, next) {
                         }
                         if(info>0){
                             logger.debug('[Task-ImportCode] import code from file. FILE: '+fileName+' count: '+info);
-                            Logs.addLogs('users', '[Task-ImportCode] import code for category:'+ category +' from file. FILE: '+fileName+' count: '+info, '0');
+                            //Logs.addLogs('users', '[Task-ImportCode] import code for category:'+ category +' from file. FILE: '+fileName+' count: '+info, '0');
                             filesList.shift();
                             updateCategoryCount(applyId, category, info, true, isUNUsed);
                         }
@@ -164,31 +164,31 @@ function importQRCode(fileName, categoryId, orderId, isUNUsed, callback){
     var shardkey = parseInt(6000*Math.random());
     //------
     logger.debug('[Task-ImportCode] orderId: '+orderId+' shardkey: '+shardkey );
-    var ep = new eventproxy();
-    ep.fail();
+    // var ep = new eventproxy();
+    // ep.fail();
 
     // 如果已经导入了当前工单，按照已经存在的distribution
-    QRCode.getOneQRCodeByQuery({orderId:''+orderId}, function (err,rs) {
-        if(err){
+    // QRCode.getOneQRCodeByQuery({orderId:''+orderId}, function (err,rs) {
+    //     if(err){
 
-        }else{
-            if(rs.length > 0){
-                if(typeof rs[0].distribution != 'undefined'){
-                    if(rs[0].distribution != ''){
-                        shardkey = rs[0].distribution;
-                    }
-                }
-            }
-            ep.emit('getDistribution');
-        }
-    });
+    //     }else{
+    //         if(rs.length > 0){
+    //             if(typeof rs[0].distribution != 'undefined'){
+    //                 if(rs[0].distribution != ''){
+    //                     shardkey = rs[0].distribution;
+    //                 }
+    //             }
+    //         }
+    //         ep.emit('getDistribution');
+    //     }
+    // });
 
-    ep.on('getDistribution', function () {
-        logger.debug('[Task-ImportCode] orderId: '+orderId+' shardkey: '+shardkey );
+    // ep.on('getDistribution', function () {
+    //     logger.debug('[Task-ImportCode] orderId: '+orderId+' shardkey: '+shardkey );
         wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, function(err, importCount){
             return callback(err, importCount);
         });
-    });
+    // });
 }
 
 function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) {
@@ -232,11 +232,12 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
             var t = msToS(getSpentTime(startTime));
             var s = counter / t;
             if (!isFinite(s)) s = counter;
+            logger.debug('[Task-ImportCode] orderId: '+orderId+' count: '+count );
             batch.execute(function (err, rs) {
                 if (err) {
                     //Logs.addLogs('system', 'Import Code is err: ' + err, 'system', 2);
                     logger.debug('[Task-ImportCode] Insert to DB is err: ' + err);
-                    Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
+                    //Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
                 }
                 importCount = importCount + rs.nInserted;
                 logger.debug('Insert %s lines, speed: %sL/S', counter, s.toFixed(0));
@@ -254,7 +255,7 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
             batch.execute(function(err, rs) {
                 if (err) {
                     logger.debug('[Task-ImportCode] Insert to DB is err: '+ err);
-                    Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
+                    //Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
                 }
                 importCount = importCount + rs.nInserted;
                 logger.debug('[Task-ImportCode] Complete Insert. Count is '+ importCount);
