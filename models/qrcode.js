@@ -31,7 +31,6 @@ QRCodeSchema.index({content: 1});
 QRCodeSchema.index({categoryId: 1});
 QRCodeSchema.index({content1: 1}, {sparse: true});
 QRCodeSchema.index({state: 1});
-QRCodeSchema.index({cansDate: 1}, {sparse: true});
 QRCodeSchema.index({orderId: 1});
 
 mongoose.model('QRCode', QRCodeSchema);

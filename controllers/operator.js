@@ -163,9 +163,9 @@ exports.getfile = function (req, res, next) {
 function importQRCode(fileName, categoryId, orderId, isUNUsed, callback){
     //------取得shard分配范围
     // 一个工单对应一个片键，Azure上不能按范围划分区间，自动处理分片，直接生成随机数
-    var shardkey = parseInt(6000*Math.random());
+    //var shardkey = parseInt(6000*Math.random());
     //------
-    logger.debug('[Task-ImportCode] orderId: '+orderId+' shardkey: '+shardkey );
+    //logger.debug('[Task-ImportCode] orderId: '+orderId+' shardkey: '+shardkey );
     // var ep = new eventproxy();
     // ep.fail();
 
@@ -187,19 +187,30 @@ function importQRCode(fileName, categoryId, orderId, isUNUsed, callback){
 
     // ep.on('getDistribution', function () {
     //     logger.debug('[Task-ImportCode] orderId: '+orderId+' shardkey: '+shardkey );
-        wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, function(err, importCount){
+        wirtetoDB(fileName, categoryId, isUNUsed, orderId, function(err, importCount){
             return callback(err, importCount);
         });
     // });
 }
 
-function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) {
+function wirtetoDB(fileName, categoryId, isUNUsed, orderId, callback) {
     var counter = 0,
         importCount = 0;
     var startTime = Date.now();
-    var batch = QRCodeEntity.collection.initializeUnorderedBulkOp();
+    var batch = [{},{},{}];
+    batch[0].flag = true;//可用
+    batch[0].qrcode = QRCodeEntity.collection.initializeUnorderedBulkOp();
+    batch[1].flag = true;//可用
+    batch[1].qrcode = QRCodeEntity.collection.initializeUnorderedBulkOp();
+    batch[2].flag = true;//可用
+    batch[2].qrcode = QRCodeEntity.collection.initializeUnorderedBulkOp();
+    var curTimes = 2;
+    var docData = {};
+    var isInBatch = false;
+    var times = 0;
+    var isover = false;
     readLine(fileName).go(function (data, next) {
-
+        isInBatch = true;
         // 在读到内容太短时，认为该条信息错误
         if (data.length < 20) {
             next();
@@ -207,54 +218,60 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
         data = data.replace('\r','');
         data = data.split(',');
 
+        docData = {
+            categoryId: mongoose.Types.ObjectId(categoryId),
+            content: data[0],
+            code:data[0].substring(data[0].lastIndexOf('/')+1, data[0].length),
+            state: isUNUsed?1:11,
+            url: "",
+            orderId: orderId
+        };
+
         if(data.length > 1){
-            batch.insert({
-                categoryId: mongoose.Types.ObjectId(categoryId),
-                content: data[0],
-                content1: data[1],
-                state: isUNUsed?1:11,
-                url: "",
-                orderId: orderId,
-                distribution: shardkey
-            });
-        }else{
-            batch.insert({
-                categoryId: mongoose.Types.ObjectId(categoryId),
-                content: data[0],
-                state: isUNUsed?1:11,
-                url: "",
-                orderId: orderId,
-                distribution: shardkey
-            });
+            docData.content1 = data[1];
         }
+        batch[curTimes].qrcode.insert(docData);
 
         counter++;
 
-        if (counter % 5000 === 0) {
-            var t = msToS(getSpentTime(startTime));
-            var s = counter / t;
-            if (!isFinite(s)) s = counter;
-            logger.debug('[Task-ImportCode] orderId: '+orderId+' count: '+counter );
-            batch.execute(function (err, rs) {
-                if (err) {
-                    //Logs.addLogs('system', 'Import Code is err: ' + err, 'system', 2);
-                    logger.debug('[Task-ImportCode] Insert to DB is err: ' + err);
-                    //Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
+        if (counter % 10000 === 0) {
+            console.log(times++,curTimes);
+            var stopTime = curTimes;
+            batch[stopTime].flag = false;
+            isInBatch = false;
+
+            //查看当前哪个batch可用
+            for(var i=0; i<batch.length; i++){
+                if(batch[i].flag){
+                    curTimes = i;
+                    isInBatch = true;
+                    break;
                 }
-                importCount = importCount + rs.nInserted;
-                logger.debug('Insert %s lines, speed: %sL/S', counter, s.toFixed(0));
-                batch = QRCodeEntity.collection.initializeUnorderedBulkOp();
-                next();
+            }
+
+            batchtoDB(batch[stopTime].qrcode, stopTime, counter, orderId, startTime, function(index){
+                batch[index].qrcode = QRCodeEntity.collection.initializeUnorderedBulkOp();
+                batch[index].flag = true;
+                if(!isInBatch && !isover){
+                    curTimes = index;
+                    return next();
+                }
             });
+            if(isInBatch && batch[curTimes].flag){
+                next();
+            }
+
+
         } else {
             next();
         }
     }, function () {
+        isover = true;
         var t = msToS(getSpentTime(startTime));
         var s = counter / t;
         if (!isFinite(s)) s = counter;
-        if (counter % 5000 != 0) {
-            batch.execute(function(err, rs) {
+        if (counter % 10000 != 0) {
+            batch[curTimes].qrcode.execute(function(err, rs) {
                 if (err) {
                     logger.debug('[Task-ImportCode] Insert to DB is err: '+ err);
                     //Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
@@ -270,6 +287,23 @@ function wirtetoDB(fileName, categoryId, shardkey, isUNUsed, orderId, callback) 
             logger.debug('----------------['+ msToS(getSpentTime(startTime)) +']End Import----------------');
             return callback(null, importCount);
         }
+    });
+}
+
+function batchtoDB(batch, batchIndex, counter, orderId, startTime, callback){
+    var t = msToS(getSpentTime(startTime));
+    var s = counter / t;
+    if (!isFinite(s)) s = counter;
+    logger.debug('[Task-ImportCode] orderId: '+orderId+' count: '+counter );
+    batch.execute(function (err, rs) {
+        if (err) {
+            //Logs.addLogs('system', 'Import Code is err: ' + err, 'system', 2);
+            logger.debug('[Task-ImportCode] Insert to DB is err: ' + err);
+            //Logs.addLogs('system', '[Task-ImportCode] Insert to DB is err: '+ err, 'system', 2);
+        }
+        logger.debug('Insert %s lines, speed: %sL/S', counter, s.toFixed(0));
+        callback(batchIndex);
+        //next();
     });
 }
 
@@ -322,4 +356,21 @@ function updateCategoryCount(applyId, categoryId, insertCount, isInsert, isUsed)
             }
         });
     });
+}
+
+//读取二维码
+function readQRCodeFromDB(categoryId, orderId, count, callback){
+    //1.验证可用码量是否充足
+
+    //2.开始导出
+
+    //3.更新可用码量
+
+    //4.更新qrcode状态 为11
+
+};
+
+function updateQRCodeState(fileName){
+    // 更新数据库
+
 }
